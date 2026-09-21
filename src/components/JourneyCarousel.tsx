@@ -53,15 +53,16 @@ export default function JourneyCarousel() {
         </motion.div>
       </AnimatePresence>
 
-      {/* cinematic scrim for text legibility */}
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+      {/* cinematic scrims: guarantee contrast for chrome regardless of image brightness */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-black/55 to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/85 via-black/40 to-transparent" />
 
       {/* story-style progress bars */}
       <div className="absolute inset-x-0 top-0 flex gap-1.5 p-6 sm:p-8">
         {journeyTimeline.map((stage, i) => (
           <div
             key={stage.id}
-            className="h-[3px] flex-1 overflow-hidden rounded-full bg-white/25"
+            className="h-[3px] flex-1 overflow-hidden rounded-full bg-white/30 shadow-[0_0_0_1px_rgba(0,0,0,0.15)]"
           >
             {i === index && (
               <motion.div
@@ -90,10 +91,10 @@ export default function JourneyCarousel() {
           transition={{ duration: 0.5, ease: "easeOut" }}
           className="absolute inset-x-0 bottom-0 space-y-2 p-8 sm:p-12"
         >
-          <h3 className="text-[clamp(32px,4.5vw,60px)] font-semibold leading-none text-white">
+          <h3 className="text-[clamp(32px,4.5vw,60px)] font-semibold leading-none text-white [text-shadow:0_2px_20px_rgba(0,0,0,0.45)]">
             {slide.year}
           </h3>
-          <p className="max-w-lg text-base leading-relaxed text-white/80">
+          <p className="max-w-lg text-base leading-relaxed text-white/90 [text-shadow:0_1px_12px_rgba(0,0,0,0.5)]">
             {slide.description}
           </p>
         </motion.div>
@@ -104,21 +105,21 @@ export default function JourneyCarousel() {
         <button
           onClick={() => goTo(index - 1)}
           aria-label="Previous stage"
-          className="flex size-10 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition-colors hover:bg-white/25"
+          className="flex size-10 items-center justify-center rounded-full bg-black/35 text-white backdrop-blur-sm transition-colors hover:bg-black/55"
         >
           <ArrowForward className="size-4 rotate-180" />
         </button>
         <button
           onClick={() => setIsPlaying((playing) => !playing)}
           aria-label={isPlaying ? "Pause carousel" : "Play carousel"}
-          className="flex size-10 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition-colors hover:bg-white/25"
+          className="flex size-10 items-center justify-center rounded-full bg-black/35 text-white backdrop-blur-sm transition-colors hover:bg-black/55"
         >
           <FontAwesomeIcon icon={isPlaying ? faPause : faPlay} className="size-3.5" />
         </button>
         <button
           onClick={() => goTo(index + 1)}
           aria-label="Next stage"
-          className="flex size-10 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition-colors hover:bg-white/25"
+          className="flex size-10 items-center justify-center rounded-full bg-black/35 text-white backdrop-blur-sm transition-colors hover:bg-black/55"
         >
           <ArrowForward className="size-4" />
         </button>
