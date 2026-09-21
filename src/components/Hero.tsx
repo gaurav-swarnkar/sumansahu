@@ -2,7 +2,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBriefcase, faBolt, faPhone, faEnvelope, faPaperPlane, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faBriefcase, faBolt, faPhone, faEnvelope, faPaperPlane, faXmark, faComment } from "@fortawesome/free-solid-svg-icons";
 import { faLinkedin, faBehance, faMedium } from "@fortawesome/free-brands-svg-icons";
 import heroImage from "../imports/Main/4c74906ffa4be2217b2d960958c0d49e73b948cc.png";
 import contactDrawerImage from "../imports/main/suman_sahu.png";
@@ -130,7 +130,7 @@ function AnimatedTitle() {
   };
 
   return (
-    <h1 className="mt-2 text-[clamp(36px,5vw,70px)] font-semibold leading-tight text-ink-soft lg:max-w-[900px] min-h-[180px]">
+    <h1 className="mt-2 text-[clamp(24px,4vw,70px)] font-semibold leading-tight text-ink-soft lg:max-w-[900px] min-h-[100px] sm:min-h-[180px]">
       {renderText()}
       {isTypingActive && <span className="animate-pulse">|</span>}
     </h1>
@@ -151,15 +151,15 @@ function CtaButton({
   return (
     <button
       onClick={onClick}
-      className="group relative flex h-[54px] w-[224px] items-center overflow-hidden"
+      className="group relative flex h-12 sm:h-[54px] w-full sm:w-[224px] items-center overflow-hidden"
     >
       {/* sliding fill from left */}
       <span className="absolute inset-y-0 left-0 right-[35px] bg-lilac transition-all duration-500 ease-out group-hover:right-0 group-hover:bg-brand-600" />
-      <span className="relative z-10 flex w-full items-center justify-start pl-6 pr-3 gap-4">
-        <span className="text-[20px] font-medium leading-none tracking-tight text-white">
+      <span className="relative z-10 flex w-full items-center justify-start pl-4 sm:pl-6 pr-3 gap-4">
+        <span className="text-sm sm:text-[20px] font-medium leading-none tracking-tight text-white">
           {label}
         </span>
-        <ArrowForward className="absolute right-3 size-5 text-white opacity-0 transition-all duration-500 ease-out group-hover:opacity-100 group-hover:-rotate-45 flex-shrink-0" />
+        <ArrowForward className="absolute right-3 size-4 sm:size-5 text-white opacity-0 transition-all duration-500 ease-out group-hover:opacity-100 group-hover:-rotate-45 flex-shrink-0" />
       </span>
     </button>
   );
@@ -196,17 +196,17 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative flex h-screen w-full items-center overflow-hidden bg-white">
+    <section className="relative w-full h-screen flex flex-col overflow-hidden bg-white">
       {/* warm glow */}
       <div className="pointer-events-none absolute -left-40 top-8 size-[620px] rounded-full bg-[#fffcf4] blur-[120px]" />
       {/* lime glow behind image */}
       <div className="pointer-events-none absolute -right-24 -top-40 size-[560px] rounded-full bg-lime opacity-20 blur-[80px]" />
       
-      {/* random moving light strobe on left side */}
+      {/* random moving light strobe - small and faded */}
       <motion.div
         animate={{
-          x: [-200, 100, -150, 250, -300, 50, -100, 300, -200],
-          y: [-150, -300, 200, -100, 300, -200, 100, -250, -150],
+          x: [-100, 50, -75, 125, -150, 25, -50, 150, -100],
+          y: [-75, -150, 100, -50, 150, -100, 50, -125, -75],
           scale: [1, 1.2, 0.9, 1.1, 0.95, 1.15, 1, 0.85, 1],
         }}
         transition={{
@@ -214,10 +214,11 @@ export default function Hero() {
           repeat: Infinity,
           ease: "easeInOut",
         }}
-        className="pointer-events-none absolute top-1/3 left-1/4 size-[400px] rounded-full bg-[#fdfbd4] blur-[60px]"
+        className="pointer-events-none absolute top-1/3 left-1/4 size-[200px] rounded-full bg-[#fdfbd4] opacity-30 blur-[40px]"
       />
 
-      <div className="relative z-10 grid h-full w-full grid-cols-1 items-center lg:grid-cols-[1.5fr_1fr]">
+      {/* DESKTOP: Grid layout */}
+      <div className="hidden lg:grid relative z-10 w-full h-full grid-cols-[1.5fr_1fr]">
         {/* left copy */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
@@ -227,26 +228,26 @@ export default function Hero() {
             x: isExiting ? 100 : 0
           }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          className="max-w-[820px] pl-[37px] pr-8 py-20 lg:max-w-full lg:pl-[74px] lg:pr-16"
+          className="flex flex-col justify-center max-w-full px-8 py-20 lg:pl-[74px] lg:pr-16"
         >
-          <p className="text-[26px] font-semibold text-muted sm:text-[32px]">
+          <p className="text-[26px] md:text-[32px] font-semibold text-muted">
             I am Suman S.
           </p>
           <AnimatedTitle />
 
           {/* Inline badges */}
           <div className="mt-6 flex flex-wrap items-center gap-3">
-            <div className="inline-flex items-center gap-2 rounded-full bg-brand/15 px-4 py-2 backdrop-blur-sm">
-              <FontAwesomeIcon icon={faBriefcase} className="text-ink-soft text-sm" />
-              <span className="text-sm font-medium text-ink-soft">4+ Yrs Exp. in Saas Design</span>
+            <div className="inline-flex items-center gap-2 rounded-full bg-brand/15 px-4 py-2 backdrop-blur-sm text-sm">
+              <FontAwesomeIcon icon={faBriefcase} className="text-ink-soft text-sm flex-shrink-0" />
+              <span className="font-medium text-ink-soft">4+ Yrs Exp. in Saas Design</span>
             </div>
-            <div className="inline-flex items-center gap-2 rounded-full bg-brand/15 px-4 py-2 backdrop-blur-sm">
-              <FontAwesomeIcon icon={faBolt} className="text-ink-soft text-sm" />
-              <span className="text-sm font-medium text-ink-soft">Open for Work</span>
+            <div className="inline-flex items-center gap-2 rounded-full bg-brand/15 px-4 py-2 backdrop-blur-sm text-sm">
+              <FontAwesomeIcon icon={faBolt} className="text-ink-soft text-sm flex-shrink-0" />
+              <span className="font-medium text-ink-soft">Open for Work</span>
             </div>
           </div>
 
-          <div className="mt-10 flex items-center gap-8">
+          <div className="mt-10 flex flex-row items-center gap-4 w-full">
             <CtaButton label="Project Stories" splitAt={4} onClick={() => handleNavigation("/projects")} />
             <CtaButton label="My Journey" splitAt={2} onClick={() => handleNavigation("/about")} />
             <CtaButton label="Let's Connect" splitAt={4} onClick={() => setIsDrawerOpen(true)} />
@@ -276,6 +277,180 @@ export default function Hero() {
         </motion.div>
       </div>
 
+      {/* MOBILE: Vertical layout with top white, bottom purple */}
+      <div className="flex lg:hidden relative z-10 flex-col h-full w-full">
+        {/* Floating Contact Button - Mobile Only */}
+        <button
+          onClick={() => setIsDrawerOpen(true)}
+          className="fixed right-4 lg:hidden z-50 flex items-center justify-center size-14 rounded-full bg-white/40 backdrop-blur-sm hover:bg-white/60 transition-all"
+          style={{ bottom: '92px' }}
+          title="Contact"
+        >
+          <FontAwesomeIcon icon={faComment} className="text-brand text-lg" />
+        </button>
+
+        {/* Top White Section - Title */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ 
+            opacity: isExiting ? 0 : 1, 
+            y: isExiting ? 24 : 0
+          }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className="h-[35%] flex flex-col justify-start px-4 pt-10 pb-8 relative z-30"
+        >
+          <p className="text-base font-semibold text-muted">
+            I am Suman S.
+          </p>
+          <div className="mt-2 text-[2.4rem] font-semibold leading-tight text-ink-soft min-h-[200px]">
+            {(() => {
+              const titles = [
+                { text: "Designing Intelligent Product Experiences", highlight: "Product Experiences" },
+                { text: "Shaping Human & AI Collaboration", highlight: "Human & AI" },
+                { text: "Turning Complexity into Adaptive Experiences", highlight: "Adaptive Experiences" },
+                { text: "Building Trust, Control & Autonomy", highlight: "Trust" },
+              ];
+              const [currentIndex, setCurrentIndex] = useState(0);
+              const [displayedText, setDisplayedText] = useState("");
+              const [isTypingActive, setIsTypingActive] = useState(true);
+
+              const currentTitle = titles[currentIndex];
+              const fullText = currentTitle.text;
+              const isTextComplete = displayedText.length === fullText.length;
+
+              useEffect(() => {
+                let timer: NodeJS.Timeout;
+
+                if (isTypingActive && !isTextComplete) {
+                  timer = setTimeout(() => {
+                    setDisplayedText(fullText.slice(0, displayedText.length + 1));
+                  }, 50);
+                } else if (isTextComplete && isTypingActive) {
+                  setIsTypingActive(false);
+                } else if (!isTypingActive && isTextComplete) {
+                  timer = setTimeout(() => {
+                    setCurrentIndex((prev) => (prev + 1) % titles.length);
+                    setDisplayedText("");
+                    setIsTypingActive(true);
+                  }, 5000);
+                }
+
+                return () => clearTimeout(timer);
+              }, [displayedText, isTypingActive, isTextComplete, fullText, titles.length]);
+
+              const renderText = () => {
+                const highlightWords = currentTitle.highlight.split(/[\s–-]+/);
+                const isHighlightedChar = Array(fullText.length).fill(false);
+                
+                highlightWords.forEach(word => {
+                  const regex = new RegExp(`\\b${word}\\b`, "gi");
+                  let match;
+                  while ((match = regex.exec(fullText)) !== null) {
+                    for (let i = match.index; i < match.index + match[0].length; i++) {
+                      isHighlightedChar[i] = true;
+                    }
+                  }
+                });
+
+                const result: JSX.Element[] = [];
+                let currentSpanHighlighted: boolean | null = null;
+                let currentSpanText = "";
+
+                for (let i = 0; i < displayedText.length; i++) {
+                  const char = displayedText[i];
+                  const charHighlighted = isHighlightedChar[i];
+
+                  if (charHighlighted !== currentSpanHighlighted) {
+                    if (currentSpanText) {
+                      result.push(
+                        <span
+                          key={result.length}
+                          className={currentSpanHighlighted ? "text-brand font-semibold" : ""}
+                        >
+                          {currentSpanText}
+                        </span>
+                      );
+                    }
+                    currentSpanText = char;
+                    currentSpanHighlighted = charHighlighted;
+                  } else {
+                    currentSpanText += char;
+                  }
+                }
+
+                if (currentSpanText) {
+                  result.push(
+                    <span
+                      key={result.length}
+                      className={currentSpanHighlighted ? "text-brand font-semibold" : ""}
+                    >
+                      {currentSpanText}
+                    </span>
+                  );
+                }
+
+                return result;
+              };
+
+              return (
+                <>
+                  {renderText()}
+                  {isTypingActive && <span className="animate-pulse">|</span>}
+                </>
+              );
+            })()}
+          </div>
+
+          {/* Badges for mobile - Relative position below text */}
+          <div className="mt-4 flex flex-wrap items-center gap-2 z-30">
+            <div className="inline-flex items-center gap-2 rounded-full bg-brand/15 px-3 py-2 backdrop-blur-sm text-xs">
+              <FontAwesomeIcon icon={faBriefcase} className="text-ink-soft text-xs flex-shrink-0" />
+              <span className="font-medium text-ink-soft">4+ Yrs Exp. in Saas Design</span>
+            </div>
+            <div className="inline-flex items-center gap-2 rounded-full bg-brand/15 px-3 py-2 backdrop-blur-sm text-xs">
+              <FontAwesomeIcon icon={faBolt} className="text-ink-soft text-xs flex-shrink-0" />
+              <span className="font-medium text-ink-soft">Open for Work</span>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Bottom Section - Sharp Gradient & Image */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.96 }}
+          animate={{ 
+            opacity: isExiting ? 0 : 1, 
+            scale: isExiting ? 0.96 : 1
+          }}
+          transition={{ duration: 0.5, ease: "easeOut", delay: isExiting ? 0 : 0.15 }}
+          className="h-[65%] relative flex items-center justify-center overflow-hidden"
+          style={{ backgroundImage: 'linear-gradient(to bottom, transparent 0%, transparent 30%, rgb(115, 34, 255) 100%)' }}
+        >
+          <motion.img
+            animate={{ opacity: isExiting ? 0 : 1 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+            src={heroImage}
+            alt="Suman S., product designer, seated in a lilac armchair beside a potted plant"
+            className="w-full h-full object-cover drop-shadow-2xl"
+          />
+        </motion.div>
+      </div>
+
+      {/* Bottom Navigation Menu - Mobile Only */}
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 w-full px-4 py-4 bg-white border-t border-ink/10 flex gap-3">
+        <button
+          onClick={() => handleNavigation("/projects")}
+          className="flex-1 h-12 bg-brand text-white font-semibold text-sm transition-all hover:bg-brand-600 active:scale-95"
+        >
+          Project Stories
+        </button>
+        <button
+          onClick={() => handleNavigation("/about")}
+          className="flex-1 h-12 bg-lilac text-white font-semibold text-sm transition-all hover:bg-brand-600 active:scale-95"
+        >
+          My Journey
+        </button>
+      </div>
+
       {/* ---- Contact Drawer ---- */}
       <AnimatePresence>
         {isDrawerOpen && (
@@ -296,7 +471,7 @@ export default function Hero() {
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: 400, opacity: 0 }}
               transition={{ duration: 0.4, ease: "easeOut" }}
-              className="fixed right-0 top-0 z-50 h-screen w-full max-w-[420px] overflow-y-auto bg-white shadow-2xl flex flex-col"
+              className="fixed inset-0 z-50 h-screen w-full sm:max-w-[420px] sm:right-0 sm:left-auto overflow-y-auto bg-white shadow-2xl flex flex-col"
             >
               {/* Close Button */}
               <button
@@ -314,7 +489,7 @@ export default function Hero() {
               <div 
                 className="bg-gradient-to-br from-brand via-brand-600 to-brand-900 px-8 py-6 relative overflow-hidden"
               >
-                <div className="relative z-10 flex flex-col items-center justify-between h-full min-h-[280px]">
+                <div className="relative z-10 flex flex-col items-center justify-between h-full min-h-[200px] sm:min-h-[280px]">
                   {/* Profile Image with Circular Design */}
                   <motion.div
                     initial={{ scale: 0.8, opacity: 0 }}
@@ -323,8 +498,8 @@ export default function Hero() {
                     className="mt-4 flex items-center justify-center"
                   >
                     <div className="relative flex items-center justify-center">
-                      <div className="absolute inset-0 w-48 h-48 bg-white/20 rounded-full blur-lg" />
-                      <div className="relative flex items-center justify-center rounded-full bg-white/10 backdrop-blur-sm border-2 border-white/30 w-44 h-44 overflow-hidden">
+                      <div className="absolute inset-0 w-32 h-32 sm:w-48 sm:h-48 bg-white/20 rounded-full blur-lg" />
+                      <div className="relative flex items-center justify-center rounded-full bg-white/10 backdrop-blur-sm border-2 border-white/30 w-32 h-32 sm:w-44 sm:h-44 overflow-hidden">
                         <img
                           src={contactDrawerImage}
                           alt="Suman S."

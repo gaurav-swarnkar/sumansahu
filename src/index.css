@@ -16,6 +16,8 @@
   --color-lilac: #884bdb;
   --color-lilac-100: #e1cbff;
   --color-lime: #f0ff64;
+
+  --breakpoint-xs: 375px;
 }
 
 html,
