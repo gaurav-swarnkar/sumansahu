@@ -15,6 +15,92 @@ export type Project = {
   contents: ProjectContent[];
 };
 
+import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+import {
+  faSeedling,
+  faGraduationCap,
+  faBriefcase,
+  faLightbulb,
+  faRocket,
+  faCrown,
+  faFlagCheckered,
+} from "@fortawesome/free-solid-svg-icons";
+
+export type JourneyStage = {
+  id: string;
+  year: string;
+  title: string;
+  description: string;
+  gradient: string; // Tailwind classes for the placeholder image/GIF panel
+  icon: IconDefinition;
+};
+
+export const journeyTimeline: JourneyStage[] = [
+  {
+    id: "stage-1",
+    year: "2015",
+    title: "Where It Began",
+    description:
+      "Started exploring visual design and the fundamentals of user-centered thinking.",
+    gradient: "bg-gradient-to-br from-brand to-brand-900",
+    icon: faSeedling,
+  },
+  {
+    id: "stage-2",
+    year: "2016–17",
+    title: "Design Education",
+    description:
+      "Formal training in interaction design, sharpening research, prototyping and storytelling skills.",
+    gradient: "bg-brand-900",
+    icon: faGraduationCap,
+  },
+  {
+    id: "stage-3",
+    year: "2018–19",
+    title: "First Steps, Real Users",
+    description:
+      "Joined my first studio role, shipping UI for fintech and retail clients under real deadlines.",
+    gradient: "bg-gradient-to-br from-brand-700 via-[#3d0079] to-[#1c0140]",
+    icon: faBriefcase,
+  },
+  {
+    id: "stage-4",
+    year: "2020–21",
+    title: "Owning 0 to 1",
+    description:
+      "Led product design end-to-end for a logistics AI tool, shaping the experience from scratch.",
+    gradient: "bg-gradient-to-br from-brand-800 to-[#2a0166]",
+    icon: faLightbulb,
+  },
+  {
+    id: "stage-5",
+    year: "2022–23",
+    title: "Scaling Impact",
+    description:
+      "Drove measurable growth across products, mentored designers and built shared design systems.",
+    gradient: "bg-gradient-to-br from-lilac to-brand-700",
+    icon: faRocket,
+  },
+  {
+    id: "stage-6",
+    year: "2024–25",
+    title: "Recognition",
+    description:
+      "Earned industry recognition for AI-assisted product design and spoke at design conferences.",
+    gradient: "bg-gradient-to-br from-brand-600 to-[#2a0166]",
+    icon: faCrown,
+  },
+  {
+    id: "stage-7",
+    year: "2026",
+    title: "What's Next",
+    description:
+      "Continuing to design intelligent products that put people first — the story keeps going.",
+    gradient: "bg-gradient-to-br from-brand to-lilac",
+    icon: faFlagCheckered,
+  },
+];
+
 export type WorkExperienceEntry = {
   id: string;
   role: string;

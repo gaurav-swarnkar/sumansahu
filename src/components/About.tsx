@@ -14,6 +14,7 @@ import {
   education,
   achievements,
 } from "../data";
+import JourneyCarousel from "./JourneyCarousel";
 
 function ArrowForward({ className = "" }: { className?: string }) {
   return (
@@ -48,6 +49,13 @@ function SummarySection() {
         <p className="text-base leading-relaxed text-ink/80">
           {journeySummary.bio}
         </p>
+      </div>
+
+      <div className="space-y-6">
+        <h3 className="text-xl font-semibold uppercase tracking-wide text-ink">
+          My Journey Through the Years
+        </h3>
+        <JourneyCarousel />
       </div>
 
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
