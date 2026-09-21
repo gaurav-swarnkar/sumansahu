@@ -8,12 +8,7 @@ import {
   faGraduationCap,
   faTrophy,
 } from "@fortawesome/free-solid-svg-icons";
-import {
-  journeySummary,
-  workExperience,
-  education,
-  achievements,
-} from "../data";
+import { workExperience, education, achievements } from "../data";
 import JourneyCarousel from "./JourneyCarousel";
 
 function ArrowForward({ className = "" }: { className?: string }) {
@@ -35,61 +30,6 @@ const sections = [
 ] as const;
 
 type SectionId = (typeof sections)[number]["id"];
-
-function SummarySection() {
-  return (
-    <div className="space-y-16">
-      <div className="max-w-3xl space-y-4">
-        <p className="text-xs font-medium uppercase tracking-wide text-ink/60">
-          Summary
-        </p>
-        <h2 className="text-2xl font-semibold leading-snug text-ink">
-          {journeySummary.heading}
-        </h2>
-        <p className="text-base leading-relaxed text-ink/80">
-          {journeySummary.bio}
-        </p>
-      </div>
-
-      <div className="space-y-6">
-        <h3 className="text-xl font-semibold uppercase tracking-wide text-ink">
-          My Journey Through the Years
-        </h3>
-        <JourneyCarousel />
-      </div>
-
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
-        {journeySummary.stats.map((stat) => (
-          <div
-            key={stat.label}
-            className="rounded-lg border border-ink/10 bg-white/50 p-6 text-center backdrop-blur-sm"
-          >
-            <div className="text-4xl font-bold text-brand">{stat.value}</div>
-            <div className="mt-2 text-xs font-medium uppercase tracking-wide text-ink/60">
-              {stat.label}
-            </div>
-          </div>
-        ))}
-      </div>
-
-      <div className="space-y-6 border-t border-ink/10 pt-12">
-        <h3 className="text-xl font-semibold uppercase tracking-wide text-ink">
-          Core Skills
-        </h3>
-        <div className="flex flex-wrap gap-3">
-          {journeySummary.skills.map((skill) => (
-            <span
-              key={skill}
-              className="rounded-full bg-lilac-100 px-4 py-2 text-sm font-medium text-brand-700"
-            >
-              {skill}
-            </span>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
 
 function WorkExperienceSection() {
   return (
@@ -201,14 +141,14 @@ function AchievementsSection() {
 
 function SectionContent({ sectionId }: { sectionId: SectionId }) {
   switch (sectionId) {
-    case "summary":
-      return <SummarySection />;
     case "work-experience":
       return <WorkExperienceSection />;
     case "education":
       return <EducationSection />;
     case "achievements":
       return <AchievementsSection />;
+    default:
+      return null;
   }
 }
 
@@ -286,18 +226,31 @@ export default function About() {
         </div>
 
         {/* ---- content panel ---- */}
-        <div className="relative min-h-[70vh] overflow-y-auto bg-gray-100/50 lg:max-h-screen lg:min-h-screen">
+        <div className="relative min-h-[70vh] overflow-hidden lg:max-h-screen lg:min-h-screen">
           <AnimatePresence mode="wait">
-            <motion.div
-              key={activeSection}
-              initial={{ opacity: 0, x: 40 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -40 }}
-              transition={{ duration: 0.4, ease: "easeOut" }}
-              className="flex h-full flex-col px-8 py-12 lg:px-16 lg:py-20"
-            >
-              <SectionContent sectionId={activeSection} />
-            </motion.div>
+            {activeSection === "summary" ? (
+              <motion.div
+                key="summary"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+                className="absolute inset-0"
+              >
+                <JourneyCarousel />
+              </motion.div>
+            ) : (
+              <motion.div
+                key={activeSection}
+                initial={{ opacity: 0, x: 40 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -40 }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+                className="absolute inset-0 flex flex-col overflow-y-auto bg-gray-100/50 px-8 py-12 lg:px-16 lg:py-20"
+              >
+                <SectionContent sectionId={activeSection} />
+              </motion.div>
+            )}
           </AnimatePresence>
         </div>
       </div>
