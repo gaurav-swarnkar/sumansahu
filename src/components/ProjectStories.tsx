@@ -1,11 +1,11 @@
 import { AnimatePresence, motion } from "motion/react";
 import { projects } from "../data";
-import { useEffect } from "react";
+import { useEffect, type Dispatch, type SetStateAction } from "react";
 import { useNavigate } from "react-router-dom";
-import video1 from "../imports/main/1.mp4";
-import video2 from "../imports/main/2.mp4";
-import video3 from "../imports/main/3.mp4";
-import video4 from "../imports/main/4.mp4";
+import video1 from "../imports/Main/1.mp4";
+import video2 from "../imports/Main/2.mp4";
+import video3 from "../imports/Main/3.mp4";
+import video4 from "../imports/Main/4.mp4";
 
 function Chevron({ className = "" }: { className?: string }) {
   return (
@@ -79,7 +79,7 @@ export default function ProjectStories({
   onBack,
 }: {
   active: number;
-  setActive: (i: number) => void;
+  setActive: Dispatch<SetStateAction<number>>;
   onBack: () => void;
 }) {
   const navigate = useNavigate();

@@ -8,6 +8,7 @@ import {
   faPaperPlane,
   faArrowRight,
 } from "@fortawesome/free-solid-svg-icons";
+import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 
 function ArrowForward({ className = "" }: { className?: string }) {
   return (
@@ -209,7 +210,7 @@ export default function Contact() {
                     >
                       <div className="flex size-12 shrink-0 items-center justify-center rounded-full bg-white/20 transition-all group-hover:bg-white/30">
                         <FontAwesomeIcon
-                          icon={<i class="fa-brands fa-whatsapp"></i>}
+                          icon={faWhatsapp}
                           className="size-5 text-white"
                         />
                       </div>
