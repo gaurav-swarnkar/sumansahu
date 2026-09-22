@@ -141,22 +141,31 @@ function CtaButton({
   label,
   splitAt,
   onClick,
+  variant = "primary",
 }: {
   label: string;
   splitAt: number;
   onClick?: () => void;
+  variant?: "primary" | "secondary" | "tertiary";
 }) {
   const head = label.slice(0, splitAt);
   const tail = label.slice(splitAt);
+  
+  const variantClasses = {
+    primary: "bg-lilac text-white hover:bg-brand-600",
+    secondary: "bg-white text-lilac border-2 border-lilac hover:bg-lilac hover:text-white",
+    tertiary: "bg-transparent text-lilac border-2 border-lilac hover:bg-lilac hover:text-white",
+  };
+  
   return (
     <button
       onClick={onClick}
-      className="group relative flex h-12 sm:h-[54px] w-full sm:w-[224px] items-center justify-center gap-4 rounded-full bg-lilac transition-colors duration-300 hover:bg-brand-600"
+      className={`group relative flex h-12 sm:h-[54px] w-full sm:w-[224px] items-center justify-center gap-4 rounded-full transition-colors duration-300 ${variantClasses[variant]}`}
     >
-      <span className="text-sm sm:text-[20px] font-medium leading-none tracking-tight text-white">
+      <span className="text-sm sm:text-[20px] font-medium leading-none tracking-tight">
         {label}
       </span>
-      <ArrowForward className="size-4 sm:size-5 text-white transition-transform duration-300 group-hover:-rotate-45 flex-shrink-0" />
+      <ArrowForward className="size-4 sm:size-5 transition-transform duration-300 group-hover:-rotate-45 flex-shrink-0" />
     </button>
   );
 }
@@ -244,9 +253,9 @@ export default function Hero() {
           </div>
 
           <div className="mt-10 flex flex-row items-center gap-4 w-full">
-            <CtaButton label="Project Stories" splitAt={4} onClick={() => handleNavigation("/projects")} />
-            <CtaButton label="My Journey" splitAt={2} onClick={() => handleNavigation("/about")} />
-            <CtaButton label="Let's Connect" splitAt={4} onClick={() => setIsDrawerOpen(true)} />
+            <CtaButton label="Project Stories" splitAt={4} onClick={() => handleNavigation("/projects")} variant="primary" />
+            <CtaButton label="My Journey" splitAt={2} onClick={() => handleNavigation("/about")} variant="secondary" />
+            <CtaButton label="Let's Connect" splitAt={4} onClick={() => setIsDrawerOpen(true)} variant="tertiary" />
           </div>
         </motion.div>
 
