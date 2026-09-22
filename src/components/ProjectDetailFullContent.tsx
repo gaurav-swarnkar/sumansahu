@@ -179,9 +179,9 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
               {/* Card 1: Acquisition */}
               <button
                 onClick={() => setSelectedMetric("acquisition")}
-                className={`rounded-lg p-6 transition-all text-left ${
+                className={`rounded-lg p-6 transition-all text-left shadow-md ${
                   selectedMetric === "acquisition"
-                    ? "border-2 border-brand bg-brand/5 shadow-lg"
+                    ? "border-2 border-brand bg-brand/5 shadow-xl"
                     : "border border-ink/10 bg-white/50 backdrop-blur-sm hover:shadow-lg"
                 }`}
               >
@@ -208,9 +208,9 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
               {/* Card 2: Retention */}
               <button
                 onClick={() => setSelectedMetric("retention")}
-                className={`rounded-lg p-6 transition-all text-left ${
+                className={`rounded-lg p-6 transition-all text-left shadow-md ${
                   selectedMetric === "retention"
-                    ? "border-2 border-brand bg-brand/5 shadow-lg"
+                    ? "border-2 border-brand bg-brand/5 shadow-xl"
                     : "border border-ink/10 bg-white/50 backdrop-blur-sm hover:shadow-lg"
                 }`}
               >
@@ -237,9 +237,9 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
               {/* Card 3: On-Time Completion */}
               <button
                 onClick={() => setSelectedMetric("on-time")}
-                className={`rounded-lg p-6 transition-all text-left ${
+                className={`rounded-lg p-6 transition-all text-left shadow-md ${
                   selectedMetric === "on-time"
-                    ? "border-2 border-brand bg-brand/5 shadow-lg"
+                    ? "border-2 border-brand bg-brand/5 shadow-xl"
                     : "border border-ink/10 bg-white/50 backdrop-blur-sm hover:shadow-lg"
                 }`}
               >
@@ -266,9 +266,9 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
               {/* Card 4: Engagement */}
               <button
                 onClick={() => setSelectedMetric("engagement")}
-                className={`rounded-lg p-6 transition-all text-left ${
+                className={`rounded-lg p-6 transition-all text-left shadow-md ${
                   selectedMetric === "engagement"
-                    ? "border-2 border-brand bg-brand/5 shadow-lg"
+                    ? "border-2 border-brand bg-brand/5 shadow-xl"
                     : "border border-ink/10 bg-white/50 backdrop-blur-sm hover:shadow-lg"
                 }`}
               >
