@@ -6,9 +6,10 @@ import {
   faDownload,
   faLocationDot,
   faGraduationCap,
-  faTrophy,
+
 } from "@fortawesome/free-solid-svg-icons";
-import { workExperience, education, achievements } from "../data";
+import { workExperience, education } from "../data";
+import awardImage from "../imports/about_page/award_video.mp4";
 import JourneyCarousel from "./JourneyCarousel";
 
 function ArrowForward({ className = "" }: { className?: string }) {
@@ -111,29 +112,19 @@ function EducationSection() {
 
 function AchievementsSection() {
   return (
-    <div className="space-y-16">
-      <p className="text-xs font-medium uppercase tracking-wide text-ink/60">
-        Achievements
-      </p>
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        {achievements.map((ach) => (
-          <div
-            key={ach.id}
-            className="space-y-3 rounded-lg border border-ink/10 bg-white/50 p-6 backdrop-blur-sm"
-          >
-            <div className="flex items-center gap-3">
-              <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-lilac-100 text-brand">
-                <FontAwesomeIcon icon={faTrophy} className="size-4" />
-              </div>
-              <span className="text-xs font-medium text-ink/50">{ach.year}</span>
-            </div>
-            <h3 className="text-lg font-semibold text-ink">{ach.title}</h3>
-            <p className="text-xs font-medium uppercase tracking-wide text-ink/50">
-              {ach.issuer}
-            </p>
-            <p className="text-sm text-ink/60">{ach.description}</p>
-          </div>
-        ))}
+    <div className="absolute inset-0 -m-0 h-full w-full overflow-hidden">
+      <video src={awardImage} className="h-full w-full object-cover" autoPlay loop muted style={{ objectPosition: "left center" }} />
+      
+      {/* Award Description Card */}
+      <div className="absolute inset-0 flex items-end justify-start p-8 sm:p-12">
+        <div className="w-fit space-y-3 rounded-lg bg-white/80 px-6 py-4">
+          <h3 className="inline-block border-b-4 border-brand pb-2 text-[clamp(24px,3vw,40px)] font-semibold leading-tight text-ink drop-shadow-lg">
+            Service Award
+          </h3>
+          <p className="max-w-lg text-base leading-relaxed text-ink/70 drop-shadow-md">
+            Recognized for outstanding contribution and innovation in product design and user experience excellence.
+          </p>
+        </div>
       </div>
     </div>
   );
@@ -182,14 +173,14 @@ export default function About() {
 
       <div className="relative z-10 mx-auto grid min-h-screen w-full max-w-[1920px] grid-cols-1 lg:grid-cols-[minmax(360px,32%)_1fr]">
         {/* ---- sidebar nav ---- */}
-        <div className="flex flex-col gap-10 px-8 py-12 lg:max-h-screen lg:px-16 lg:py-20">
+        <div className="flex flex-col gap-10 px-8 py-12 -mt-10 lg:max-h-screen lg:px-16 lg:py-20 lg:-mt-10">
           <div className="flex items-center gap-3">
             <button
               onClick={() => navigate(-1)}
               aria-label="Go back"
-              className="group flex size-16 shrink-0 items-center justify-center rounded-full bg-lilac-100 text-brand transition-colors hover:bg-brand-600 hover:text-white"
+              className="group flex size-12 shrink-0 items-center justify-center rounded-full bg-lilac-100 text-brand transition-colors hover:bg-brand-600 hover:text-white"
             >
-              <ArrowForward className="size-6 rotate-180 transition-transform duration-300 group-hover:rotate-135" />
+              <ArrowForward className="size-5 rotate-180 transition-transform duration-300 group-hover:rotate-135" />
             </button>
             <span className="text-sm font-medium text-ink/60">My Journey</span>
           </div>

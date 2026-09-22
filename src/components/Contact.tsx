@@ -51,9 +51,9 @@ export default function Contact() {
             <button
               onClick={handleBack}
               aria-label="Go back"
-              className="group flex size-16 shrink-0 items-center justify-center rounded-full bg-lilac-100 text-brand transition-colors hover:bg-brand-600 hover:text-white"
+              className="group flex size-12 shrink-0 items-center justify-center rounded-full bg-lilac-100 text-brand transition-colors hover:bg-brand-600 hover:text-white"
             >
-              <ArrowForward className="size-6 rotate-180 transition-transform duration-300 group-hover:rotate-135" />
+              <ArrowForward className="size-5 rotate-180 transition-transform duration-300 group-hover:rotate-135" />
             </button>
             <span className="text-sm font-medium text-ink/60">Let's Connect</span>
           </div>
