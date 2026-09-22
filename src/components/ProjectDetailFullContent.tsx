@@ -1,6 +1,10 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLightbulb, faCalendarDays, faFire, faClipboardList, faLock, faHeartBroken } from "@fortawesome/free-solid-svg-icons";
+import { faLightbulb, faCalendarDays, faFire, faClipboardList, faLock, faHeartBroken, faUsers, faChartLine, faCheckCircle, faClock } from "@fortawesome/free-solid-svg-icons";
+import { motion } from "framer-motion";
 import sumansahuImage from "../imports/Main/suman_sahu.png";
+import student1 from "../imports/project_assets/student1.png";
+import student2 from "../imports/project_assets/student 2.png";
+import student3 from "../imports/project_assets/student 3.png";
 import video1 from "../imports/Main/1.mp4";
 import video2 from "../imports/Main/2.mp4";
 import video3 from "../imports/Main/3.mp4";
@@ -18,6 +22,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
   const [showExperienceModal, setShowExperienceModal] = useState(false);
   const [activeTab, setActiveTab] = useState<"before" | "after" | "impact">("before");
   const [selectedMetric, setSelectedMetric] = useState<"acquisition" | "retention" | "on-time" | "engagement">("acquisition");
+  const [currentPersona, setCurrentPersona] = useState(0);
   
   // Map project IDs to video indices
   const videos = [video1, video2, video3, video4];
@@ -94,7 +99,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
             <div className="flex gap-8 mb-8 mt-8">
               <button
                 onClick={() => setActiveTab("before")}
-                className={`px-6 py-2 font-semibold text-lg transition-all ${
+                className={`px-6 py-2 font-semibold text-base transition-all ${
                   activeTab === "before"
                     ? "text-brand border-b-2 border-brand"
                     : "text-white/60 hover:text-white"
@@ -104,7 +109,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
               </button>
               <button
                 onClick={() => setActiveTab("after")}
-                className={`px-6 py-2 font-semibold text-lg transition-all ${
+                className={`px-6 py-2 font-semibold text-base transition-all ${
                   activeTab === "after"
                     ? "text-brand border-b-2 border-brand"
                     : "text-white/60 hover:text-white"
@@ -114,7 +119,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
               </button>
               <button
                 onClick={() => setActiveTab("impact")}
-                className={`px-6 py-2 font-semibold text-lg transition-all ${
+                className={`px-6 py-2 font-semibold text-base transition-all ${
                   activeTab === "impact"
                     ? "text-brand border-b-2 border-brand"
                     : "text-white/60 hover:text-white"
@@ -171,7 +176,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
               <p className="text-base text-ink/60 max-w-3xl">
                 Personalised learning experience led to stronger and more consistent student outcomes.
               </p>
-              <p className="text-sm font-medium text-ink/50">12 months Data : Nov 2024 - Nov 2025</p>
+              <p className="text-xs font-medium text-ink/50">Nov 2024 - Apr 2025 Vs May 2025 - Oct 2025</p>
             </div>
 
             {/* KPI Cards Grid - 4 columns (Clickable Tabs) */}
@@ -179,122 +184,82 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
               {/* Card 1: Acquisition */}
               <button
                 onClick={() => setSelectedMetric("acquisition")}
-                className={`rounded-lg p-6 transition-all text-left ${
+                className={`rounded-lg p-5 transition-all text-left shadow-md ${
                   selectedMetric === "acquisition"
-                    ? "border-2 border-brand bg-brand/5 shadow-lg"
-                    : "border border-ink/10 bg-white/50 backdrop-blur-sm hover:shadow-lg"
+                    ? "border-2 border-brand bg-brand/5 shadow-xl"
+                    : "bg-white/50 backdrop-blur-sm hover:shadow-lg"
                 }`}
               >
-                <div className="space-y-6">
-                  <div className="flex items-start justify-between">
-                    <div className="space-y-2">
-                      <p className="text-xs font-medium text-ink/60">Acquisition</p>
-                      <p className="text-xs text-ink/50">New student sign-ups</p>
-                    </div>
-                    <div className="w-8 h-8 rounded-lg bg-brand/10 flex items-center justify-center">
-                      <span className="text-lg">👥</span>
-                    </div>
+                <div className="flex flex-col h-full gap-4">
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm font-semibold text-ink/70">Acquisition</p>
+                    <FontAwesomeIcon icon={faUsers} className={`size-5 ${selectedMetric === "acquisition" ? "text-brand" : "text-ink/40"}`} />
                   </div>
-                  
-                  <div className={`text-4xl font-bold ${selectedMetric === "acquisition" ? "text-brand" : "text-ink"}`}>12.4K</div>
-                  
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm font-semibold text-green-600">↗ +62%</span>
-                    <span className="text-xs text-ink/50">vs previous 6 months</span>
-                  </div>
+                  <div className={`text-3xl font-bold ${selectedMetric === "acquisition" ? "text-brand" : "text-ink"}`}>12.4K</div>
+                  <div className="text-sm text-green-600">↗ +62% growth</div>
                 </div>
               </button>
 
               {/* Card 2: Retention */}
               <button
                 onClick={() => setSelectedMetric("retention")}
-                className={`rounded-lg p-6 transition-all text-left ${
+                className={`rounded-lg p-5 transition-all text-left shadow-md ${
                   selectedMetric === "retention"
-                    ? "border-2 border-brand bg-brand/5 shadow-lg"
-                    : "border border-ink/10 bg-white/50 backdrop-blur-sm hover:shadow-lg"
+                    ? "border-2 border-brand bg-brand/5 shadow-xl"
+                    : "bg-white/50 backdrop-blur-sm hover:shadow-lg"
                 }`}
               >
-                <div className="space-y-6">
-                  <div className="flex items-start justify-between">
-                    <div className="space-y-2">
-                      <p className="text-xs font-medium text-ink/60">Retention</p>
-                      <p className="text-xs text-ink/50">Day-7 student retention</p>
-                    </div>
-                    <div className="w-8 h-8 rounded-lg bg-brand/20 flex items-center justify-center">
-                      <span className="text-lg">↻</span>
-                    </div>
+                <div className="flex flex-col h-full gap-4">
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm font-semibold text-ink/70">Retention</p>
+                    <FontAwesomeIcon icon={faChartLine} className={`size-5 ${selectedMetric === "retention" ? "text-brand" : "text-ink/40"}`} />
                   </div>
-                  
-                  <div className={`text-4xl font-bold ${selectedMetric === "retention" ? "text-brand" : "text-ink"}`}>37%</div>
-                  
-                  <div className="flex items-center gap-2">
-                    <span className={`text-sm font-semibold ${selectedMetric === "retention" ? "text-brand" : "text-ink/60"}`}>↗ +27pp</span>
-                    <span className="text-xs text-ink/50">from 10% to 37%</span>
-                  </div>
+                  <div className={`text-3xl font-bold ${selectedMetric === "retention" ? "text-brand" : "text-ink"}`}>37%</div>
+                  <div className="text-sm text-green-600">↗ +27pp growth</div>
                 </div>
               </button>
 
               {/* Card 3: On-Time Completion */}
               <button
                 onClick={() => setSelectedMetric("on-time")}
-                className={`rounded-lg p-6 transition-all text-left ${
+                className={`rounded-lg p-5 transition-all text-left shadow-md ${
                   selectedMetric === "on-time"
-                    ? "border-2 border-brand bg-brand/5 shadow-lg"
-                    : "border border-ink/10 bg-white/50 backdrop-blur-sm hover:shadow-lg"
+                    ? "border-2 border-brand bg-brand/5 shadow-xl"
+                    : "bg-white/50 backdrop-blur-sm hover:shadow-lg"
                 }`}
               >
-                <div className="space-y-6">
-                  <div className="flex items-start justify-between">
-                    <div className="space-y-2">
-                      <p className="text-xs font-medium text-ink/60">On-Time Completion</p>
-                      <p className="text-xs text-ink/50">Personally-set sessions</p>
-                    </div>
-                    <div className="w-8 h-8 rounded-lg bg-brand/10 flex items-center justify-center">
-                      <span className="text-lg">✓</span>
-                    </div>
+                <div className="flex flex-col h-full gap-4">
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm font-semibold text-ink/70">Completion</p>
+                    <FontAwesomeIcon icon={faCheckCircle} className={`size-5 ${selectedMetric === "on-time" ? "text-brand" : "text-ink/40"}`} />
                   </div>
-                  
-                  <div className={`text-4xl font-bold ${selectedMetric === "on-time" ? "text-brand" : "text-ink"}`}>68%</div>
-                  
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm font-semibold text-green-600">↗ +32pp</span>
-                    <span className="text-xs text-ink/50">vs previous 6 months</span>
-                  </div>
+                  <div className={`text-3xl font-bold ${selectedMetric === "on-time" ? "text-brand" : "text-ink"}`}>68%</div>
+                  <div className="text-sm text-green-600">↗ +32pp growth</div>
                 </div>
               </button>
 
               {/* Card 4: Engagement */}
               <button
                 onClick={() => setSelectedMetric("engagement")}
-                className={`rounded-lg p-6 transition-all text-left ${
+                className={`rounded-lg p-5 transition-all text-left shadow-md ${
                   selectedMetric === "engagement"
-                    ? "border-2 border-brand bg-brand/5 shadow-lg"
-                    : "border border-ink/10 bg-white/50 backdrop-blur-sm hover:shadow-lg"
+                    ? "border-2 border-brand bg-brand/5 shadow-xl"
+                    : "bg-white/50 backdrop-blur-sm hover:shadow-lg"
                 }`}
               >
-                <div className="space-y-6">
-                  <div className="flex items-start justify-between">
-                    <div className="space-y-2">
-                      <p className="text-xs font-medium text-ink/60">Engagement</p>
-                      <p className="text-xs text-ink/50">Average daily learning time</p>
-                    </div>
-                    <div className="w-8 h-8 rounded-lg bg-brand/10 flex items-center justify-center">
-                      <span className="text-lg">🕐</span>
-                    </div>
+                <div className="flex flex-col h-full gap-4">
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm font-semibold text-ink/70">Engagement</p>
+                    <FontAwesomeIcon icon={faClock} className={`size-5 ${selectedMetric === "engagement" ? "text-brand" : "text-ink/40"}`} />
                   </div>
-                  
-                  <div className={`text-4xl font-bold ${selectedMetric === "engagement" ? "text-brand" : "text-ink"}`}>8-12<span className="text-xl ml-1">min</span></div>
-                  
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm font-semibold text-green-600">↗ +3x</span>
-                    <span className="text-xs text-ink/50">from &lt;3 min to 8-12 min</span>
-                  </div>
+                  <div className={`text-3xl font-bold ${selectedMetric === "engagement" ? "text-brand" : "text-ink"}`}>8-12 min</div>
+                  <div className="text-sm text-green-600">↗ +3x growth</div>
                 </div>
               </button>
             </div>
 
             {/* Dynamic Chart Section */}
-            <div className="mt-8 rounded-lg border border-ink/10 p-8 bg-white/50 backdrop-blur-sm">
+            <div className="mt-8 rounded-lg p-8 bg-white/50 backdrop-blur-sm">
               <div className="space-y-6">
                 {selectedMetric === "acquisition" && (
                   <>
@@ -304,7 +269,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
                     </div>
                     
                     {/* Acquisition Bar Chart - SVG */}
-                    <svg viewBox="0 0 1000 300" className="w-full h-64 bg-ink/2 rounded border border-ink/5">
+                    <svg viewBox="0 0 1000 300" className="w-full h-64 rounded">
                       {/* Grid lines */}
                       {[0, 20, 40, 60, 80, 100].map((val) => (
                         <line
@@ -328,7 +293,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
                           fill="rgba(24, 3, 59, 0.6)"
                           textAnchor="end"
                         >
-                          {val}%
+                          {(val / 100) * 2100}
                         </text>
                       ))}
 
@@ -373,7 +338,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
                         );
                       })}
                     </svg>
-                    <div className="text-center text-sm text-ink/60">Total: 12,400 sign-ups</div>
+                    <div className="text-center text-xs text-ink/60">Total: 12,400 sign-ups</div>
                   </>
                 )}
 
@@ -385,7 +350,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
                     </div>
                     
                     {/* Retention Line Chart with Single Annotation */}
-                    <svg viewBox="0 0 1000 420" className="w-full h-80 bg-ink/2 rounded border border-ink/5">
+                    <svg viewBox="0 0 1000 420" className="w-full h-80 rounded">
                       {/* Grid lines - 0%, 10%, 20%, 30%, 40% */}
                       {[0, 10, 20, 30, 40].map((val) => (
                         <line
@@ -510,33 +475,57 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
                       <p className="text-sm text-ink/60">Percentage of personally-set sessions completed on time</p>
                     </div>
                     
-                    {/* Horizontal Bar Chart */}
-                    <div className="space-y-8 px-4 py-6 bg-ink/2 rounded border border-ink/5">
+                    {/* Horizontal Bar Chart - Two Periods Comparison */}
+                    <div className="grid grid-cols-2 gap-6 px-4 py-6 rounded">
+                      {/* Period 1: Nov 2024 - Apr 2025 */}
                       <div className="space-y-2">
-                        <div className="flex justify-between items-center mb-2">
-                          <span className="text-sm font-medium text-ink">Completed On Time</span>
-                          <span className="text-lg font-bold text-brand">68%</span>
+                        <h4 className="text-xs font-semibold text-ink mb-3">Nov 2024 - Apr 2025</h4>
+                        <div className="space-y-1.5">
+                          <div className="flex justify-between items-center mb-1">
+                            <span className="text-xs font-medium text-ink">Completed</span>
+                            <span className="text-sm font-bold text-brand">36%</span>
+                          </div>
+                          <div className="w-full h-5 bg-ink/10 rounded-full overflow-hidden">
+                            <div className="h-full w-[36%] bg-brand rounded-full"></div>
+                          </div>
                         </div>
-                        <div className="w-full h-8 bg-ink/10 rounded-full overflow-hidden">
-                          <div className="h-full w-[68%] bg-brand rounded-full flex items-center justify-end pr-2">
-                            <span className="text-xs font-semibold text-white">68%</span>
+                        
+                        <div className="space-y-1.5">
+                          <div className="flex justify-between items-center mb-1">
+                            <span className="text-xs font-medium text-ink">Incomplete</span>
+                            <span className="text-sm font-bold text-ink/60">64%</span>
+                          </div>
+                          <div className="w-full h-5 bg-ink/10 rounded-full overflow-hidden">
+                            <div className="h-full w-[64%] bg-ink/40 rounded-full"></div>
                           </div>
                         </div>
                       </div>
-                      
+
+                      {/* Period 2: May 2025 - Oct 2025 */}
                       <div className="space-y-2">
-                        <div className="flex justify-between items-center mb-2">
-                          <span className="text-sm font-medium text-ink">Missed or Incomplete</span>
-                          <span className="text-lg font-bold text-ink/60">32%</span>
+                        <h4 className="text-xs font-semibold text-ink mb-3">May 2025 - Oct 2025</h4>
+                        <div className="space-y-1.5">
+                          <div className="flex justify-between items-center mb-1">
+                            <span className="text-xs font-medium text-ink">Completed</span>
+                            <span className="text-sm font-bold text-brand">68%</span>
+                          </div>
+                          <div className="w-full h-5 bg-ink/10 rounded-full overflow-hidden">
+                            <div className="h-full w-[68%] bg-brand rounded-full"></div>
+                          </div>
                         </div>
-                        <div className="w-full h-8 bg-ink/10 rounded-full overflow-hidden">
-                          <div className="h-full w-[32%] bg-ink/40 rounded-full flex items-center justify-end pr-2">
-                            <span className="text-xs font-semibold text-ink/80">32%</span>
+                        
+                        <div className="space-y-1.5">
+                          <div className="flex justify-between items-center mb-1">
+                            <span className="text-xs font-medium text-ink">Incomplete</span>
+                            <span className="text-sm font-bold text-ink/60">32%</span>
+                          </div>
+                          <div className="w-full h-5 bg-ink/10 rounded-full overflow-hidden">
+                            <div className="h-full w-[32%] bg-ink/40 rounded-full"></div>
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div className="text-center text-sm text-ink/60">+32pp improvement from previous period</div>
+                    <div className="text-center text-xs text-ink/60">+32pp improvement from previous period</div>
                   </>
                 )}
 
@@ -547,51 +536,31 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
                       <p className="text-sm text-ink/60">Average time spent learning per day</p>
                     </div>
                     
-                    {/* Dot Metrics Chart */}
-                    <div className="px-4 py-6 bg-ink/2 rounded border border-ink/5 space-y-6">
+                    {/* Time Comparison Chart */}
+                    <div className="grid grid-cols-2 gap-6 px-4 py-6 rounded">
                       {/* Before */}
                       <div className="space-y-3">
-                        <div className="flex justify-between items-center">
-                          <span className="text-sm font-medium text-ink">Before Implementation</span>
-                          <span className="text-sm font-semibold text-ink/60">&lt;3 minutes</span>
-                        </div>
-                        <div className="flex gap-1.5 flex-wrap">
-                          {Array(3)
-                            .fill(null)
-                            .map((_, idx) => (
-                              <div
-                                key={idx}
-                                className="w-3 h-3 rounded-full bg-ink/30"
-                              />
-                            ))}
+                        <h4 className="text-xs font-semibold text-ink mb-3">Nov 2024 - Apr 2025</h4>
+                        <div className="bg-ink/5 rounded-lg p-4 text-center">
+                          <div className="text-2xl font-bold text-ink/60 mb-1">&lt;3 min</div>
+                          <p className="text-xs text-ink/50">per session</p>
                         </div>
                       </div>
 
                       {/* After */}
                       <div className="space-y-3">
-                        <div className="flex justify-between items-center">
-                          <span className="text-sm font-medium text-ink">After Implementation</span>
-                          <span className="text-sm font-semibold text-brand">8-12 minutes</span>
-                        </div>
-                        <div className="flex gap-1.5 flex-wrap">
-                          {Array(12)
-                            .fill(null)
-                            .map((_, idx) => (
-                              <div
-                                key={idx}
-                                className="w-3 h-3 rounded-full bg-brand"
-                              />
-                            ))}
+                        <h4 className="text-xs font-semibold text-ink mb-3">May 2025 - Oct 2025</h4>
+                        <div className="bg-brand/10 rounded-lg p-4 text-center">
+                          <div className="text-2xl font-bold text-brand mb-1">8-12 min</div>
+                          <p className="text-xs text-ink/50">per session</p>
                         </div>
                       </div>
-
-                      {/* Improvement indicator */}
-                      <div className="border-t border-ink/10 pt-4 mt-4">
-                        <div className="text-center">
-                          <div className="text-3xl font-bold text-brand">+3x</div>
-                          <p className="text-xs text-ink/60">Improvement in engagement time</p>
-                        </div>
-                      </div>
+                    </div>
+                    
+                    {/* Improvement indicator */}
+                    <div className="text-center px-4">
+                      <div className="text-3xl font-bold text-brand">+3x</div>
+                      <p className="text-xs text-ink/60">Improvement in daily engagement time</p>
                     </div>
                   </>
                 )}
@@ -599,7 +568,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
             </div>
 
             {/* Note */}
-            <div className="bg-ink/5 border border-ink/10 rounded-lg px-4 py-3">
+            <div className="bg-ink/5 rounded-lg px-4 py-3">
               <p className="text-xs text-ink/60 font-medium">
                 <strong>Note:</strong> The statistics above represent proportional data. This does not represent the real organizational data.
               </p>
@@ -609,7 +578,6 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
           {/* Core Outcomes */}
           <div className="space-y-6 pt-6">
             <h2 className="text-xl font-semibold text-ink">Core Outcomes</h2>
-
             <div className="space-y-6">
               {/* Outcome 1 */}
               <div className="flex gap-6">
@@ -675,7 +643,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
         {/* ===== SECTION 2: BUSINESS PROBLEM ===== */}
         <section id="business-problem" className="space-y-12 scroll-mt-8 mt-[120px]">
           <div>
-            <h1 className="text-4xl font-bold text-ink mb-8">Business Problem</h1>
+            <h1 className="text-4xl font-bold text-ink mb-8">Business UseCases </h1>
             <div className="relative pl-8 border-l-4 border-brand py-6">
               <h2 className="text-2xl font-bold text-ink leading-tight">
                 We brought students to Notesight, but <span className="text-brand">struggled to keep them learning.</span>
@@ -683,33 +651,44 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
             </div>
           </div>
 
-          {/* Three Problem Cards */}
+          {/* Three Problem & Target Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Card 1: Low Retention */}
-            <div className="rounded-lg border border-ink/10 bg-white/50 backdrop-blur-sm p-8 space-y-4">
-              <div className="text-4xl font-bold text-brand">1 in 10</div>
-              <h3 className="text-lg font-semibold text-ink">Low student retention</h3>
-              <p className="text-sm text-ink/60">
-                Only 1 in 10 students were retained by Day 7.
-              </p>
+            {/* Card 1: Retention */}
+            <div className="rounded-lg bg-white/50 backdrop-blur-sm p-6 space-y-4">
+              <div className="space-y-2">
+                <p className="text-xs font-semibold text-ink/50 uppercase tracking-wide">Problem</p>
+                <h3 className="text-lg font-semibold text-ink">Low Student Retention</h3>
+                <p className="text-sm text-ink/60">Only 1 in 10 students retained by Day 7</p>
+                <div className="text-3xl font-bold text-ink/40 pt-2">1 in 10</div>
+              </div>
             </div>
 
-            {/* Card 2: Declining Engagement */}
-            <div className="rounded-lg border border-ink/10 bg-white/50 backdrop-blur-sm p-8 space-y-4">
-              <div className="text-4xl font-bold text-brand">&lt;3 min</div>
-              <h3 className="text-lg font-semibold text-ink">Declining engagement</h3>
-              <p className="text-sm text-ink/60">
-                Average engagement fell to less than 3 minutes by Day 7.
-              </p>
+            {/* Card 2: Engagement */}
+            <div className="rounded-lg bg-white/50 backdrop-blur-sm p-6 space-y-4">
+              <div className="space-y-2">
+                <p className="text-xs font-semibold text-ink/50 uppercase tracking-wide">Problem</p>
+                <h3 className="text-lg font-semibold text-ink">Declining Engagement</h3>
+                <p className="text-sm text-ink/60">Average time fell below 3 minutes by Day 7</p>
+                <div className="text-3xl font-bold text-ink/40 pt-2">&lt;3 min</div>
+              </div>
             </div>
 
-            {/* Card 3: High Dependence on Re-engagement */}
-            <div className="rounded-lg border border-ink/10 bg-white/50 backdrop-blur-sm p-8 space-y-4">
-              <div className="text-4xl font-bold text-brand">100%</div>
-              <h3 className="text-lg font-semibold text-ink">Re-engagement dependent</h3>
-              <p className="text-sm text-ink/60">
-                We relied on nudges and interventions to bring students back.
-              </p>
+            {/* Card 3: Re-engagement */}
+            <div className="rounded-lg bg-white/50 backdrop-blur-sm p-6 space-y-4">
+              <div className="space-y-2">
+                <p className="text-xs font-semibold text-ink/50 uppercase tracking-wide">Current State</p>
+                <h3 className="text-lg font-semibold text-ink">Engagement Sustainability</h3>
+                <div className="space-y-2 pt-1">
+                  <div className="flex justify-between items-baseline">
+                    <p className="text-xs text-ink/60">Self-Sustaining</p>
+                    <div className="text-2xl font-bold text-ink/40">3%</div>
+                  </div>
+                  <div className="flex justify-between items-baseline">
+                    <p className="text-xs text-ink/60">Re-engagement Dependent</p>
+                    <div className="text-2xl font-bold text-ink/40">97%</div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -752,7 +731,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
             
             <div className="space-y-6">
               {/* Objective 1 */}
-              <div className="rounded-lg border border-ink/10 bg-white/50 backdrop-blur-sm p-8 space-y-4">
+              <div className="rounded-lg bg-white/50 backdrop-blur-sm p-8 space-y-4">
                 <div className="flex items-start gap-6">
                   <div className="text-7xl font-bold text-brand/30">01</div>
                   <div className="space-y-3 flex-1">
@@ -765,7 +744,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
               </div>
 
               {/* Objective 2 */}
-              <div className="rounded-lg border border-ink/10 bg-white/50 backdrop-blur-sm p-8 space-y-4">
+              <div className="rounded-lg bg-white/50 backdrop-blur-sm p-8 space-y-4">
                 <div className="flex items-start gap-6">
                   <div className="text-7xl font-bold text-brand/30">02</div>
                   <div className="space-y-3 flex-1">
@@ -778,7 +757,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
               </div>
 
               {/* Objective 3 */}
-              <div className="rounded-lg border border-ink/10 bg-white/50 backdrop-blur-sm p-8 space-y-4">
+              <div className="rounded-lg bg-white/50 backdrop-blur-sm p-8 space-y-4">
                 <div className="flex items-start gap-6">
                   <div className="text-7xl font-bold text-brand/30">03</div>
                   <div className="space-y-3 flex-1">
@@ -796,7 +775,144 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
         {/* ===== SECTION 3: USER PROBLEM ===== */}
         <section id="user-problem" className="space-y-8 scroll-mt-8 mt-[120px]">
           <h1 className="text-4xl font-bold text-ink">User Problem</h1>
-          <p className="text-base text-ink/60">Content coming soon...</p>
+          
+          {/* USER PERSONAS SUBSECTION */}
+          <div className="space-y-8">
+            <div className="space-y-4">
+              <h2 className="text-2xl font-bold text-ink">Different learners. Real challenges.</h2>
+              <p className="text-base text-ink/60">Students come to the platform with different goals, routines and obstacles.</p>
+            </div>
+
+            {/* Personas Carousel - Stacked Cards */}
+            <div className="space-y-6">
+              {/* Stacked Cards Container */}
+              <div className="relative h-[600px]">
+                {/* Persona 0: The Overwhelmed Planner */}
+                {[
+                  {
+                    id: 0,
+                    image: student1,
+                    name: "The Overwhelmed Planner",
+                    quote: "I know I need to study, but I don't know how to fit everything in.",
+                    goals: [
+                      "Plan what to study and when",
+                      "Balance multiple subjects",
+                      "Prepare for upcoming tests"
+                    ],
+                    painPoints: [
+                      "Too many subjects to plan",
+                      "Spends more time planning",
+                      "Feels overwhelmed easily"
+                    ]
+                  },
+                  {
+                    id: 1,
+                    image: student2,
+                    name: "The Inconsistent Learner",
+                    quote: "I start with motivation, but I can't keep the routine going.",
+                    goals: [
+                      "Build a regular study routine",
+                      "Complete planned sessions",
+                      "Get back on track after a pause"
+                    ],
+                    painPoints: [
+                      "Loses motivation quickly",
+                      "Misses sessions when busy",
+                      "Hard to catch up once behind"
+                    ]
+                  },
+                  {
+                    id: 2,
+                    image: student3,
+                    name: "The Goal-Driven Achiever",
+                    quote: "I know where I want to go. Help me get there efficiently.",
+                    goals: [
+                      "Prepare for a specific exam or goal",
+                      "Focus on weak areas",
+                      "Track progress toward their goal"
+                    ],
+                    painPoints: [
+                      "Limited time to study",
+                      "Unclear what to focus on now",
+                      "Generic plans don't fit their goals"
+                    ]
+                  }
+                ].map((persona) => {
+                  const distance = (persona.id - currentPersona + 3) % 3;
+                  const rotation = distance === 0 ? 0 : distance === 1 ? 3 : 6;
+                  const offset = distance * 12;
+                  
+                  return (
+                    <motion.div
+                      key={persona.id}
+                      className="absolute w-full h-full rounded-lg bg-white/50 backdrop-blur-sm p-8 overflow-y-auto"
+                      animate={{
+                        zIndex: 10 - distance,
+                        y: offset,
+                        scale: 1 - distance * 0.03,
+                        rotate: rotation
+                      }}
+                      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                      style={{ transformOrigin: "center bottom" }}
+                      onClick={() => setCurrentPersona(persona.id)}
+                    >
+                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div className="space-y-3 flex flex-col">
+                          <img src={persona.image} alt={persona.name} className="w-full max-w-48 h-auto rounded-lg" />
+                          <div className="space-y-3">
+                            <h3 className="text-2xl font-bold text-ink">{persona.name}</h3>
+                            <p className="text-base italic text-ink/70">"{persona.quote}"</p>
+                          </div>
+                        </div>
+                        
+                        <div className="space-y-6">
+                          <div className="space-y-2">
+                            <p className="text-xs font-semibold text-brand uppercase tracking-wide">Goals / Use cases</p>
+                            <ul className="space-y-2">
+                              {persona.goals.map((goal, idx) => (
+                                <li key={idx} className="flex gap-2 text-sm text-ink/70">
+                                  <span className="text-brand">✓</span>
+                                  <span>{goal}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <p className="text-xs font-semibold text-red-500 uppercase tracking-wide">Key pain points</p>
+                            <ul className="space-y-2">
+                              {persona.painPoints.map((point, idx) => (
+                                <li key={idx} className="flex gap-2 text-sm text-ink/70">
+                                  <span className="text-red-500">⚠</span>
+                                  <span>{point}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </div>
+              
+              {/* Carousel Controls - Dots */}
+              <div className="flex justify-center items-center gap-3">
+                {[0, 1, 2].map((index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentPersona(index)}
+                    className={`rounded-full transition-all duration-300 ${ 
+                      currentPersona === index
+                        ? "size-3 bg-brand"
+                        : "size-2 bg-ink/30 hover:bg-ink/50"
+                    }`}
+                    aria-label={`Go to persona ${index + 1}`}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
         </section>
 
         {/* ===== SECTION 4: RESEARCH ===== */}

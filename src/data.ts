@@ -232,7 +232,7 @@ export const projects: Project[] = [
     panel: "bg-brand",
     visual: "tablets",
     contents: [
-      { id: "product-summary", label: "Project Summary" },
+      { id: "project-summary", label: "Project Summary" },
       { id: "business-problem", label: "Business Usecase" },
       { id: "user-problem", label: "User Needs" },
       { id: "research", label: "Case Study" },
