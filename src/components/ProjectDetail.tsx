@@ -71,7 +71,7 @@ export default function ProjectDetail() {
   const handleScroll = () => {
     if (!contentPanelRef.current) return;
 
-    const scrollPosition = contentPanelRef.current.scrollTop + 100; // Add offset for header
+    const scrollPosition = contentPanelRef.current.scrollTop + 200; // Add offset for header
 
     for (let i = sectionIds.length - 1; i >= 0; i--) {
       const sectionId = sectionIds[i];
