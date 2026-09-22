@@ -786,8 +786,8 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
               {/* Persona 1: The Overwhelmed Planner */}
               <div className="rounded-lg bg-white/50 backdrop-blur-sm p-8">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                  <div className="space-y-4 flex flex-col">
-                    <img src={student1} alt="The Overwhelmed Planner" className="w-full max-w-xs h-auto rounded-lg" />
+                  <div className="space-y-3 flex flex-col">
+                    <img src={student1} alt="The Overwhelmed Planner" className="w-full max-w-48 h-auto rounded-lg" />
                     <div className="space-y-3">
                       <h3 className="text-2xl font-bold text-ink">The Overwhelmed Planner</h3>
                       <p className="text-base italic text-ink/70">"I know I need to study, but I don't know how to fit everything in."</p>
@@ -837,8 +837,8 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
               {/* Persona 2: The Inconsistent Learner */}
               <div className="rounded-lg bg-white/50 backdrop-blur-sm p-8">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                  <div className="space-y-4 flex flex-col">
-                    <img src={student2} alt="The Inconsistent Learner" className="w-full max-w-xs h-auto rounded-lg" />
+                  <div className="space-y-3 flex flex-col">
+                    <img src={student2} alt="The Inconsistent Learner" className="w-full max-w-48 h-auto rounded-lg" />
                     <div className="space-y-3">
                       <h3 className="text-2xl font-bold text-ink">The Inconsistent Learner</h3>
                       <p className="text-base italic text-ink/70">"I start with motivation, but I can't keep the routine going."</p>
@@ -888,8 +888,8 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
               {/* Persona 3: The Goal-Driven Achiever */}
               <div className="rounded-lg bg-white/50 backdrop-blur-sm p-8">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                  <div className="space-y-4 flex flex-col">
-                    <img src={student3} alt="The Goal-Driven Achiever" className="w-full max-w-xs h-auto rounded-lg" />
+                  <div className="space-y-3 flex flex-col">
+                    <img src={student3} alt="The Goal-Driven Achiever" className="w-full max-w-48 h-auto rounded-lg" />
                     <div className="space-y-3">
                       <h3 className="text-2xl font-bold text-ink">The Goal-Driven Achiever</h3>
                       <p className="text-base italic text-ink/70">"I know where I want to go. Help me get there efficiently."</p>
