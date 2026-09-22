@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlay, faPause } from "@fortawesome/free-solid-svg-icons";
+import { faPlay, faPause, faVolumeMute, faVolumeHigh } from "@fortawesome/free-solid-svg-icons";
 import { journeyTimeline } from "../data";
 import slide1 from "../imports/about_page/slide1.mp4";
 import slide2 from "../imports/about_page/slide2.mp4";
@@ -27,6 +27,7 @@ function ArrowForward({ className = "" }: { className?: string }) {
 export default function JourneyCarousel() {
   const [index, setIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
+  const [isMuted, setIsMuted] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const goTo = (i: number) =>
@@ -50,6 +51,13 @@ export default function JourneyCarousel() {
       }
     }
   }, [isPlaying]);
+
+  // Control video mute state
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.muted = isMuted;
+    }
+  }, [isMuted]);
 
   const slide = journeyTimeline[index];
   
@@ -116,6 +124,13 @@ export default function JourneyCarousel() {
             className="flex size-12 items-center justify-center rounded-full bg-white/30 text-ink backdrop-blur-sm transition-colors hover:bg-white/40"
           >
             <FontAwesomeIcon icon={isPlaying ? faPause : faPlay} className="size-4" />
+          </button>
+          <button
+            onClick={() => setIsMuted((muted) => !muted)}
+            aria-label={isMuted ? "Unmute video" : "Mute video"}
+            className="flex size-12 items-center justify-center rounded-full bg-white/30 text-ink backdrop-blur-sm transition-colors hover:bg-white/40"
+          >
+            <FontAwesomeIcon icon={isMuted ? faVolumeMute : faVolumeHigh} className="size-4" />
           </button>
           <button
             onClick={() => goTo(index + 1)}
