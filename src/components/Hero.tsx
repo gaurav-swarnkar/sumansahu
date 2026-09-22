@@ -255,7 +255,13 @@ export default function Hero() {
           <div className="mt-10 flex flex-row items-center gap-4 w-full">
             <CtaButton label="Project Stories" splitAt={4} onClick={() => handleNavigation("/projects")} variant="primary" />
             <CtaButton label="My Journey" splitAt={2} onClick={() => handleNavigation("/about")} variant="secondary" />
-            <CtaButton label="Let's Connect" splitAt={4} onClick={() => setIsDrawerOpen(true)} variant="tertiary" />
+            <button
+              onClick={() => setIsDrawerOpen(true)}
+              className="flex items-center justify-center size-12 sm:size-[54px] rounded-full bg-white/40 backdrop-blur-sm hover:bg-white/60 transition-colors duration-300"
+              title="Start a chat"
+            >
+              <FontAwesomeIcon icon={faComment} className="text-brand text-lg sm:text-xl" />
+            </button>
           </div>
         </motion.div>
 
