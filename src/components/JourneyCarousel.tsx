@@ -105,6 +105,7 @@ export default function JourneyCarousel() {
         loop
         playsInline
         preload="auto"
+        muted={isMuted}
         onCanPlay={handleVideoCanPlay}
         onLoadStart={handleVideoLoadStart}
         onSeeking={handleVideoSeeking}
