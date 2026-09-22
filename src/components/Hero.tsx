@@ -160,7 +160,7 @@ function CtaButton({
   return (
     <button
       onClick={onClick}
-      className={`group relative flex h-12 sm:h-[54px] w-full sm:w-[224px] items-center justify-center gap-4 rounded-full transition-colors duration-300 ${variantClasses[variant]}`}
+      className={`group relative flex h-16 sm:h-[64px] w-full sm:w-[224px] items-center justify-center gap-4 rounded-full transition-colors duration-300 ${variantClasses[variant]}`}
     >
       <span className="text-sm sm:text-[20px] font-medium leading-none tracking-tight">
         {label}
