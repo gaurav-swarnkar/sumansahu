@@ -176,7 +176,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
               <p className="text-base text-ink/60 max-w-3xl">
                 Personalised learning experience led to stronger and more consistent student outcomes.
               </p>
-              <p className="text-xs font-medium text-ink/50">Nov 2024 - Apr 2025 Vs May 2025 - Oct 2025</p>
+              <p className="text-sm font-medium text-ink/50">Nov 2024 - Apr 2025 Vs May 2025 - Oct 2025</p>
             </div>
 
             {/* KPI Cards Grid - 4 columns (Clickable Tabs) */}
@@ -338,7 +338,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
                         );
                       })}
                     </svg>
-                    <div className="text-center text-xs text-ink/60">Total: 12,400 sign-ups</div>
+                    <div className="text-center text-sm text-ink/60">Total: 12,400 sign-ups</div>
                   </>
                 )}
 
@@ -463,7 +463,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
                     
                     <div className="text-center space-y-1">
                       <div className="text-sm font-semibold text-ink">Day-7 retention: 9% → 37% (+28pp)</div>
-                      <div className="text-xs text-ink/50">Illustrative monthly trend based on project outcome</div>
+                      <div className="text-sm text-ink/50">Illustrative monthly trend based on project outcome</div>
                     </div>
                   </>
                 )}
@@ -479,10 +479,10 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
                     <div className="grid grid-cols-2 gap-6 px-4 py-6 rounded">
                       {/* Period 1: Nov 2024 - Apr 2025 */}
                       <div className="space-y-2">
-                        <h4 className="text-xs font-semibold text-ink mb-3">Nov 2024 - Apr 2025</h4>
+                        <h4 className="text-sm font-semibold text-ink mb-3">Nov 2024 - Apr 2025</h4>
                         <div className="space-y-1.5">
                           <div className="flex justify-between items-center mb-1">
-                            <span className="text-xs font-medium text-ink">Completed</span>
+                            <span className="text-sm font-medium text-ink">Completed</span>
                             <span className="text-sm font-bold text-brand">36%</span>
                           </div>
                           <div className="w-full h-5 bg-ink/10 rounded-full overflow-hidden">
@@ -492,7 +492,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
                         
                         <div className="space-y-1.5">
                           <div className="flex justify-between items-center mb-1">
-                            <span className="text-xs font-medium text-ink">Incomplete</span>
+                            <span className="text-sm font-medium text-ink">Incomplete</span>
                             <span className="text-sm font-bold text-ink/60">64%</span>
                           </div>
                           <div className="w-full h-5 bg-ink/10 rounded-full overflow-hidden">
@@ -503,10 +503,10 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
 
                       {/* Period 2: May 2025 - Oct 2025 */}
                       <div className="space-y-2">
-                        <h4 className="text-xs font-semibold text-ink mb-3">May 2025 - Oct 2025</h4>
+                        <h4 className="text-sm font-semibold text-ink mb-3">May 2025 - Oct 2025</h4>
                         <div className="space-y-1.5">
                           <div className="flex justify-between items-center mb-1">
-                            <span className="text-xs font-medium text-ink">Completed</span>
+                            <span className="text-sm font-medium text-ink">Completed</span>
                             <span className="text-sm font-bold text-brand">68%</span>
                           </div>
                           <div className="w-full h-5 bg-ink/10 rounded-full overflow-hidden">
@@ -516,7 +516,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
                         
                         <div className="space-y-1.5">
                           <div className="flex justify-between items-center mb-1">
-                            <span className="text-xs font-medium text-ink">Incomplete</span>
+                            <span className="text-sm font-medium text-ink">Incomplete</span>
                             <span className="text-sm font-bold text-ink/60">32%</span>
                           </div>
                           <div className="w-full h-5 bg-ink/10 rounded-full overflow-hidden">
@@ -525,7 +525,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
                         </div>
                       </div>
                     </div>
-                    <div className="text-center text-xs text-ink/60">+32pp improvement from previous period</div>
+                    <div className="text-center text-sm text-ink/60">+32pp improvement from previous period</div>
                   </>
                 )}
 
@@ -540,19 +540,19 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
                     <div className="grid grid-cols-2 gap-6 px-4 py-6 rounded">
                       {/* Before */}
                       <div className="space-y-3">
-                        <h4 className="text-xs font-semibold text-ink mb-3">Nov 2024 - Apr 2025</h4>
+                        <h4 className="text-sm font-semibold text-ink mb-3">Nov 2024 - Apr 2025</h4>
                         <div className="bg-ink/5 rounded-lg p-4 text-center">
                           <div className="text-2xl font-bold text-ink/60 mb-1">&lt;3 min</div>
-                          <p className="text-xs text-ink/50">per session</p>
+                          <p className="text-sm text-ink/50">per session</p>
                         </div>
                       </div>
 
                       {/* After */}
                       <div className="space-y-3">
-                        <h4 className="text-xs font-semibold text-ink mb-3">May 2025 - Oct 2025</h4>
+                        <h4 className="text-sm font-semibold text-ink mb-3">May 2025 - Oct 2025</h4>
                         <div className="bg-brand/10 rounded-lg p-4 text-center">
                           <div className="text-2xl font-bold text-brand mb-1">8-12 min</div>
-                          <p className="text-xs text-ink/50">per session</p>
+                          <p className="text-sm text-ink/50">per session</p>
                         </div>
                       </div>
                     </div>
@@ -560,7 +560,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
                     {/* Improvement indicator */}
                     <div className="text-center px-4">
                       <div className="text-3xl font-bold text-brand">+3x</div>
-                      <p className="text-xs text-ink/60">Improvement in daily engagement time</p>
+                      <p className="text-sm text-ink/60">Improvement in daily engagement time</p>
                     </div>
                   </>
                 )}
@@ -569,7 +569,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
 
             {/* Note */}
             <div className="bg-ink/5 rounded-lg px-4 py-3">
-              <p className="text-xs text-ink/60 font-medium">
+              <p className="text-sm text-ink/60 font-medium">
                 <strong>Note:</strong> The statistics above represent proportional data. This does not represent the real organizational data.
               </p>
             </div>
@@ -656,7 +656,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
             {/* Card 1: Retention */}
             <div className="rounded-lg bg-white/50 backdrop-blur-sm p-6 space-y-4">
               <div className="space-y-2">
-                <p className="text-xs font-semibold text-ink/50 uppercase tracking-wide">Problem</p>
+                <p className="text-sm font-semibold text-ink/50 uppercase tracking-wide">Problem</p>
                 <h3 className="text-lg font-semibold text-ink">Low Student Retention</h3>
                 <p className="text-sm text-ink/60">Only 1 in 10 students retained by Day 7</p>
                 <div className="text-3xl font-bold text-ink/40 pt-2">1 in 10</div>
@@ -666,7 +666,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
             {/* Card 2: Engagement */}
             <div className="rounded-lg bg-white/50 backdrop-blur-sm p-6 space-y-4">
               <div className="space-y-2">
-                <p className="text-xs font-semibold text-ink/50 uppercase tracking-wide">Problem</p>
+                <p className="text-sm font-semibold text-ink/50 uppercase tracking-wide">Problem</p>
                 <h3 className="text-lg font-semibold text-ink">Declining Engagement</h3>
                 <p className="text-sm text-ink/60">Average time fell below 3 minutes by Day 7</p>
                 <div className="text-3xl font-bold text-ink/40 pt-2">&lt;3 min</div>
@@ -676,15 +676,15 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
             {/* Card 3: Re-engagement */}
             <div className="rounded-lg bg-white/50 backdrop-blur-sm p-6 space-y-4">
               <div className="space-y-2">
-                <p className="text-xs font-semibold text-ink/50 uppercase tracking-wide">Current State</p>
+                <p className="text-sm font-semibold text-ink/50 uppercase tracking-wide">Current State</p>
                 <h3 className="text-lg font-semibold text-ink">Engagement Sustainability</h3>
                 <div className="space-y-2 pt-1">
                   <div className="flex justify-between items-baseline">
-                    <p className="text-xs text-ink/60">Self-Sustaining</p>
+                    <p className="text-sm text-ink/60">Self-Sustaining</p>
                     <div className="text-2xl font-bold text-ink/40">3%</div>
                   </div>
                   <div className="flex justify-between items-baseline">
-                    <p className="text-xs text-ink/60">Re-engagement Dependent</p>
+                    <p className="text-sm text-ink/60">Re-engagement Dependent</p>
                     <div className="text-2xl font-bold text-ink/40">97%</div>
                   </div>
                 </div>
@@ -868,7 +868,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
                           <p className="text-sm italic text-ink font-semibold bg-yellow-200/40 border-b-2 border-yellow-400 pb-1">"{ persona.quote}"</p>
 
                           <div className="space-y-1">
-                            <p className="text-xs font-semibold text-brand uppercase tracking-wide">Goals</p>
+                            <p className="text-sm font-semibold text-brand uppercase tracking-wide">Goals</p>
                             <ul className="space-y-1">
                               {persona.goals.map((goal, idx) => (
                                 <li key={idx} className="flex gap-2 text-sm text-ink/70">
@@ -880,7 +880,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
                           </div>
                           
                           <div className="space-y-1">
-                            <p className="text-xs font-semibold text-red-500 uppercase tracking-wide">Pain points</p>
+                            <p className="text-sm font-semibold text-red-500 uppercase tracking-wide">Pain points</p>
                             <ul className="space-y-1">
                               {persona.painPoints.map((point, idx) => (
                                 <li key={idx} className="flex gap-2 text-sm text-ink/70">
@@ -950,15 +950,15 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
                       <th className="px-4 py-3 text-left font-semibold text-ink">Characteristics</th>
                       <th className="px-4 py-3 text-center font-semibold text-ink">
                         Long-horizon planners<br />
-                        <span className="text-xs font-normal text-ink/60">137 • 22%</span>
+                        <span className="text-sm font-normal text-ink/60">137 • 22%</span>
                       </th>
                       <th className="px-4 py-3 text-center font-semibold text-ink">
                         Parallel planners<br />
-                        <span className="text-xs font-normal text-ink/60">205 • 33%</span>
+                        <span className="text-sm font-normal text-ink/60">205 • 33%</span>
                       </th>
                       <th className="px-4 py-3 text-center font-semibold text-ink">
                         Realistic planners<br />
-                        <span className="text-xs font-normal text-ink/60">278 • 45%</span>
+                        <span className="text-sm font-normal text-ink/60">278 • 45%</span>
                       </th>
                     </tr>
                   </thead>
@@ -1001,15 +1001,15 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
                     </tr>
                     <tr className="border-b border-ink/10 bg-ink/5">
                       <td className="px-4 py-3 text-ink font-semibold italic">Typical behaviour</td>
-                      <td className="px-4 py-3 text-center text-xs text-ink/70">Plans far ahead, then struggles to execute</td>
-                      <td className="px-4 py-3 text-center text-xs text-ink/70">Balances multiple subjects at once</td>
-                      <td className="px-4 py-3 text-center text-xs text-ink/70">Plans realistically and adapts</td>
+                      <td className="px-4 py-3 text-center text-sm text-ink/70">Plans far ahead, then struggles to execute</td>
+                      <td className="px-4 py-3 text-center text-sm text-ink/70">Balances multiple subjects at once</td>
+                      <td className="px-4 py-3 text-center text-sm text-ink/70">Plans realistically and adapts</td>
                     </tr>
                     <tr className="bg-brand/5">
                       <td className="px-4 py-3 text-ink font-semibold italic">Observed outcome</td>
-                      <td className="px-4 py-3 text-center text-xs font-medium text-red-600">Higher drop-off</td>
-                      <td className="px-4 py-3 text-center text-xs font-medium text-amber-600">Balanced engagement</td>
-                      <td className="px-4 py-3 text-center text-xs font-medium text-green-600">Longer engagement</td>
+                      <td className="px-4 py-3 text-center text-sm font-medium text-red-600">Higher drop-off</td>
+                      <td className="px-4 py-3 text-center text-sm font-medium text-amber-600">Balanced engagement</td>
+                      <td className="px-4 py-3 text-center text-sm font-medium text-green-600">Longer engagement</td>
                     </tr>
                   </tbody>
                 </table>
