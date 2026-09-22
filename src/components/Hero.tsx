@@ -151,7 +151,7 @@ function CtaButton({
   return (
     <button
       onClick={onClick}
-      className="group relative flex h-12 sm:h-[54px] w-full sm:w-[224px] items-center overflow-hidden"
+      className="group relative flex h-12 sm:h-[54px] w-full sm:w-[224px] items-center overflow-hidden rounded-full"
     >
       {/* sliding fill from left */}
       <span className="absolute inset-y-0 left-0 right-[35px] bg-lilac transition-all duration-500 ease-out group-hover:right-0 group-hover:bg-brand-600" />
