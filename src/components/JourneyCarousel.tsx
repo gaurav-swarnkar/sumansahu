@@ -70,6 +70,13 @@ export default function JourneyCarousel() {
     setIsVideoReady(false);
   }, [videoSrc]);
 
+  // Sync muted state with video element
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.muted = isMuted;
+    }
+  }, [isMuted]);
+
   const handleVideoCanPlay = () => {
     setIsVideoReady(true);
   };
