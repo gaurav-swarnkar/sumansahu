@@ -155,7 +155,7 @@ function CtaButton({
     >
       {/* sliding fill from left */}
       <span className="absolute inset-y-0 left-0 right-[35px] bg-lilac transition-all duration-500 ease-out group-hover:right-0 group-hover:bg-brand-600" />
-      <span className="relative z-10 flex w-full items-center justify-start pl-4 sm:pl-6 pr-3 gap-4">
+      <span className="relative z-10 flex w-full items-center justify-center gap-4">
         <span className="text-sm sm:text-[20px] font-medium leading-none tracking-tight text-white">
           {label}
         </span>
