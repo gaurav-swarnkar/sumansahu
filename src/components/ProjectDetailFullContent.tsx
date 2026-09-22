@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLightbulb, faCalendarDays, faFire, faClipboardList, faLock, faHeartBroken, faUsers, faChartLine, faCheckCircle, faClock, faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import { faLightbulb, faCalendarDays, faFire, faClipboardList, faLock, faHeartBroken, faUsers, faChartLine, faCheckCircle, faClock, faChevronLeft, faChevronRight, faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { motion } from "framer-motion";
 import sumansahuImage from "../imports/Main/suman_sahu.png";
 import student1 from "../imports/project_assets/student1.png";
@@ -932,6 +932,87 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
                 >
                   <FontAwesomeIcon icon={faChevronRight} className="text-ink/50 hover:text-ink/70" />
                 </button>
+              </div>
+            </div>
+
+            {/* BEHAVIORAL SEGMENTATION SUBSECTION */}
+            <div className="space-y-6 mt-12">
+              <div className="space-y-3">
+                <h2 className="text-2xl font-bold text-ink">Behavioral Segmentation</h2>
+                <p className="text-base text-ink/60">620 retained students show three distinct planning patterns.</p>
+              </div>
+              
+              {/* Segmentation Table */}
+              <div className="overflow-x-auto bg-white/40 backdrop-blur-sm rounded-lg border border-ink/10">
+                <table className="w-full text-sm border-collapse">
+                  <thead>
+                    <tr className="border-b border-ink/20">
+                      <th className="px-4 py-3 text-left font-semibold text-ink">Characteristics</th>
+                      <th className="px-4 py-3 text-center font-semibold text-ink">
+                        Long-horizon planners<br />
+                        <span className="text-xs font-normal text-ink/60">137 • 22%</span>
+                      </th>
+                      <th className="px-4 py-3 text-center font-semibold text-ink">
+                        Parallel planners<br />
+                        <span className="text-xs font-normal text-ink/60">205 • 33%</span>
+                      </th>
+                      <th className="px-4 py-3 text-center font-semibold text-ink">
+                        Realistic planners<br />
+                        <span className="text-xs font-normal text-ink/60">278 • 45%</span>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr className="border-b border-ink/10 hover:bg-ink/5 transition">
+                      <td className="px-4 py-3 text-ink font-medium">Plans 7+ days ahead</td>
+                      <td className="px-4 py-3 text-center"><FontAwesomeIcon icon={faCheck} className="text-green-500 text-base" /></td>
+                      <td className="px-4 py-3 text-center"><FontAwesomeIcon icon={faXmark} className="text-red-500 text-base" /></td>
+                      <td className="px-4 py-3 text-center"><FontAwesomeIcon icon={faXmark} className="text-red-500 text-base" /></td>
+                    </tr>
+                    <tr className="border-b border-ink/10 hover:bg-ink/5 transition">
+                      <td className="px-4 py-3 text-ink font-medium">Plans multiple subjects</td>
+                      <td className="px-4 py-3 text-center"><FontAwesomeIcon icon={faCheck} className="text-green-500 text-base" /></td>
+                      <td className="px-4 py-3 text-center"><FontAwesomeIcon icon={faCheck} className="text-green-500 text-base" /></td>
+                      <td className="px-4 py-3 text-center"><FontAwesomeIcon icon={faCheck} className="text-green-500 text-base" /></td>
+                    </tr>
+                    <tr className="border-b border-ink/10 hover:bg-ink/5 transition">
+                      <td className="px-4 py-3 text-ink font-medium">Works in parallel</td>
+                      <td className="px-4 py-3 text-center"><FontAwesomeIcon icon={faXmark} className="text-red-500 text-base" /></td>
+                      <td className="px-4 py-3 text-center"><FontAwesomeIcon icon={faCheck} className="text-green-500 text-base" /></td>
+                      <td className="px-4 py-3 text-center"><FontAwesomeIcon icon={faXmark} className="text-red-500 text-base" /></td>
+                    </tr>
+                    <tr className="border-b border-ink/10 hover:bg-ink/5 transition">
+                      <td className="px-4 py-3 text-ink font-medium">Plan matches capacity</td>
+                      <td className="px-4 py-3 text-center"><FontAwesomeIcon icon={faXmark} className="text-red-500 text-base" /></td>
+                      <td className="px-4 py-3 text-center"><FontAwesomeIcon icon={faCheck} className="text-green-500 text-base" /></td>
+                      <td className="px-4 py-3 text-center"><FontAwesomeIcon icon={faCheck} className="text-green-500 text-base" /></td>
+                    </tr>
+                    <tr className="border-b border-ink/10 hover:bg-ink/5 transition">
+                      <td className="px-4 py-3 text-ink font-medium">Stays on track</td>
+                      <td className="px-4 py-3 text-center"><FontAwesomeIcon icon={faXmark} className="text-red-500 text-base" /></td>
+                      <td className="px-4 py-3 text-center"><FontAwesomeIcon icon={faCheck} className="text-green-500 text-base" /></td>
+                      <td className="px-4 py-3 text-center"><FontAwesomeIcon icon={faCheck} className="text-green-500 text-base" /></td>
+                    </tr>
+                    <tr className="border-b border-ink/10 hover:bg-ink/5 transition">
+                      <td className="px-4 py-3 text-ink font-medium">Recovers after a miss</td>
+                      <td className="px-4 py-3 text-center"><FontAwesomeIcon icon={faXmark} className="text-red-500 text-base" /></td>
+                      <td className="px-4 py-3 text-center"><FontAwesomeIcon icon={faCheck} className="text-green-500 text-base" /></td>
+                      <td className="px-4 py-3 text-center"><FontAwesomeIcon icon={faCheck} className="text-green-500 text-base" /></td>
+                    </tr>
+                    <tr className="border-b border-ink/10 bg-ink/5">
+                      <td className="px-4 py-3 text-ink font-semibold italic">Typical behaviour</td>
+                      <td className="px-4 py-3 text-center text-xs text-ink/70">Plans far ahead, then struggles to execute</td>
+                      <td className="px-4 py-3 text-center text-xs text-ink/70">Balances multiple subjects at once</td>
+                      <td className="px-4 py-3 text-center text-xs text-ink/70">Plans realistically and adapts</td>
+                    </tr>
+                    <tr className="bg-brand/5">
+                      <td className="px-4 py-3 text-ink font-semibold italic">Observed outcome</td>
+                      <td className="px-4 py-3 text-center text-xs font-medium text-red-600">Higher drop-off</td>
+                      <td className="px-4 py-3 text-center text-xs font-medium text-amber-600">Balanced engagement</td>
+                      <td className="px-4 py-3 text-center text-xs font-medium text-green-600">Longer engagement</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
