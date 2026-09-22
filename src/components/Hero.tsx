@@ -159,7 +159,7 @@ function CtaButton({
         <span className="text-sm sm:text-[20px] font-medium leading-none tracking-tight text-white">
           {label}
         </span>
-        <ArrowForward className="absolute right-3 size-4 sm:size-5 text-white opacity-0 transition-all duration-500 ease-out group-hover:opacity-100 group-hover:-rotate-45 flex-shrink-0" />
+        <ArrowForward className="absolute right-3 size-4 sm:size-5 text-white transition-transform duration-500 ease-out group-hover:-rotate-45 flex-shrink-0" />
       </span>
     </button>
   );
