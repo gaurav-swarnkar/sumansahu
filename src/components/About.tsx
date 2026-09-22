@@ -1,5 +1,15 @@
-import { motion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faDownload,
+  faLocationDot,
+  faGraduationCap,
+  faTrophy,
+} from "@fortawesome/free-solid-svg-icons";
+import { workExperience, education, achievements } from "../data";
+import JourneyCarousel from "./JourneyCarousel";
 
 function ArrowForward({ className = "" }: { className?: string }) {
   return (
@@ -12,12 +22,157 @@ function ArrowForward({ className = "" }: { className?: string }) {
   );
 }
 
+const sections = [
+  { id: "summary", label: "Summary" },
+  { id: "work-experience", label: "Work Experience" },
+  { id: "education", label: "Education" },
+  { id: "achievements", label: "Achievements" },
+] as const;
+
+type SectionId = (typeof sections)[number]["id"];
+
+function WorkExperienceSection() {
+  return (
+    <div className="space-y-16">
+      <p className="text-xs font-medium uppercase tracking-wide text-ink/60">
+        Work Experience
+      </p>
+      <div className="space-y-8">
+        {workExperience.map((exp, i) => (
+          <div key={exp.id} className="relative flex gap-6">
+            <div className="flex flex-col items-center">
+              <span className="mt-2 size-3.5 shrink-0 rounded-full bg-brand" />
+              {i < workExperience.length - 1 && (
+                <span className="mt-2 w-px flex-1 bg-ink/10" />
+              )}
+            </div>
+            <div className="flex-1 space-y-3 rounded-lg border border-ink/10 bg-white/50 p-6 backdrop-blur-sm">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <h3 className="text-lg font-semibold text-ink">
+                  {exp.role} · <span className="text-brand">{exp.company}</span>
+                </h3>
+                <span className="text-xs font-medium text-ink/50">
+                  {exp.duration}
+                </span>
+              </div>
+              <p className="flex items-center gap-2 text-xs text-ink/50">
+                <FontAwesomeIcon icon={faLocationDot} className="size-3" />
+                {exp.location}
+              </p>
+              <ul className="space-y-2 pt-1">
+                {exp.points.map((point) => (
+                  <li key={point} className="flex gap-3 text-sm text-ink/70">
+                    <span className="mt-0.5 text-brand">→</span>
+                    <span>{point}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function EducationSection() {
+  return (
+    <div className="space-y-16">
+      <p className="text-xs font-medium uppercase tracking-wide text-ink/60">
+        Education
+      </p>
+      <div className="space-y-6">
+        {education.map((edu) => (
+          <div
+            key={edu.id}
+            className="flex gap-6 rounded-lg border border-ink/10 bg-white/50 p-6 backdrop-blur-sm"
+          >
+            <div className="flex size-12 shrink-0 items-center justify-center rounded-full bg-lilac-100 text-brand">
+              <FontAwesomeIcon icon={faGraduationCap} className="size-5" />
+            </div>
+            <div className="flex-1 space-y-2">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <h3 className="text-lg font-semibold text-ink">{edu.degree}</h3>
+                <span className="text-xs font-medium text-ink/50">
+                  {edu.duration}
+                </span>
+              </div>
+              <p className="text-sm font-medium text-brand">
+                {edu.institution}
+              </p>
+              <p className="text-sm text-ink/60">{edu.description}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function AchievementsSection() {
+  return (
+    <div className="space-y-16">
+      <p className="text-xs font-medium uppercase tracking-wide text-ink/60">
+        Achievements
+      </p>
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        {achievements.map((ach) => (
+          <div
+            key={ach.id}
+            className="space-y-3 rounded-lg border border-ink/10 bg-white/50 p-6 backdrop-blur-sm"
+          >
+            <div className="flex items-center gap-3">
+              <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-lilac-100 text-brand">
+                <FontAwesomeIcon icon={faTrophy} className="size-4" />
+              </div>
+              <span className="text-xs font-medium text-ink/50">{ach.year}</span>
+            </div>
+            <h3 className="text-lg font-semibold text-ink">{ach.title}</h3>
+            <p className="text-xs font-medium uppercase tracking-wide text-ink/50">
+              {ach.issuer}
+            </p>
+            <p className="text-sm text-ink/60">{ach.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function SectionContent({ sectionId }: { sectionId: SectionId }) {
+  switch (sectionId) {
+    case "work-experience":
+      return <WorkExperienceSection />;
+    case "education":
+      return <EducationSection />;
+    case "achievements":
+      return <AchievementsSection />;
+    default:
+      return null;
+  }
+}
+
+function DownloadResumeButton() {
+  return (
+    <a
+      href="/resume.pdf"
+      download
+      className="group relative flex h-[56px] w-full items-center justify-center gap-3 overflow-hidden rounded-full bg-brand text-white transition-colors hover:bg-brand-600"
+    >
+      <FontAwesomeIcon
+        icon={faDownload}
+        className="size-4 transition-transform duration-300 group-hover:-translate-y-0.5"
+      />
+      <span className="text-[16px] font-semibold leading-none">
+        Download Resume
+      </span>
+    </a>
+  );
+}
+
 export default function About() {
   const navigate = useNavigate();
-
-  const handleBack = () => {
-    navigate(-1);
-  };
+  const [activeSection, setActiveSection] = useState<SectionId>("summary");
 
   return (
     <section className="relative min-h-screen w-full overflow-hidden bg-canvas">
@@ -27,10 +182,10 @@ export default function About() {
 
       <div className="relative z-10 mx-auto grid min-h-screen w-full max-w-[1920px] grid-cols-1 lg:grid-cols-[minmax(360px,32%)_1fr]">
         {/* ---- sidebar nav ---- */}
-        <div className="flex flex-col gap-10 px-8 py-12 lg:px-16 lg:py-20">
+        <div className="flex flex-col gap-10 px-8 py-12 lg:max-h-screen lg:px-16 lg:py-20">
           <div className="flex items-center gap-3">
             <button
-              onClick={handleBack}
+              onClick={() => navigate(-1)}
               aria-label="Go back"
               className="group flex size-16 shrink-0 items-center justify-center rounded-full bg-lilac-100 text-brand transition-colors hover:bg-brand-600 hover:text-white"
             >
@@ -39,43 +194,64 @@ export default function About() {
             <span className="text-sm font-medium text-ink/60">My Journey</span>
           </div>
 
-          {/* Placeholder for content structure - to be designed */}
-          <nav className="flex flex-col gap-8 pt-4 lg:gap-14 lg:pt-5">
-            <div className="flex flex-col items-start text-left">
-              <span className="text-[22px] font-semibold leading-none text-ink/50">
-                Story
-              </span>
-              <span className="mt-3 text-[clamp(34px,3.4vw,48px)] font-semibold leading-none text-ink/50">
-                Coming Soon
-              </span>
-            </div>
+          <nav className="flex flex-col gap-8 pt-4 lg:gap-10 lg:pt-5">
+            {sections.map((section) => {
+              const isActive = section.id === activeSection;
+              return (
+                <button
+                  key={section.id}
+                  onClick={() => setActiveSection(section.id)}
+                  className="group flex items-center gap-3 text-left"
+                >
+                  <span
+                    className={`font-semibold leading-none transition-all duration-300 ${
+                      isActive
+                        ? "text-[clamp(28px,3vw,40px)] text-ink"
+                        : "text-[clamp(20px,2.2vw,28px)] text-ink/50 group-hover:text-ink"
+                    }`}
+                  >
+                    {section.label}
+                  </span>
+                  {isActive && (
+                    <span className="block size-2.5 shrink-0 rounded-full bg-brand" />
+                  )}
+                </button>
+              );
+            })}
           </nav>
+
+          <div className="mt-auto pt-10">
+            <DownloadResumeButton />
+          </div>
         </div>
 
         {/* ---- content panel ---- */}
-        <div className="relative min-h-[70vh] overflow-hidden lg:min-h-screen">
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -40 }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-            className="absolute inset-0 overflow-hidden bg-gradient-to-br from-brand to-brand-900"
-          >
-            {/* ambient blobs */}
-            <div className="pointer-events-none absolute -right-40 top-24 size-[520px] rounded-full bg-white/10 blur-[120px]" />
-            <div className="pointer-events-none absolute -left-40 bottom-0 size-[520px] rounded-full bg-black/25 blur-[160px]" />
-
-            {/* content placeholder */}
-            <div className="relative z-10 flex max-w-[760px] flex-col gap-6 px-8 pt-24 lg:px-16 lg:pt-28">
-              <h2 className="text-[clamp(36px,4.4vw,64px)] font-semibold leading-[1.05] text-white">
-                My Journey
-              </h2>
-              <p className="text-lg leading-relaxed text-white/80">
-                This page is being designed. Come back soon to see my story, 
-                experience, and the path that shaped me as a product designer.
-              </p>
-            </div>
-          </motion.div>
+        <div className="relative min-h-[70vh] overflow-hidden lg:max-h-screen lg:min-h-screen">
+          <AnimatePresence mode="wait">
+            {activeSection === "summary" ? (
+              <motion.div
+                key="summary"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+                className="absolute inset-0"
+              >
+                <JourneyCarousel />
+              </motion.div>
+            ) : (
+              <motion.div
+                key={activeSection}
+                initial={{ opacity: 0, x: 40 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -40 }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+                className="absolute inset-0 flex flex-col overflow-y-auto bg-gray-100/50 px-8 py-12 lg:px-16 lg:py-20"
+              >
+                <SectionContent sectionId={activeSection} />
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
     </section>
