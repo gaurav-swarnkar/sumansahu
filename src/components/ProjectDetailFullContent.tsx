@@ -709,6 +709,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
                     <div className="text-2xl font-bold text-brand">&lt;80%</div>
                   </div>
                 </div>
+                <div className="text-sm text-green-600 pt-1">↗ +12% growth</div>
               </div>
             </div>
           </div>
