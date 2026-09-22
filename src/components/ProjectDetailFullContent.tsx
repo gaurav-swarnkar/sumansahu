@@ -683,16 +683,32 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
             {/* Card 3: Re-engagement */}
             <div className="rounded-lg bg-white/50 backdrop-blur-sm p-6 space-y-4">
               <div className="space-y-2">
-                <p className="text-xs font-semibold text-ink/50 uppercase tracking-wide">Problem</p>
-                <h3 className="text-lg font-semibold text-ink">Re-engagement Dependent</h3>
-                <p className="text-sm text-ink/60">100% reliant on nudges and interventions</p>
-                <div className="text-3xl font-bold text-ink/40 pt-2">100%</div>
+                <p className="text-xs font-semibold text-ink/50 uppercase tracking-wide">Current State</p>
+                <h3 className="text-lg font-semibold text-ink">Engagement Sustainability</h3>
+                <div className="space-y-2 pt-1">
+                  <div className="flex justify-between items-baseline">
+                    <p className="text-xs text-ink/60">Self-Sustaining</p>
+                    <div className="text-2xl font-bold text-ink/40">3%</div>
+                  </div>
+                  <div className="flex justify-between items-baseline">
+                    <p className="text-xs text-ink/60">Re-engagement Dependent</p>
+                    <div className="text-2xl font-bold text-ink/40">100%</div>
+                  </div>
+                </div>
               </div>
               <div className="h-px bg-ink/10"></div>
               <div className="space-y-2">
-                <p className="text-xs font-semibold text-brand uppercase tracking-wide">Target</p>
-                <p className="text-sm text-ink/60">Build organic engagement habits</p>
-                <div className="text-3xl font-bold text-brand pt-2">Self-Sustaining</div>
+                <p className="text-xs font-semibold text-brand uppercase tracking-wide">After Implementation</p>
+                <div className="space-y-2 pt-1">
+                  <div className="flex justify-between items-baseline">
+                    <p className="text-xs text-ink/60">Self-Sustaining</p>
+                    <div className="text-2xl font-bold text-brand">68%</div>
+                  </div>
+                  <div className="flex justify-between items-baseline">
+                    <p className="text-xs text-ink/60">Re-engagement Dependent</p>
+                    <div className="text-2xl font-bold text-brand">32%</div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
