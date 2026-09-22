@@ -190,11 +190,11 @@ export default function JourneyCarousel() {
           onMouseEnter={() => setIsPlaying(false)}
           onMouseLeave={() => setIsPlaying(true)}
         >
-          <div className="w-fit space-y-3 rounded-lg bg-white/80 px-6 py-4 backdrop-blur-sm">
-            <h3 className="inline-block border-b-4 border-brand pb-2 text-[clamp(24px,3vw,40px)] font-semibold leading-tight text-ink">
+          <div className="w-fit space-y-3 rounded-lg px-6 py-4">
+            <h3 className="inline-block border-b-4 border-brand pb-2 text-[clamp(24px,3vw,40px)] font-semibold leading-tight text-ink drop-shadow-lg">
               {slide.year}
             </h3>
-            <p className="max-w-lg text-base leading-relaxed text-ink/70">
+            <p className="max-w-lg text-base leading-relaxed text-ink/70 drop-shadow-md">
               {slide.description}
             </p>
           </div>
