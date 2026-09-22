@@ -69,7 +69,7 @@ export const journeyTimeline: JourneyStage[] = [
   },
   {
     id: "stage-5",
-    year: "Jul – Dec 2021",
+    year: "July 2021 - Dec 2021",
     description:
       "UX/UI Designer at SquareOff — moved to Bengaluru mid-pandemic to keep building SaaS products, making board games more scalable.",
     gradient: "bg-gradient-to-br from-lilac to-brand-600",
