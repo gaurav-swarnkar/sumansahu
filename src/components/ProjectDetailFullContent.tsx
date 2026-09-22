@@ -182,7 +182,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
                 className={`rounded-lg p-5 transition-all text-left shadow-md ${
                   selectedMetric === "acquisition"
                     ? "border-2 border-brand bg-brand/5 shadow-xl"
-                    : "border border-ink/10 bg-white/50 backdrop-blur-sm hover:shadow-lg"
+                    : "bg-white/50 backdrop-blur-sm hover:shadow-lg"
                 }`}
               >
                 <div className="flex flex-col h-full gap-4">
@@ -201,7 +201,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
                 className={`rounded-lg p-5 transition-all text-left shadow-md ${
                   selectedMetric === "retention"
                     ? "border-2 border-brand bg-brand/5 shadow-xl"
-                    : "border border-ink/10 bg-white/50 backdrop-blur-sm hover:shadow-lg"
+                    : "bg-white/50 backdrop-blur-sm hover:shadow-lg"
                 }`}
               >
                 <div className="flex flex-col h-full gap-4">
@@ -220,7 +220,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
                 className={`rounded-lg p-5 transition-all text-left shadow-md ${
                   selectedMetric === "on-time"
                     ? "border-2 border-brand bg-brand/5 shadow-xl"
-                    : "border border-ink/10 bg-white/50 backdrop-blur-sm hover:shadow-lg"
+                    : "bg-white/50 backdrop-blur-sm hover:shadow-lg"
                 }`}
               >
                 <div className="flex flex-col h-full gap-4">
@@ -239,7 +239,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
                 className={`rounded-lg p-5 transition-all text-left shadow-md ${
                   selectedMetric === "engagement"
                     ? "border-2 border-brand bg-brand/5 shadow-xl"
-                    : "border border-ink/10 bg-white/50 backdrop-blur-sm hover:shadow-lg"
+                    : "bg-white/50 backdrop-blur-sm hover:shadow-lg"
                 }`}
               >
                 <div className="flex flex-col h-full gap-4">
@@ -254,7 +254,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
             </div>
 
             {/* Dynamic Chart Section */}
-            <div className="mt-8 rounded-lg border border-ink/10 p-8 bg-white/50 backdrop-blur-sm">
+            <div className="mt-8 rounded-lg p-8 bg-white/50 backdrop-blur-sm">
               <div className="space-y-6">
                 {selectedMetric === "acquisition" && (
                   <>
@@ -264,7 +264,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
                     </div>
                     
                     {/* Acquisition Bar Chart - SVG */}
-                    <svg viewBox="0 0 1000 300" className="w-full h-64 rounded border border-ink/5">
+                    <svg viewBox="0 0 1000 300" className="w-full h-64 rounded">
                       {/* Grid lines */}
                       {[0, 20, 40, 60, 80, 100].map((val) => (
                         <line
@@ -345,7 +345,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
                     </div>
                     
                     {/* Retention Line Chart with Single Annotation */}
-                    <svg viewBox="0 0 1000 420" className="w-full h-80 rounded border border-ink/5">
+                    <svg viewBox="0 0 1000 420" className="w-full h-80 rounded">
                       {/* Grid lines - 0%, 10%, 20%, 30%, 40% */}
                       {[0, 10, 20, 30, 40].map((val) => (
                         <line
@@ -471,7 +471,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
                     </div>
                     
                     {/* Horizontal Bar Chart */}
-                    <div className="space-y-8 px-4 py-6 rounded border border-ink/5">
+                    <div className="space-y-8 px-4 py-6 rounded">
                       <div className="space-y-2">
                         <div className="flex justify-between items-center mb-2">
                           <span className="text-sm font-medium text-ink">Completed On Time</span>
@@ -508,7 +508,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
                     </div>
                     
                     {/* Dot Metrics Chart */}
-                    <div className="px-4 py-6 rounded border border-ink/5 space-y-6">
+                    <div className="px-4 py-6 rounded space-y-6">
                       {/* Before */}
                       <div className="space-y-3">
                         <div className="flex justify-between items-center">
@@ -559,7 +559,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
             </div>
 
             {/* Note */}
-            <div className="bg-ink/5 border border-ink/10 rounded-lg px-4 py-3">
+            <div className="bg-ink/5 rounded-lg px-4 py-3">
               <p className="text-xs text-ink/60 font-medium">
                 <strong>Note:</strong> The statistics above represent proportional data. This does not represent the real organizational data.
               </p>
@@ -645,7 +645,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
           {/* Three Problem Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Card 1: Low Retention */}
-            <div className="rounded-lg border border-ink/10 bg-white/50 backdrop-blur-sm p-8 space-y-4">
+            <div className="rounded-lg bg-white/50 backdrop-blur-sm p-8 space-y-4">
               <div className="text-4xl font-bold text-brand">1 in 10</div>
               <h3 className="text-lg font-semibold text-ink">Low student retention</h3>
               <p className="text-sm text-ink/60">
@@ -654,7 +654,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
             </div>
 
             {/* Card 2: Declining Engagement */}
-            <div className="rounded-lg border border-ink/10 bg-white/50 backdrop-blur-sm p-8 space-y-4">
+            <div className="rounded-lg bg-white/50 backdrop-blur-sm p-8 space-y-4">
               <div className="text-4xl font-bold text-brand">&lt;3 min</div>
               <h3 className="text-lg font-semibold text-ink">Declining engagement</h3>
               <p className="text-sm text-ink/60">
@@ -663,7 +663,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
             </div>
 
             {/* Card 3: High Dependence on Re-engagement */}
-            <div className="rounded-lg border border-ink/10 bg-white/50 backdrop-blur-sm p-8 space-y-4">
+            <div className="rounded-lg bg-white/50 backdrop-blur-sm p-8 space-y-4">
               <div className="text-4xl font-bold text-brand">100%</div>
               <h3 className="text-lg font-semibold text-ink">Re-engagement dependent</h3>
               <p className="text-sm text-ink/60">
@@ -711,7 +711,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
             
             <div className="space-y-6">
               {/* Objective 1 */}
-              <div className="rounded-lg border border-ink/10 bg-white/50 backdrop-blur-sm p-8 space-y-4">
+              <div className="rounded-lg bg-white/50 backdrop-blur-sm p-8 space-y-4">
                 <div className="flex items-start gap-6">
                   <div className="text-7xl font-bold text-brand/30">01</div>
                   <div className="space-y-3 flex-1">
@@ -724,7 +724,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
               </div>
 
               {/* Objective 2 */}
-              <div className="rounded-lg border border-ink/10 bg-white/50 backdrop-blur-sm p-8 space-y-4">
+              <div className="rounded-lg bg-white/50 backdrop-blur-sm p-8 space-y-4">
                 <div className="flex items-start gap-6">
                   <div className="text-7xl font-bold text-brand/30">02</div>
                   <div className="space-y-3 flex-1">
@@ -737,7 +737,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
               </div>
 
               {/* Objective 3 */}
-              <div className="rounded-lg border border-ink/10 bg-white/50 backdrop-blur-sm p-8 space-y-4">
+              <div className="rounded-lg bg-white/50 backdrop-blur-sm p-8 space-y-4">
                 <div className="flex items-start gap-6">
                   <div className="text-7xl font-bold text-brand/30">03</div>
                   <div className="space-y-3 flex-1">
