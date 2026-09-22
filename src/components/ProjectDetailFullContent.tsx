@@ -783,211 +783,155 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
               <p className="text-base text-ink/60">Students come to the platform with different goals, routines and obstacles.</p>
             </div>
 
-            {/* Personas Carousel */}
-            <div className="space-y-6">
-              {/* Carousel Container with Arrow Controls */}
-              <div className="relative px-8">
-                {/* Left Arrow */}
-                <button
-                  onClick={() => setCurrentPersona((prev) => (prev - 1 + 3) % 3)}
-                  className="absolute -left-14 top-1/2 -translate-y-1/2 z-10 p-2 rounded-full bg-brand/10 hover:bg-brand/20 transition-all duration-300 active:scale-95"
-                  aria-label="Previous persona"
-                >
-                  <FontAwesomeIcon icon={faChevronLeft} className="w-5 h-5 text-brand" />
-                </button>
+            {/* Personas Carousel - Stacked Cards */}
+            <div className="space-y-4">
+              {/* Stacked Cards Container */}
+              <div className="relative h-[350px]">
+                {/* Persona 0: The Overwhelmed Planner */}
+                {[
+                  {
+                    id: 0,
+                    image: student1,
+                    name: "The Overwhelmed Planner",
+                    quote: "I know I need to study, but I don't know how to fit everything in.",
+                    goals: [
+                      "Plan what to study and when",
+                      "Balance multiple subjects",
+                      "Prepare for upcoming tests"
+                    ],
+                    painPoints: [
+                      "Too many subjects to plan",
+                      "Spends more time planning",
+                      "Feels overwhelmed easily"
+                    ]
+                  },
+                  {
+                    id: 1,
+                    image: student2,
+                    name: "The Inconsistent Learner",
+                    quote: "I start with motivation, but I can't keep the routine going.",
+                    goals: [
+                      "Build a regular study routine",
+                      "Complete planned sessions",
+                      "Get back on track after a pause"
+                    ],
+                    painPoints: [
+                      "Loses motivation quickly",
+                      "Misses sessions when busy",
+                      "Hard to catch up once behind"
+                    ]
+                  },
+                  {
+                    id: 2,
+                    image: student3,
+                    name: "The Goal-Driven Achiever",
+                    quote: "I know where I want to go. Help me get there efficiently.",
+                    goals: [
+                      "Prepare for a specific exam or goal",
+                      "Focus on weak areas",
+                      "Track progress toward their goal"
+                    ],
+                    painPoints: [
+                      "Limited time to study",
+                      "Unclear what to focus on now",
+                      "Generic plans don't fit their goals"
+                    ]
+                  }
+                ].map((persona) => {
+                  const distance = (persona.id - currentPersona + 3) % 3;
+                  const rotation = distance === 0 ? 0 : distance === 1 ? -3 : 3;
+                  const offset = distance * 8;
+                  
+                  return (
+                    <motion.div
+                      key={persona.id}
+                      className="absolute w-full h-full rounded-lg bg-white/50 backdrop-blur-sm p-6 overflow-y-auto flex flex-col justify-center"
+                      animate={{
+                        zIndex: 10 - distance,
+                        y: offset,
+                        scale: 1 - distance * 0.02,
+                        rotate: rotation
+                      }}
+                      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                      style={{ transformOrigin: "center bottom" }}
+                      onClick={() => setCurrentPersona(persona.id)}
+                    >
+                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mx-auto w-full">
+                        <div className="space-y-2 flex flex-col items-center text-center">
+                          <img src={persona.image} alt={persona.name} className="w-full max-w-56 h-auto rounded-full" />
+                          <div className="space-y-1">
+                            <h3 className="text-lg font-bold text-ink">{persona.name}</h3>
+                          </div>
+                        </div>
+                        
+                        <div className="space-y-3">
+                          <p className="text-sm italic text-ink font-semibold bg-yellow-200/40 border-b-2 border-yellow-400 pb-1">"{ persona.quote}"</p>
 
-                {/* Right Arrow */}
-                <button
-                  onClick={() => setCurrentPersona((prev) => (prev + 1) % 3)}
-                  className="absolute -right-14 top-1/2 -translate-y-1/2 z-10 p-2 rounded-full bg-brand/10 hover:bg-brand/20 transition-all duration-300 active:scale-95"
-                  aria-label="Next persona"
-                >
-                  <FontAwesomeIcon icon={faChevronRight} className="w-5 h-5 text-brand" />
-                </button>
-
-                {/* Carousel Track with Peek Effect */}
-                <div className="overflow-hidden -mx-8">
-                  <motion.div
-                    className="flex gap-8 px-8"
-                    animate={{ x: `${-currentPersona * 90}%` }}
-                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                  >
-                    {/* Persona 0: The Overwhelmed Planner */}
-                    <div className="flex-shrink-0" style={{ width: "calc(100% - 80px)" }}>
-                      <div className="rounded-lg bg-white/50 backdrop-blur-sm p-8 h-full">
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                          <div className="space-y-3 flex flex-col">
-                            <img src={student1} alt="The Overwhelmed Planner" className="w-full max-w-48 h-auto rounded-lg" />
-                            <div className="space-y-3">
-                              <h3 className="text-2xl font-bold text-ink">The Overwhelmed Planner</h3>
-                              <p className="text-base italic text-ink/70">"I know I need to study, but I don't know how to fit everything in."</p>
-                            </div>
+                          <div className="space-y-1">
+                            <p className="text-xs font-semibold text-brand uppercase tracking-wide">Goals</p>
+                            <ul className="space-y-1">
+                              {persona.goals.map((goal, idx) => (
+                                <li key={idx} className="flex gap-2 text-sm text-ink/70">
+                                  <span className="text-brand">✓</span>
+                                  <span>{goal}</span>
+                                </li>
+                              ))}
+                            </ul>
                           </div>
                           
-                          <div className="space-y-6">
-                            <div className="space-y-2">
-                              <p className="text-xs font-semibold text-brand uppercase tracking-wide">Goals / Use cases</p>
-                              <ul className="space-y-2">
-                                <li className="flex gap-2 text-sm text-ink/70">
-                                  <span className="text-brand">✓</span>
-                                  <span>Plan what to study and when</span>
-                                </li>
-                                <li className="flex gap-2 text-sm text-ink/70">
-                                  <span className="text-brand">✓</span>
-                                  <span>Balance multiple subjects</span>
-                                </li>
-                                <li className="flex gap-2 text-sm text-ink/70">
-                                  <span className="text-brand">✓</span>
-                                  <span>Prepare for upcoming tests</span>
-                                </li>
-                              </ul>
-                            </div>
-                            
-                            <div className="space-y-2">
-                              <p className="text-xs font-semibold text-red-500 uppercase tracking-wide">Key pain points</p>
-                              <ul className="space-y-2">
-                                <li className="flex gap-2 text-sm text-ink/70">
+                          <div className="space-y-1">
+                            <p className="text-xs font-semibold text-red-500 uppercase tracking-wide">Pain points</p>
+                            <ul className="space-y-1">
+                              {persona.painPoints.map((point, idx) => (
+                                <li key={idx} className="flex gap-2 text-sm text-ink/70">
                                   <span className="text-red-500">⚠</span>
-                                  <span>Too many subjects to plan</span>
+                                  <span>{point}</span>
                                 </li>
-                                <li className="flex gap-2 text-sm text-ink/70">
-                                  <span className="text-red-500">⚠</span>
-                                  <span>Spends more time planning</span>
-                                </li>
-                                <li className="flex gap-2 text-sm text-ink/70">
-                                  <span className="text-red-500">⚠</span>
-                                  <span>Feels overwhelmed easily</span>
-                                </li>
-                              </ul>
-                            </div>
+                              ))}
+                            </ul>
                           </div>
                         </div>
                       </div>
-                    </div>
-
-                    {/* Persona 1: The Inconsistent Learner */}
-                    <div className="flex-shrink-0" style={{ width: "calc(100% - 80px)" }}>
-                      <div className="rounded-lg bg-white/50 backdrop-blur-sm p-8 h-full">
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                          <div className="space-y-3 flex flex-col">
-                            <img src={student2} alt="The Inconsistent Learner" className="w-full max-w-48 h-auto rounded-lg" />
-                            <div className="space-y-3">
-                              <h3 className="text-2xl font-bold text-ink">The Inconsistent Learner</h3>
-                              <p className="text-base italic text-ink/70">"I start with motivation, but I can't keep the routine going."</p>
-                            </div>
-                          </div>
-                          
-                          <div className="space-y-6">
-                            <div className="space-y-2">
-                              <p className="text-xs font-semibold text-brand uppercase tracking-wide">Goals / Use cases</p>
-                              <ul className="space-y-2">
-                                <li className="flex gap-2 text-sm text-ink/70">
-                                  <span className="text-brand">✓</span>
-                                  <span>Build a regular study routine</span>
-                                </li>
-                                <li className="flex gap-2 text-sm text-ink/70">
-                                  <span className="text-brand">✓</span>
-                                  <span>Complete planned sessions</span>
-                                </li>
-                                <li className="flex gap-2 text-sm text-ink/70">
-                                  <span className="text-brand">✓</span>
-                                  <span>Get back on track after a pause</span>
-                                </li>
-                              </ul>
-                            </div>
-                            
-                            <div className="space-y-2">
-                              <p className="text-xs font-semibold text-red-500 uppercase tracking-wide">Key pain points</p>
-                              <ul className="space-y-2">
-                                <li className="flex gap-2 text-sm text-ink/70">
-                                  <span className="text-red-500">⚠</span>
-                                  <span>Loses motivation quickly</span>
-                                </li>
-                                <li className="flex gap-2 text-sm text-ink/70">
-                                  <span className="text-red-500">⚠</span>
-                                  <span>Misses sessions when busy</span>
-                                </li>
-                                <li className="flex gap-2 text-sm text-ink/70">
-                                  <span className="text-red-500">⚠</span>
-                                  <span>Hard to catch up once behind</span>
-                                </li>
-                              </ul>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Persona 2: The Goal-Driven Achiever */}
-                    <div className="flex-shrink-0" style={{ width: "calc(100% - 80px)" }}>
-                      <div className="rounded-lg bg-white/50 backdrop-blur-sm p-8 h-full">
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                          <div className="space-y-3 flex flex-col">
-                            <img src={student3} alt="The Goal-Driven Achiever" className="w-full max-w-48 h-auto rounded-lg" />
-                            <div className="space-y-3">
-                              <h3 className="text-2xl font-bold text-ink">The Goal-Driven Achiever</h3>
-                              <p className="text-base italic text-ink/70">"I know where I want to go. Help me get there efficiently."</p>
-                            </div>
-                          </div>
-                          
-                          <div className="space-y-6">
-                            <div className="space-y-2">
-                              <p className="text-xs font-semibold text-brand uppercase tracking-wide">Goals / Use cases</p>
-                              <ul className="space-y-2">
-                                <li className="flex gap-2 text-sm text-ink/70">
-                                  <span className="text-brand">✓</span>
-                                  <span>Prepare for a specific exam or goal</span>
-                                </li>
-                                <li className="flex gap-2 text-sm text-ink/70">
-                                  <span className="text-brand">✓</span>
-                                  <span>Focus on weak areas</span>
-                                </li>
-                                <li className="flex gap-2 text-sm text-ink/70">
-                                  <span className="text-brand">✓</span>
-                                  <span>Track progress toward their goal</span>
-                                </li>
-                              </ul>
-                            </div>
-                            
-                            <div className="space-y-2">
-                              <p className="text-xs font-semibold text-red-500 uppercase tracking-wide">Key pain points</p>
-                              <ul className="space-y-2">
-                                <li className="flex gap-2 text-sm text-ink/70">
-                                  <span className="text-red-500">⚠</span>
-                                  <span>Limited time to study</span>
-                                </li>
-                                <li className="flex gap-2 text-sm text-ink/70">
-                                  <span className="text-red-500">⚠</span>
-                                  <span>Unclear what to focus on now</span>
-                                </li>
-                                <li className="flex gap-2 text-sm text-ink/70">
-                                  <span className="text-red-500">⚠</span>
-                                  <span>Generic plans don't fit their goals</span>
-                                </li>
-                              </ul>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </motion.div>
-                </div>
+                    </motion.div>
+                  );
+                })}
               </div>
               
-              {/* Carousel Controls - Dots */}
-              <div className="flex justify-center items-center gap-3">
-                {[0, 1, 2].map((index) => (
-                  <button
-                    key={index}
-                    onClick={() => setCurrentPersona(index)}
-                    className={`rounded-full transition-all duration-300 ${ 
-                      currentPersona === index
-                        ? "size-3 bg-brand"
-                        : "size-2 bg-ink/30 hover:bg-ink/50"
-                    }`}
-                    aria-label={`Go to persona ${index + 1}`}
-                  />
-                ))}
+              {/* Carousel Controls - Chevrons and Dots */}
+              <div className="flex justify-center items-center gap-4 pt-6">
+                {/* Left Chevron */}
+                <button
+                  onClick={() => setCurrentPersona((currentPersona - 1 + 3) % 3)}
+                  className="p-2 bg-ink/5 hover:bg-ink/10 rounded-full transition-colors"
+                  aria-label="Previous persona"
+                >
+                  <FontAwesomeIcon icon={faChevronLeft} className="text-ink/50 hover:text-ink/70" />
+                </button>
+
+                {/* Dot Indicators */}
+                <div className="flex items-center gap-2">
+                  {[0, 1, 2].map((index) => (
+                    <button
+                      key={index}
+                      onClick={() => setCurrentPersona(index)}
+                      className={`rounded-full transition-all duration-300 ${ 
+                        currentPersona === index
+                          ? "size-3 bg-brand"
+                          : "size-2 bg-ink/30 hover:bg-ink/50"
+                      }`}
+                      aria-label={`Go to persona ${index + 1}`}
+                    />
+                  ))}
+                </div>
+
+                {/* Right Chevron */}
+                <button
+                  onClick={() => setCurrentPersona((currentPersona + 1) % 3)}
+                  className="p-2 bg-ink/5 hover:bg-ink/10 rounded-full transition-colors"
+                  aria-label="Next persona"
+                >
+                  <FontAwesomeIcon icon={faChevronRight} className="text-ink/50 hover:text-ink/70" />
+                </button>
               </div>
             </div>
           </div>
