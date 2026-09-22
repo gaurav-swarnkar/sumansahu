@@ -170,7 +170,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
           </div>
 
           {/* Impact Highlights */}
-          <div id="impact" className="space-y-8 pt-6 scroll-mt-8">
+          <div className="space-y-8 pt-6 scroll-mt-8">
             <div className="space-y-3">
               <h2 className="text-3xl font-bold text-ink">Impact Highlights</h2>
               <p className="text-base text-ink/60 max-w-3xl">
