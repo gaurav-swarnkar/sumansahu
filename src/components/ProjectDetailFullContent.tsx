@@ -191,7 +191,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
                     <FontAwesomeIcon icon={faUsers} className={`size-5 ${selectedMetric === "acquisition" ? "text-brand" : "text-ink/40"}`} />
                   </div>
                   <div className={`text-3xl font-bold ${selectedMetric === "acquisition" ? "text-brand" : "text-ink"}`}>12.4K</div>
-                  <div className="text-xs text-green-600">↗ +62% growth</div>
+                  <div className="text-sm text-green-600">↗ +62% growth</div>
                 </div>
               </button>
 
@@ -210,7 +210,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
                     <FontAwesomeIcon icon={faChartLine} className={`size-5 ${selectedMetric === "retention" ? "text-brand" : "text-ink/40"}`} />
                   </div>
                   <div className={`text-3xl font-bold ${selectedMetric === "retention" ? "text-brand" : "text-ink"}`}>37%</div>
-                  <div className="text-xs text-green-600">↗ +27pp growth</div>
+                  <div className="text-sm text-green-600">↗ +27pp growth</div>
                 </div>
               </button>
 
@@ -229,7 +229,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
                     <FontAwesomeIcon icon={faCheckCircle} className={`size-5 ${selectedMetric === "on-time" ? "text-brand" : "text-ink/40"}`} />
                   </div>
                   <div className={`text-3xl font-bold ${selectedMetric === "on-time" ? "text-brand" : "text-ink"}`}>68%</div>
-                  <div className="text-xs text-green-600">↗ +32pp growth</div>
+                  <div className="text-sm text-green-600">↗ +32pp growth</div>
                 </div>
               </button>
 
@@ -248,7 +248,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
                     <FontAwesomeIcon icon={faClock} className={`size-5 ${selectedMetric === "engagement" ? "text-brand" : "text-ink/40"}`} />
                   </div>
                   <div className={`text-3xl font-bold ${selectedMetric === "engagement" ? "text-brand" : "text-ink"}`}>8-12 min</div>
-                  <div className="text-xs text-green-600">↗ +3x growth</div>
+                  <div className="text-sm text-green-600">↗ +3x growth</div>
                 </div>
               </button>
             </div>
