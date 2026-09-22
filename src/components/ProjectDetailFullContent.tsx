@@ -638,7 +638,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
         {/* ===== SECTION 2: BUSINESS PROBLEM ===== */}
         <section id="business-problem" className="space-y-12 scroll-mt-8 mt-[120px]">
           <div>
-            <h1 className="text-4xl font-bold text-ink mb-8">Business Problem</h1>
+            <h1 className="text-4xl font-bold text-ink mb-8">Business UseCases </h1>
             <div className="relative pl-8 border-l-4 border-brand py-6">
               <h2 className="text-2xl font-bold text-ink leading-tight">
                 We brought students to Notesight, but <span className="text-brand">struggled to keep them learning.</span>
@@ -772,7 +772,6 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
           <h1 className="text-4xl font-bold text-ink">User Problem</h1>
           
           <div className="space-y-4">
-            <p className="text-xs font-semibold text-brand uppercase tracking-wide">Different learners</p>
             <h2 className="text-2xl font-bold text-ink">Different learners. Real challenges.</h2>
             <p className="text-base text-ink/60">Students come to the platform with different goals, routines and obstacles.</p>
           </div>
