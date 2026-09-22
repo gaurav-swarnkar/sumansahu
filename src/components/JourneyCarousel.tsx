@@ -28,10 +28,17 @@ export default function JourneyCarousel() {
   const [index, setIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(false);
+  const [isVideoReady, setIsVideoReady] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const goTo = (i: number) =>
     setIndex(((i % journeyTimeline.length) + journeyTimeline.length) % journeyTimeline.length);
+
+  const slide = journeyTimeline[index];
+  
+  // Map videos to slides
+  const videos = [slide1, slide2, slide3, slide4, slide5, slide6, slide7];
+  const videoSrc = videos[index] || videos[0]; // Fallback to first video
 
   useEffect(() => {
     if (!isPlaying) return;
@@ -41,29 +48,45 @@ export default function JourneyCarousel() {
     return () => clearInterval(timer);
   }, [index, isPlaying]);
 
-  // Control video playback based on isPlaying state
+  // Control video playback based on isPlaying state and video readiness
   useEffect(() => {
     if (videoRef.current) {
-      if (isPlaying) {
-        videoRef.current.play();
+      if (isPlaying && isVideoReady) {
+        const playPromise = videoRef.current.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(() => {
+            // Playback failed, pause and wait for user interaction
+            videoRef.current?.pause();
+          });
+        }
       } else {
         videoRef.current.pause();
       }
     }
-  }, [isPlaying]);
+  }, [isPlaying, isVideoReady]);
 
-  // Control video mute state
+  // Reset video ready state when video source changes
   useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.muted = isMuted;
-    }
-  }, [isMuted]);
+    setIsVideoReady(false);
+  }, [videoSrc]);
 
-  const slide = journeyTimeline[index];
-  
-  // Map videos to slides
-  const videos = [slide1, slide2, slide3, slide4, slide5, slide6, slide7];
-  const videoSrc = videos[index] || videos[0]; // Fallback to first video
+  const handleVideoCanPlay = () => {
+    setIsVideoReady(true);
+  };
+
+  const handleVideoLoadStart = () => {
+    // Pause when loading starts
+    if (videoRef.current) {
+      videoRef.current.pause();
+    }
+  };
+
+  const handleVideoSeeking = () => {
+    // Pause during seeking/buffering
+    if (videoRef.current) {
+      videoRef.current.pause();
+    }
+  };
 
   return (
     <div className="relative h-full w-full overflow-hidden bg-white">
@@ -74,6 +97,10 @@ export default function JourneyCarousel() {
         autoPlay
         loop
         playsInline
+        preload="auto"
+        onCanPlay={handleVideoCanPlay}
+        onLoadStart={handleVideoLoadStart}
+        onSeeking={handleVideoSeeking}
         className="absolute inset-0 h-full w-full object-cover"
       >
         <source src={videoSrc} type="video/mp4" />
