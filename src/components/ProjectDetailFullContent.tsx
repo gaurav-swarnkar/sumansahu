@@ -646,33 +646,54 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
             </div>
           </div>
 
-          {/* Three Problem Cards */}
+          {/* Three Problem & Target Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Card 1: Low Retention */}
-            <div className="rounded-lg bg-white/50 backdrop-blur-sm p-8 space-y-4">
-              <div className="text-4xl font-bold text-brand">1 in 10</div>
-              <h3 className="text-lg font-semibold text-ink">Low student retention</h3>
-              <p className="text-sm text-ink/60">
-                Only 1 in 10 students were retained by Day 7.
-              </p>
+            {/* Card 1: Retention */}
+            <div className="rounded-lg bg-white/50 backdrop-blur-sm p-6 space-y-4">
+              <div className="space-y-2">
+                <p className="text-xs font-semibold text-ink/50 uppercase tracking-wide">Problem</p>
+                <h3 className="text-lg font-semibold text-ink">Low Student Retention</h3>
+                <p className="text-sm text-ink/60">Only 1 in 10 students retained by Day 7</p>
+                <div className="text-3xl font-bold text-ink/40 pt-2">1 in 10</div>
+              </div>
+              <div className="h-px bg-ink/10"></div>
+              <div className="space-y-2">
+                <p className="text-xs font-semibold text-brand uppercase tracking-wide">Target</p>
+                <p className="text-sm text-ink/60">Increase retention and engagement organically</p>
+                <div className="text-3xl font-bold text-brand pt-2">3-4 in 10</div>
+              </div>
             </div>
 
-            {/* Card 2: Declining Engagement */}
-            <div className="rounded-lg bg-white/50 backdrop-blur-sm p-8 space-y-4">
-              <div className="text-4xl font-bold text-brand">&lt;3 min</div>
-              <h3 className="text-lg font-semibold text-ink">Declining engagement</h3>
-              <p className="text-sm text-ink/60">
-                Average engagement fell to less than 3 minutes by Day 7.
-              </p>
+            {/* Card 2: Engagement */}
+            <div className="rounded-lg bg-white/50 backdrop-blur-sm p-6 space-y-4">
+              <div className="space-y-2">
+                <p className="text-xs font-semibold text-ink/50 uppercase tracking-wide">Problem</p>
+                <h3 className="text-lg font-semibold text-ink">Declining Engagement</h3>
+                <p className="text-sm text-ink/60">Average time fell below 3 minutes by Day 7</p>
+                <div className="text-3xl font-bold text-ink/40 pt-2">&lt;3 min</div>
+              </div>
+              <div className="h-px bg-ink/10"></div>
+              <div className="space-y-2">
+                <p className="text-xs font-semibold text-brand uppercase tracking-wide">Target</p>
+                <p className="text-sm text-ink/60">Increase meaningful session duration</p>
+                <div className="text-3xl font-bold text-brand pt-2">8-12 min</div>
+              </div>
             </div>
 
-            {/* Card 3: High Dependence on Re-engagement */}
-            <div className="rounded-lg bg-white/50 backdrop-blur-sm p-8 space-y-4">
-              <div className="text-4xl font-bold text-brand">100%</div>
-              <h3 className="text-lg font-semibold text-ink">Re-engagement dependent</h3>
-              <p className="text-sm text-ink/60">
-                We relied on nudges and interventions to bring students back.
-              </p>
+            {/* Card 3: Re-engagement */}
+            <div className="rounded-lg bg-white/50 backdrop-blur-sm p-6 space-y-4">
+              <div className="space-y-2">
+                <p className="text-xs font-semibold text-ink/50 uppercase tracking-wide">Problem</p>
+                <h3 className="text-lg font-semibold text-ink">Re-engagement Dependent</h3>
+                <p className="text-sm text-ink/60">100% reliant on nudges and interventions</p>
+                <div className="text-3xl font-bold text-ink/40 pt-2">100%</div>
+              </div>
+              <div className="h-px bg-ink/10"></div>
+              <div className="space-y-2">
+                <p className="text-xs font-semibold text-brand uppercase tracking-wide">Target</p>
+                <p className="text-sm text-ink/60">Build organic engagement habits</p>
+                <div className="text-3xl font-bold text-brand pt-2">Self-Sustaining</div>
+              </div>
             </div>
           </div>
 
