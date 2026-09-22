@@ -21,6 +21,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
   const [showExperienceModal, setShowExperienceModal] = useState(false);
   const [activeTab, setActiveTab] = useState<"before" | "after" | "impact">("before");
   const [selectedMetric, setSelectedMetric] = useState<"acquisition" | "retention" | "on-time" | "engagement">("acquisition");
+  const [currentPersona, setCurrentPersona] = useState(0);
   
   // Map project IDs to video indices
   const videos = [video1, video2, video3, video4];
@@ -781,159 +782,173 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
               <p className="text-base text-ink/60">Students come to the platform with different goals, routines and obstacles.</p>
             </div>
 
-            {/* Personas Grid */}
-            <div className="space-y-8">
-              {/* Persona 1: The Overwhelmed Planner */}
+            {/* Personas Carousel */}
+            <div className="space-y-6">
+              {/* Persona Card */}
               <div className="rounded-lg bg-white/50 backdrop-blur-sm p-8">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                  <div className="space-y-3 flex flex-col">
-                    <img src={student1} alt="The Overwhelmed Planner" className="w-full max-w-48 h-auto rounded-lg" />
-                    <div className="space-y-3">
-                      <h3 className="text-2xl font-bold text-ink">The Overwhelmed Planner</h3>
-                      <p className="text-base italic text-ink/70">"I know I need to study, but I don't know how to fit everything in."</p>
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-6">
-                    <div className="space-y-2">
-                      <p className="text-xs font-semibold text-brand uppercase tracking-wide">Goals / Use cases</p>
-                      <ul className="space-y-2">
-                        <li className="flex gap-2 text-sm text-ink/70">
-                          <span className="text-brand">✓</span>
-                          <span>Plan what to study and when</span>
-                        </li>
-                        <li className="flex gap-2 text-sm text-ink/70">
-                          <span className="text-brand">✓</span>
-                          <span>Balance multiple subjects</span>
-                        </li>
-                        <li className="flex gap-2 text-sm text-ink/70">
-                          <span className="text-brand">✓</span>
-                          <span>Prepare for upcoming tests</span>
-                        </li>
-                      </ul>
+                {currentPersona === 0 && (
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div className="space-y-3 flex flex-col">
+                      <img src={student1} alt="The Overwhelmed Planner" className="w-full max-w-48 h-auto rounded-lg" />
+                      <div className="space-y-3">
+                        <h3 className="text-2xl font-bold text-ink">The Overwhelmed Planner</h3>
+                        <p className="text-base italic text-ink/70">"I know I need to study, but I don't know how to fit everything in."</p>
+                      </div>
                     </div>
                     
-                    <div className="space-y-2">
-                      <p className="text-xs font-semibold text-red-500 uppercase tracking-wide">Key pain points</p>
-                      <ul className="space-y-2">
-                        <li className="flex gap-2 text-sm text-ink/70">
-                          <span className="text-red-500">⚠</span>
-                          <span>Too many subjects to plan</span>
-                        </li>
-                        <li className="flex gap-2 text-sm text-ink/70">
-                          <span className="text-red-500">⚠</span>
-                          <span>Spends more time planning</span>
-                        </li>
-                        <li className="flex gap-2 text-sm text-ink/70">
-                          <span className="text-red-500">⚠</span>
-                          <span>Feels overwhelmed easily</span>
-                        </li>
-                      </ul>
+                    <div className="space-y-6">
+                      <div className="space-y-2">
+                        <p className="text-xs font-semibold text-brand uppercase tracking-wide">Goals / Use cases</p>
+                        <ul className="space-y-2">
+                          <li className="flex gap-2 text-sm text-ink/70">
+                            <span className="text-brand">✓</span>
+                            <span>Plan what to study and when</span>
+                          </li>
+                          <li className="flex gap-2 text-sm text-ink/70">
+                            <span className="text-brand">✓</span>
+                            <span>Balance multiple subjects</span>
+                          </li>
+                          <li className="flex gap-2 text-sm text-ink/70">
+                            <span className="text-brand">✓</span>
+                            <span>Prepare for upcoming tests</span>
+                          </li>
+                        </ul>
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <p className="text-xs font-semibold text-red-500 uppercase tracking-wide">Key pain points</p>
+                        <ul className="space-y-2">
+                          <li className="flex gap-2 text-sm text-ink/70">
+                            <span className="text-red-500">⚠</span>
+                            <span>Too many subjects to plan</span>
+                          </li>
+                          <li className="flex gap-2 text-sm text-ink/70">
+                            <span className="text-red-500">⚠</span>
+                            <span>Spends more time planning</span>
+                          </li>
+                          <li className="flex gap-2 text-sm text-ink/70">
+                            <span className="text-red-500">⚠</span>
+                            <span>Feels overwhelmed easily</span>
+                          </li>
+                        </ul>
+                      </div>
                     </div>
                   </div>
-                </div>
+                )}
+                {currentPersona === 1 && (
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div className="space-y-3 flex flex-col">
+                      <img src={student2} alt="The Inconsistent Learner" className="w-full max-w-48 h-auto rounded-lg" />
+                      <div className="space-y-3">
+                        <h3 className="text-2xl font-bold text-ink">The Inconsistent Learner</h3>
+                        <p className="text-base italic text-ink/70">"I start with motivation, but I can't keep the routine going."</p>
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-6">
+                      <div className="space-y-2">
+                        <p className="text-xs font-semibold text-brand uppercase tracking-wide">Goals / Use cases</p>
+                        <ul className="space-y-2">
+                          <li className="flex gap-2 text-sm text-ink/70">
+                            <span className="text-brand">✓</span>
+                            <span>Build a regular study routine</span>
+                          </li>
+                          <li className="flex gap-2 text-sm text-ink/70">
+                            <span className="text-brand">✓</span>
+                            <span>Complete planned sessions</span>
+                          </li>
+                          <li className="flex gap-2 text-sm text-ink/70">
+                            <span className="text-brand">✓</span>
+                            <span>Get back on track after a pause</span>
+                          </li>
+                        </ul>
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <p className="text-xs font-semibold text-red-500 uppercase tracking-wide">Key pain points</p>
+                        <ul className="space-y-2">
+                          <li className="flex gap-2 text-sm text-ink/70">
+                            <span className="text-red-500">⚠</span>
+                            <span>Loses motivation quickly</span>
+                          </li>
+                          <li className="flex gap-2 text-sm text-ink/70">
+                            <span className="text-red-500">⚠</span>
+                            <span>Misses sessions when busy</span>
+                          </li>
+                          <li className="flex gap-2 text-sm text-ink/70">
+                            <span className="text-red-500">⚠</span>
+                            <span>Hard to catch up once behind</span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                {currentPersona === 2 && (
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div className="space-y-3 flex flex-col">
+                      <img src={student3} alt="The Goal-Driven Achiever" className="w-full max-w-48 h-auto rounded-lg" />
+                      <div className="space-y-3">
+                        <h3 className="text-2xl font-bold text-ink">The Goal-Driven Achiever</h3>
+                        <p className="text-base italic text-ink/70">"I know where I want to go. Help me get there efficiently."</p>
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-6">
+                      <div className="space-y-2">
+                        <p className="text-xs font-semibold text-brand uppercase tracking-wide">Goals / Use cases</p>
+                        <ul className="space-y-2">
+                          <li className="flex gap-2 text-sm text-ink/70">
+                            <span className="text-brand">✓</span>
+                            <span>Prepare for a specific exam or goal</span>
+                          </li>
+                          <li className="flex gap-2 text-sm text-ink/70">
+                            <span className="text-brand">✓</span>
+                            <span>Focus on weak areas</span>
+                          </li>
+                          <li className="flex gap-2 text-sm text-ink/70">
+                            <span className="text-brand">✓</span>
+                            <span>Track progress toward their goal</span>
+                          </li>
+                        </ul>
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <p className="text-xs font-semibold text-red-500 uppercase tracking-wide">Key pain points</p>
+                        <ul className="space-y-2">
+                          <li className="flex gap-2 text-sm text-ink/70">
+                            <span className="text-red-500">⚠</span>
+                            <span>Limited time to study</span>
+                          </li>
+                          <li className="flex gap-2 text-sm text-ink/70">
+                            <span className="text-red-500">⚠</span>
+                            <span>Unclear what to focus on now</span>
+                          </li>
+                          <li className="flex gap-2 text-sm text-ink/70">
+                            <span className="text-red-500">⚠</span>
+                            <span>Generic plans don't fit their goals</span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
-
-              {/* Persona 2: The Inconsistent Learner */}
-              <div className="rounded-lg bg-white/50 backdrop-blur-sm p-8">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                  <div className="space-y-3 flex flex-col">
-                    <img src={student2} alt="The Inconsistent Learner" className="w-full max-w-48 h-auto rounded-lg" />
-                    <div className="space-y-3">
-                      <h3 className="text-2xl font-bold text-ink">The Inconsistent Learner</h3>
-                      <p className="text-base italic text-ink/70">"I start with motivation, but I can't keep the routine going."</p>
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-6">
-                    <div className="space-y-2">
-                      <p className="text-xs font-semibold text-brand uppercase tracking-wide">Goals / Use cases</p>
-                      <ul className="space-y-2">
-                        <li className="flex gap-2 text-sm text-ink/70">
-                          <span className="text-brand">✓</span>
-                          <span>Build a regular study routine</span>
-                        </li>
-                        <li className="flex gap-2 text-sm text-ink/70">
-                          <span className="text-brand">✓</span>
-                          <span>Complete planned sessions</span>
-                        </li>
-                        <li className="flex gap-2 text-sm text-ink/70">
-                          <span className="text-brand">✓</span>
-                          <span>Get back on track after a pause</span>
-                        </li>
-                      </ul>
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <p className="text-xs font-semibold text-red-500 uppercase tracking-wide">Key pain points</p>
-                      <ul className="space-y-2">
-                        <li className="flex gap-2 text-sm text-ink/70">
-                          <span className="text-red-500">⚠</span>
-                          <span>Loses motivation quickly</span>
-                        </li>
-                        <li className="flex gap-2 text-sm text-ink/70">
-                          <span className="text-red-500">⚠</span>
-                          <span>Misses sessions when busy</span>
-                        </li>
-                        <li className="flex gap-2 text-sm text-ink/70">
-                          <span className="text-red-500">⚠</span>
-                          <span>Hard to catch up once behind</span>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Persona 3: The Goal-Driven Achiever */}
-              <div className="rounded-lg bg-white/50 backdrop-blur-sm p-8">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                  <div className="space-y-3 flex flex-col">
-                    <img src={student3} alt="The Goal-Driven Achiever" className="w-full max-w-48 h-auto rounded-lg" />
-                    <div className="space-y-3">
-                      <h3 className="text-2xl font-bold text-ink">The Goal-Driven Achiever</h3>
-                      <p className="text-base italic text-ink/70">"I know where I want to go. Help me get there efficiently."</p>
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-6">
-                    <div className="space-y-2">
-                      <p className="text-xs font-semibold text-brand uppercase tracking-wide">Goals / Use cases</p>
-                      <ul className="space-y-2">
-                        <li className="flex gap-2 text-sm text-ink/70">
-                          <span className="text-brand">✓</span>
-                          <span>Prepare for a specific exam or goal</span>
-                        </li>
-                        <li className="flex gap-2 text-sm text-ink/70">
-                          <span className="text-brand">✓</span>
-                          <span>Focus on weak areas</span>
-                        </li>
-                        <li className="flex gap-2 text-sm text-ink/70">
-                          <span className="text-brand">✓</span>
-                          <span>Track progress toward their goal</span>
-                        </li>
-                      </ul>
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <p className="text-xs font-semibold text-red-500 uppercase tracking-wide">Key pain points</p>
-                      <ul className="space-y-2">
-                        <li className="flex gap-2 text-sm text-ink/70">
-                          <span className="text-red-500">⚠</span>
-                          <span>Limited time to study</span>
-                        </li>
-                        <li className="flex gap-2 text-sm text-ink/70">
-                          <span className="text-red-500">⚠</span>
-                          <span>Unclear what to focus on now</span>
-                        </li>
-                        <li className="flex gap-2 text-sm text-ink/70">
-                          <span className="text-red-500">⚠</span>
-                          <span>Generic plans don't fit their goals</span>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
+              
+              {/* Carousel Controls - Dots */}
+              <div className="flex justify-center items-center gap-3">
+                {[0, 1, 2].map((index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentPersona(index)}
+                    className={`rounded-full transition-all duration-300 ${
+                      currentPersona === index
+                        ? "size-3 bg-brand"
+                        : "size-2 bg-ink/30 hover:bg-ink/50"
+                    }`}
+                    aria-label={`Go to persona ${index + 1}`}
+                  />
+                ))}
               </div>
             </div>
           </div>
