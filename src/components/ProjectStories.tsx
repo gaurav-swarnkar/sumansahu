@@ -210,16 +210,12 @@ export default function ProjectStories({
                 <button
                   onClick={() => navigate(`/project/${project.id}`)}
                   aria-label="View Project"
-                  className="group relative flex h-[64px] w-[240px] items-center overflow-hidden"
+                  className="group relative flex h-[64px] w-[240px] items-center justify-center gap-4 rounded-full border-2 border-brand bg-white text-brand transition-colors duration-300 hover:bg-brand hover:text-white"
                 >
-                  {/* sliding fill from left */}
-                  <span className="absolute inset-y-0 left-0 right-[35px] bg-white transition-all duration-500 ease-out group-hover:right-0" />
-                  <span className="relative z-10 flex w-full items-center justify-start pl-6 pr-3 gap-4">
-                    <span className="text-[22px] font-semibold leading-none tracking-tight text-brand">
-                      View Project
-                    </span>
-                    <ArrowForward className="absolute right-3 size-6 text-brand opacity-0 transition-all duration-500 ease-out group-hover:opacity-100 group-hover:-rotate-45 flex-shrink-0" />
+                  <span className="text-[18px] font-semibold leading-none tracking-tight">
+                    View Project
                   </span>
+                  <ArrowForward className="size-5 transition-transform duration-300 group-hover:-rotate-45 flex-shrink-0" />
                 </button>
               </div>
             </motion.div>
