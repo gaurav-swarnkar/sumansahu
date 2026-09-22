@@ -2,7 +2,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect, type ReactElement } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBriefcase, faBolt, faPhone, faEnvelope, faPaperPlane, faXmark, faComment } from "@fortawesome/free-solid-svg-icons";
+import { faBriefcase, faBolt, faPhone, faEnvelope, faPaperPlane, faXmark, faComment, faBrain } from "@fortawesome/free-solid-svg-icons";
 import { faLinkedin, faBehance, faMedium } from "@fortawesome/free-brands-svg-icons";
 import heroImage from "../imports/Main/4c74906ffa4be2217b2d960958c0d49e73b948cc.png";
 import contactDrawerImage from "../imports/Main/suman_sahu.png";
@@ -247,19 +247,20 @@ export default function Hero() {
           <p className="text-[26px] md:text-[32px] font-semibold text-muted">
             I am Suman S.
           </p>
-          <AnimatedTitle />
 
           {/* Inline badges */}
-          <div className="mt-6 flex flex-wrap items-center gap-3">
+          <div className="mt-3 flex flex-wrap items-center gap-3">
+            <div className="inline-flex items-center gap-2 rounded-full bg-brand/15 px-4 py-2 backdrop-blur-sm text-sm">
+              <FontAwesomeIcon icon={faBrain} className="text-ink-soft text-sm flex-shrink-0" />
+              <span className="font-medium text-ink-soft">AI enabled product designer</span>
+            </div>
             <div className="inline-flex items-center gap-2 rounded-full bg-brand/15 px-4 py-2 backdrop-blur-sm text-sm">
               <FontAwesomeIcon icon={faBriefcase} className="text-ink-soft text-sm flex-shrink-0" />
-              <span className="font-medium text-ink-soft">4+ Yrs Exp. in Saas Design</span>
-            </div>
-            <div className="inline-flex items-center gap-2 rounded-full bg-brand/15 px-4 py-2 backdrop-blur-sm text-sm">
-              <FontAwesomeIcon icon={faBolt} className="text-ink-soft text-sm flex-shrink-0" />
-              <span className="font-medium text-ink-soft">Open for Work</span>
+              <span className="font-medium text-ink-soft">6+ Yrs Exp. in Design</span>
             </div>
           </div>
+
+          <AnimatedTitle />
 
           <div className="mt-10 flex flex-row items-center gap-4 w-full">
             <CtaButton label="Project Stories" splitAt={4} onClick={() => handleNavigation("/projects")} variant="primary" />
@@ -360,6 +361,19 @@ export default function Hero() {
           <p className="text-base font-semibold text-muted">
             I am Suman S.
           </p>
+
+          {/* Badges for mobile */}
+          <div className="mt-3 flex flex-nowrap items-center gap-1.5 z-30">
+            <div className="inline-flex items-center gap-1 rounded-full bg-brand/15 px-2 py-1.5 backdrop-blur-sm text-xs">
+              <FontAwesomeIcon icon={faBrain} className="text-ink-soft text-xs flex-shrink-0" />
+              <span className="font-medium text-ink-soft whitespace-nowrap">AI Enabled Product Designer</span>
+            </div>
+            <div className="inline-flex items-center gap-1 rounded-full bg-brand/15 px-2 py-1.5 backdrop-blur-sm text-xs">
+              <FontAwesomeIcon icon={faBriefcase} className="text-ink-soft text-xs flex-shrink-0" />
+              <span className="font-medium text-ink-soft whitespace-nowrap">6 yrs. Experience</span>
+            </div>
+          </div>
+
           <div className="mt-2 text-[2.4rem] font-semibold leading-tight text-ink-soft min-h-[200px]">
             {(() => {
               const titles = [
@@ -458,18 +472,6 @@ export default function Hero() {
               );
             })()}
           </div>
-
-          {/* Badges for mobile - Relative position below text */}
-          <div className="mt-4 flex flex-wrap items-center gap-2 z-30">
-            <div className="inline-flex items-center gap-2 rounded-full bg-brand/15 px-3 py-2 backdrop-blur-sm text-xs">
-              <FontAwesomeIcon icon={faBriefcase} className="text-ink-soft text-xs flex-shrink-0" />
-              <span className="font-medium text-ink-soft">4+ Yrs Exp. in Saas Design</span>
-            </div>
-            <div className="inline-flex items-center gap-2 rounded-full bg-brand/15 px-3 py-2 backdrop-blur-sm text-xs">
-              <FontAwesomeIcon icon={faBolt} className="text-ink-soft text-xs flex-shrink-0" />
-              <span className="font-medium text-ink-soft">Open for Work</span>
-            </div>
-          </div>
         </motion.div>
 
         {/* Bottom Section - Sharp Gradient & Image */}
@@ -497,13 +499,13 @@ export default function Hero() {
       <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 w-full px-4 py-4 bg-white border-t border-ink/10 flex gap-3">
         <button
           onClick={() => handleNavigation("/projects")}
-          className="flex-1 h-12 bg-brand text-white font-semibold text-sm transition-all hover:bg-brand-600 active:scale-95"
+          className="flex-1 h-[52px] bg-lilac text-white font-semibold text-sm rounded-full transition-all hover:bg-brand-600 active:scale-95"
         >
           Project Stories
         </button>
         <button
           onClick={() => handleNavigation("/about")}
-          className="flex-1 h-12 bg-lilac text-white font-semibold text-sm transition-all hover:bg-brand-600 active:scale-95"
+          className="flex-1 h-[52px] bg-white text-lilac font-semibold text-sm border-2 border-lilac rounded-full transition-all hover:bg-lilac hover:text-white active:scale-95"
         >
           My Journey
         </button>

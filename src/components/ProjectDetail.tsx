@@ -133,9 +133,9 @@ export default function ProjectDetail() {
                 <button
                   onClick={() => navigate("/projects")}
                   aria-label="Back to projects"
-                  className="group flex size-16 shrink-0 items-center justify-center rounded-full bg-lilac-100 text-brand transition-colors hover:bg-brand-600 hover:text-white"
+                  className="group flex size-12 shrink-0 items-center justify-center rounded-full bg-lilac-100 text-brand transition-colors hover:bg-brand-600 hover:text-white"
                 >
-                  <ArrowForward className="size-6 rotate-180 transition-transform duration-300 group-hover:rotate-135" />
+                  <ArrowForward className="size-5 rotate-180 transition-transform duration-300 group-hover:rotate-135" />
                 </button>
                 <div className="flex flex-col">
                   <span className="text-lg font-medium text-ink/60 flex items-center gap-2">
@@ -194,9 +194,9 @@ export default function ProjectDetail() {
               <button
                 onClick={() => navigate("/projects")}
                 aria-label="Back to projects"
-                className="group flex size-10 shrink-0 items-center justify-center rounded-full bg-lilac-100 text-brand transition-colors hover:bg-brand-600 hover:text-white"
+                className="group flex size-12 shrink-0 items-center justify-center rounded-full bg-lilac-100 text-brand transition-colors hover:bg-brand-600 hover:text-white"
               >
-                <ArrowForward className="size-4 rotate-180 transition-transform duration-300 group-hover:rotate-135" />
+                <ArrowForward className="size-5 rotate-180 transition-transform duration-300 group-hover:rotate-135" />
               </button>
 
               {/* Section Dots Navigation */}
