@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLightbulb, faCalendarDays, faFire, faClipboardList, faLock, faHeartBroken } from "@fortawesome/free-solid-svg-icons";
+import { faLightbulb, faCalendarDays, faFire, faClipboardList, faLock, faHeartBroken, faUsers, faChartLine, faCheckCircle, faClock } from "@fortawesome/free-solid-svg-icons";
 import sumansahuImage from "../imports/Main/suman_sahu.png";
 import video1 from "../imports/Main/1.mp4";
 import video2 from "../imports/Main/2.mp4";
@@ -179,116 +179,76 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
               {/* Card 1: Acquisition */}
               <button
                 onClick={() => setSelectedMetric("acquisition")}
-                className={`rounded-lg p-6 transition-all text-left shadow-md ${
+                className={`rounded-lg p-5 transition-all text-left shadow-md ${
                   selectedMetric === "acquisition"
                     ? "border-2 border-brand bg-brand/5 shadow-xl"
                     : "border border-ink/10 bg-white/50 backdrop-blur-sm hover:shadow-lg"
                 }`}
               >
-                <div className="space-y-6">
-                  <div className="flex items-start justify-between">
-                    <div className="space-y-2">
-                      <p className="text-xs font-medium text-ink/60">Acquisition</p>
-                      <p className="text-xs text-ink/50">New student sign-ups</p>
-                    </div>
-                    <div className="w-8 h-8 rounded-lg bg-brand/10 flex items-center justify-center">
-                      <span className="text-lg">👥</span>
-                    </div>
+                <div className="flex flex-col h-full gap-4">
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm font-semibold text-ink/70">Acquisition</p>
+                    <FontAwesomeIcon icon={faUsers} className={`size-5 ${selectedMetric === "acquisition" ? "text-brand" : "text-ink/40"}`} />
                   </div>
-                  
-                  <div className={`text-4xl font-bold ${selectedMetric === "acquisition" ? "text-brand" : "text-ink"}`}>12.4K</div>
-                  
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm font-semibold text-green-600">↗ +62%</span>
-                    <span className="text-xs text-ink/50">vs previous 6 months</span>
-                  </div>
+                  <div className={`text-3xl font-bold ${selectedMetric === "acquisition" ? "text-brand" : "text-ink"}`}>12.4K</div>
+                  <div className="text-xs text-green-600 font-semibold">+62% growth</div>
                 </div>
               </button>
 
               {/* Card 2: Retention */}
               <button
                 onClick={() => setSelectedMetric("retention")}
-                className={`rounded-lg p-6 transition-all text-left shadow-md ${
+                className={`rounded-lg p-5 transition-all text-left shadow-md ${
                   selectedMetric === "retention"
                     ? "border-2 border-brand bg-brand/5 shadow-xl"
                     : "border border-ink/10 bg-white/50 backdrop-blur-sm hover:shadow-lg"
                 }`}
               >
-                <div className="space-y-6">
-                  <div className="flex items-start justify-between">
-                    <div className="space-y-2">
-                      <p className="text-xs font-medium text-ink/60">Retention</p>
-                      <p className="text-xs text-ink/50">Day-7 student retention</p>
-                    </div>
-                    <div className="w-8 h-8 rounded-lg bg-brand/20 flex items-center justify-center">
-                      <span className="text-lg">↻</span>
-                    </div>
+                <div className="flex flex-col h-full gap-4">
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm font-semibold text-ink/70">Retention</p>
+                    <FontAwesomeIcon icon={faChartLine} className={`size-5 ${selectedMetric === "retention" ? "text-brand" : "text-ink/40"}`} />
                   </div>
-                  
-                  <div className={`text-4xl font-bold ${selectedMetric === "retention" ? "text-brand" : "text-ink"}`}>37%</div>
-                  
-                  <div className="flex items-center gap-2">
-                    <span className={`text-sm font-semibold ${selectedMetric === "retention" ? "text-brand" : "text-ink/60"}`}>↗ +27pp</span>
-                    <span className="text-xs text-ink/50">from 10% to 37%</span>
-                  </div>
+                  <div className={`text-3xl font-bold ${selectedMetric === "retention" ? "text-brand" : "text-ink"}`}>37%</div>
+                  <div className="text-xs text-green-600 font-semibold">Day-7 retention</div>
                 </div>
               </button>
 
               {/* Card 3: On-Time Completion */}
               <button
                 onClick={() => setSelectedMetric("on-time")}
-                className={`rounded-lg p-6 transition-all text-left shadow-md ${
+                className={`rounded-lg p-5 transition-all text-left shadow-md ${
                   selectedMetric === "on-time"
                     ? "border-2 border-brand bg-brand/5 shadow-xl"
                     : "border border-ink/10 bg-white/50 backdrop-blur-sm hover:shadow-lg"
                 }`}
               >
-                <div className="space-y-6">
-                  <div className="flex items-start justify-between">
-                    <div className="space-y-2">
-                      <p className="text-xs font-medium text-ink/60">On-Time Completion</p>
-                      <p className="text-xs text-ink/50">Personally-set sessions</p>
-                    </div>
-                    <div className="w-8 h-8 rounded-lg bg-brand/10 flex items-center justify-center">
-                      <span className="text-lg">✓</span>
-                    </div>
+                <div className="flex flex-col h-full gap-4">
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm font-semibold text-ink/70">Completion</p>
+                    <FontAwesomeIcon icon={faCheckCircle} className={`size-5 ${selectedMetric === "on-time" ? "text-brand" : "text-ink/40"}`} />
                   </div>
-                  
-                  <div className={`text-4xl font-bold ${selectedMetric === "on-time" ? "text-brand" : "text-ink"}`}>68%</div>
-                  
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm font-semibold text-green-600">↗ +32pp</span>
-                    <span className="text-xs text-ink/50">vs previous 6 months</span>
-                  </div>
+                  <div className={`text-3xl font-bold ${selectedMetric === "on-time" ? "text-brand" : "text-ink"}`}>68%</div>
+                  <div className="text-xs text-green-600 font-semibold">On-time rate</div>
                 </div>
               </button>
 
               {/* Card 4: Engagement */}
               <button
                 onClick={() => setSelectedMetric("engagement")}
-                className={`rounded-lg p-6 transition-all text-left shadow-md ${
+                className={`rounded-lg p-5 transition-all text-left shadow-md ${
                   selectedMetric === "engagement"
                     ? "border-2 border-brand bg-brand/5 shadow-xl"
                     : "border border-ink/10 bg-white/50 backdrop-blur-sm hover:shadow-lg"
                 }`}
               >
-                <div className="space-y-6">
-                  <div className="flex items-start justify-between">
-                    <div className="space-y-2">
-                      <p className="text-xs font-medium text-ink/60">Engagement</p>
-                      <p className="text-xs text-ink/50">Average daily learning time</p>
-                    </div>
-                    <div className="w-8 h-8 rounded-lg bg-brand/10 flex items-center justify-center">
-                      <span className="text-lg">🕐</span>
-                    </div>
+                <div className="flex flex-col h-full gap-4">
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm font-semibold text-ink/70">Engagement</p>
+                    <FontAwesomeIcon icon={faClock} className={`size-5 ${selectedMetric === "engagement" ? "text-brand" : "text-ink/40"}`} />
                   </div>
-                  
-                  <div className={`text-4xl font-bold ${selectedMetric === "engagement" ? "text-brand" : "text-ink"}`}>8-12<span className="text-xl ml-1">min</span></div>
-                  
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm font-semibold text-green-600">↗ +3x</span>
-                    <span className="text-xs text-ink/50">from &lt;3 min to 8-12 min</span>
-                  </div>
+                  <div className={`text-3xl font-bold ${selectedMetric === "engagement" ? "text-brand" : "text-ink"}`}>8-12 min</div>
+                  <div className="text-xs text-green-600 font-semibold">Daily avg</div>
                 </div>
               </button>
             </div>
