@@ -471,59 +471,51 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
                     </div>
                     
                     {/* Horizontal Bar Chart - Two Periods Comparison */}
-                    <div className="space-y-8 px-4 py-6 rounded">
+                    <div className="grid grid-cols-2 gap-6 px-4 py-6 rounded">
                       {/* Period 1: Nov 2024 - Apr 2025 */}
-                      <div className="space-y-3 pb-6 border-b border-ink/10">
-                        <h4 className="text-sm font-semibold text-ink">Nov 2024 - Apr 2025</h4>
-                        <div className="space-y-2">
-                          <div className="flex justify-between items-center mb-2">
-                            <span className="text-sm font-medium text-ink">Completed On Time</span>
-                            <span className="text-base font-bold text-brand">36%</span>
+                      <div className="space-y-2">
+                        <h4 className="text-xs font-semibold text-ink mb-3">Nov 2024 - Apr 2025</h4>
+                        <div className="space-y-1.5">
+                          <div className="flex justify-between items-center mb-1">
+                            <span className="text-xs font-medium text-ink">Completed</span>
+                            <span className="text-sm font-bold text-brand">36%</span>
                           </div>
-                          <div className="w-full h-7 bg-ink/10 rounded-full overflow-hidden">
-                            <div className="h-full w-[36%] bg-brand rounded-full flex items-center justify-end pr-2">
-                              <span className="text-xs font-semibold text-white">36%</span>
-                            </div>
+                          <div className="w-full h-5 bg-ink/10 rounded-full overflow-hidden">
+                            <div className="h-full w-[36%] bg-brand rounded-full"></div>
                           </div>
                         </div>
                         
-                        <div className="space-y-2">
-                          <div className="flex justify-between items-center mb-2">
-                            <span className="text-sm font-medium text-ink">Missed or Incomplete</span>
-                            <span className="text-base font-bold text-ink/60">64%</span>
+                        <div className="space-y-1.5">
+                          <div className="flex justify-between items-center mb-1">
+                            <span className="text-xs font-medium text-ink">Incomplete</span>
+                            <span className="text-sm font-bold text-ink/60">64%</span>
                           </div>
-                          <div className="w-full h-7 bg-ink/10 rounded-full overflow-hidden">
-                            <div className="h-full w-[64%] bg-ink/40 rounded-full flex items-center justify-end pr-2">
-                              <span className="text-xs font-semibold text-ink/80">64%</span>
-                            </div>
+                          <div className="w-full h-5 bg-ink/10 rounded-full overflow-hidden">
+                            <div className="h-full w-[64%] bg-ink/40 rounded-full"></div>
                           </div>
                         </div>
                       </div>
 
                       {/* Period 2: May 2025 - Oct 2025 */}
-                      <div className="space-y-3">
-                        <h4 className="text-sm font-semibold text-ink">May 2025 - Oct 2025</h4>
-                        <div className="space-y-2">
-                          <div className="flex justify-between items-center mb-2">
-                            <span className="text-sm font-medium text-ink">Completed On Time</span>
-                            <span className="text-base font-bold text-brand">68%</span>
+                      <div className="space-y-2">
+                        <h4 className="text-xs font-semibold text-ink mb-3">May 2025 - Oct 2025</h4>
+                        <div className="space-y-1.5">
+                          <div className="flex justify-between items-center mb-1">
+                            <span className="text-xs font-medium text-ink">Completed</span>
+                            <span className="text-sm font-bold text-brand">68%</span>
                           </div>
-                          <div className="w-full h-7 bg-ink/10 rounded-full overflow-hidden">
-                            <div className="h-full w-[68%] bg-brand rounded-full flex items-center justify-end pr-2">
-                              <span className="text-xs font-semibold text-white">68%</span>
-                            </div>
+                          <div className="w-full h-5 bg-ink/10 rounded-full overflow-hidden">
+                            <div className="h-full w-[68%] bg-brand rounded-full"></div>
                           </div>
                         </div>
                         
-                        <div className="space-y-2">
-                          <div className="flex justify-between items-center mb-2">
-                            <span className="text-sm font-medium text-ink">Missed or Incomplete</span>
-                            <span className="text-base font-bold text-ink/60">32%</span>
+                        <div className="space-y-1.5">
+                          <div className="flex justify-between items-center mb-1">
+                            <span className="text-xs font-medium text-ink">Incomplete</span>
+                            <span className="text-sm font-bold text-ink/60">32%</span>
                           </div>
-                          <div className="w-full h-7 bg-ink/10 rounded-full overflow-hidden">
-                            <div className="h-full w-[32%] bg-ink/40 rounded-full flex items-center justify-end pr-2">
-                              <span className="text-xs font-semibold text-ink/80">32%</span>
-                            </div>
+                          <div className="w-full h-5 bg-ink/10 rounded-full overflow-hidden">
+                            <div className="h-full w-[32%] bg-ink/40 rounded-full"></div>
                           </div>
                         </div>
                       </div>
