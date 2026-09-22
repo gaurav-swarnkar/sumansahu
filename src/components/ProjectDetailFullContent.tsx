@@ -264,7 +264,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
                     </div>
                     
                     {/* Acquisition Bar Chart - SVG */}
-                    <svg viewBox="0 0 1000 300" className="w-full h-64 bg-ink/2 rounded border border-ink/5">
+                    <svg viewBox="0 0 1000 300" className="w-full h-64 rounded border border-ink/5">
                       {/* Grid lines */}
                       {[0, 20, 40, 60, 80, 100].map((val) => (
                         <line
@@ -345,7 +345,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
                     </div>
                     
                     {/* Retention Line Chart with Single Annotation */}
-                    <svg viewBox="0 0 1000 420" className="w-full h-80 bg-ink/2 rounded border border-ink/5">
+                    <svg viewBox="0 0 1000 420" className="w-full h-80 rounded border border-ink/5">
                       {/* Grid lines - 0%, 10%, 20%, 30%, 40% */}
                       {[0, 10, 20, 30, 40].map((val) => (
                         <line
@@ -471,7 +471,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
                     </div>
                     
                     {/* Horizontal Bar Chart */}
-                    <div className="space-y-8 px-4 py-6 bg-ink/2 rounded border border-ink/5">
+                    <div className="space-y-8 px-4 py-6 rounded border border-ink/5">
                       <div className="space-y-2">
                         <div className="flex justify-between items-center mb-2">
                           <span className="text-sm font-medium text-ink">Completed On Time</span>
@@ -508,7 +508,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
                     </div>
                     
                     {/* Dot Metrics Chart */}
-                    <div className="px-4 py-6 bg-ink/2 rounded border border-ink/5 space-y-6">
+                    <div className="px-4 py-6 rounded border border-ink/5 space-y-6">
                       {/* Before */}
                       <div className="space-y-3">
                         <div className="flex justify-between items-center">
