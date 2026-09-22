@@ -1,10 +1,10 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLightbulb, faCalendarDays, faFire, faClipboardList, faLock, faHeartBroken } from "@fortawesome/free-solid-svg-icons";
-import sumansahuImage from "../imports/main/suman_sahu.png";
-import video1 from "../imports/main/1.mp4";
-import video2 from "../imports/main/2.mp4";
-import video3 from "../imports/main/3.mp4";
-import video4 from "../imports/main/4.mp4";
+import sumansahuImage from "../imports/Main/suman_sahu.png";
+import video1 from "../imports/Main/1.mp4";
+import video2 from "../imports/Main/2.mp4";
+import video3 from "../imports/Main/3.mp4";
+import video4 from "../imports/Main/4.mp4";
 import { useState } from "react";
 import { Project } from "../data";
 

@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlay, faPause } from "@fortawesome/free-solid-svg-icons";
+import { faPlay, faPause, faVolumeMute, faVolumeHigh } from "@fortawesome/free-solid-svg-icons";
 import { journeyTimeline } from "../data";
 import slide1 from "../imports/about_page/slide1.mp4";
 import slide2 from "../imports/about_page/slide2.mp4";
@@ -27,10 +27,18 @@ function ArrowForward({ className = "" }: { className?: string }) {
 export default function JourneyCarousel() {
   const [index, setIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
+  const [isMuted, setIsMuted] = useState(true);
+  const [isVideoReady, setIsVideoReady] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const goTo = (i: number) =>
     setIndex(((i % journeyTimeline.length) + journeyTimeline.length) % journeyTimeline.length);
+
+  const slide = journeyTimeline[index];
+  
+  // Map videos to slides
+  const videos = [slide1, slide2, slide3, slide4, slide5, slide6, slide7];
+  const videoSrc = videos[index] || videos[0]; // Fallback to first video
 
   useEffect(() => {
     if (!isPlaying) return;
@@ -40,22 +48,52 @@ export default function JourneyCarousel() {
     return () => clearInterval(timer);
   }, [index, isPlaying]);
 
-  // Control video playback based on isPlaying state
+  // Control video playback based on isPlaying state and video readiness
   useEffect(() => {
     if (videoRef.current) {
-      if (isPlaying) {
-        videoRef.current.play();
+      if (isPlaying && isVideoReady) {
+        const playPromise = videoRef.current.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(() => {
+            // Playback failed, pause and wait for user interaction
+            videoRef.current?.pause();
+          });
+        }
       } else {
         videoRef.current.pause();
       }
     }
-  }, [isPlaying]);
+  }, [isPlaying, isVideoReady]);
 
-  const slide = journeyTimeline[index];
-  
-  // Map videos to slides
-  const videos = [slide1, slide2, slide3, slide4, slide5, slide6, slide7];
-  const videoSrc = videos[index] || videos[0]; // Fallback to first video
+  // Reset video ready state when video source changes
+  useEffect(() => {
+    setIsVideoReady(false);
+  }, [videoSrc]);
+
+  // Sync muted state with video element
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.muted = isMuted;
+    }
+  }, [isMuted]);
+
+  const handleVideoCanPlay = () => {
+    setIsVideoReady(true);
+  };
+
+  const handleVideoLoadStart = () => {
+    // Pause when loading starts
+    if (videoRef.current) {
+      videoRef.current.pause();
+    }
+  };
+
+  const handleVideoSeeking = () => {
+    // Pause during seeking/buffering
+    if (videoRef.current) {
+      videoRef.current.pause();
+    }
+  };
 
   return (
     <div className="relative h-full w-full overflow-hidden bg-white">
@@ -66,6 +104,11 @@ export default function JourneyCarousel() {
         autoPlay
         loop
         playsInline
+        preload="auto"
+        muted={isMuted}
+        onCanPlay={handleVideoCanPlay}
+        onLoadStart={handleVideoLoadStart}
+        onSeeking={handleVideoSeeking}
         className="absolute inset-0 h-full w-full object-cover"
       >
         <source src={videoSrc} type="video/mp4" />
@@ -116,6 +159,14 @@ export default function JourneyCarousel() {
             className="flex size-12 items-center justify-center rounded-full bg-white/30 text-ink backdrop-blur-sm transition-colors hover:bg-white/40"
           >
             <FontAwesomeIcon icon={isPlaying ? faPause : faPlay} className="size-4" />
+          </button>
+          <button
+            onClick={() => setIsMuted((muted) => !muted)}
+            aria-label={isMuted ? "Unmute video" : "Mute video"}
+            title={isMuted ? "🔊 Click to unmute audio" : "🔇 Click to mute audio"}
+            className="flex size-12 items-center justify-center rounded-full bg-white/30 text-ink backdrop-blur-sm transition-colors hover:bg-white/40"
+          >
+            <FontAwesomeIcon icon={isMuted ? faVolumeMute : faVolumeHigh} className="size-4" />
           </button>
           <button
             onClick={() => goTo(index + 1)}

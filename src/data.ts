@@ -1,3 +1,14 @@
+import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+import {
+  faLayerGroup,
+  faGraduationCap,
+  faPalette,
+  faBullseye,
+  faChessBoard,
+  faAward,
+  faBrain,
+} from "@fortawesome/free-solid-svg-icons";
+
 export type ProjectContent = {
   id: string;
   label: string;
@@ -14,17 +25,6 @@ export type Project = {
   visual: "tablets" | "monitor" | "truck" | "receipt";
   contents: ProjectContent[];
 };
-
-import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
-import {
-  faLayerGroup,
-  faGraduationCap,
-  faPalette,
-  faBullseye,
-  faChessBoard,
-  faAward,
-  faBrain,
-} from "@fortawesome/free-solid-svg-icons";
 
 export type JourneyStage = {
   id: string;

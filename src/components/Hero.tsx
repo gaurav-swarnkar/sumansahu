@@ -1,11 +1,11 @@
 import { motion, AnimatePresence } from "motion/react";
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, type ReactElement } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBriefcase, faBolt, faPhone, faEnvelope, faPaperPlane, faXmark, faComment } from "@fortawesome/free-solid-svg-icons";
 import { faLinkedin, faBehance, faMedium } from "@fortawesome/free-brands-svg-icons";
 import heroImage from "../imports/Main/4c74906ffa4be2217b2d960958c0d49e73b948cc.png";
-import contactDrawerImage from "../imports/main/suman_sahu.png";
+import contactDrawerImage from "../imports/Main/suman_sahu.png";
 
 function ArrowForward({ className = "" }: { className?: string }) {
   return (
@@ -87,7 +87,7 @@ function AnimatedTitle() {
     });
 
     // Build JSX with character-level highlighting
-    const result: JSX.Element[] = [];
+    const result: ReactElement[] = [];
     let currentSpanHighlighted: boolean | null = null;
     let currentSpanText = "";
 
