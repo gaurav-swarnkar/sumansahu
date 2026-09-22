@@ -1,6 +1,9 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLightbulb, faCalendarDays, faFire, faClipboardList, faLock, faHeartBroken, faUsers, faChartLine, faCheckCircle, faClock } from "@fortawesome/free-solid-svg-icons";
 import sumansahuImage from "../imports/Main/suman_sahu.png";
+import student1 from "../imports/project_assets/student1.png";
+import student2 from "../imports/project_assets/student 2.png";
+import student3 from "../imports/project_assets/student 3.png";
 import video1 from "../imports/Main/1.mp4";
 import video2 from "../imports/Main/2.mp4";
 import video3 from "../imports/Main/3.mp4";
@@ -783,7 +786,8 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
               {/* Persona 1: The Overwhelmed Planner */}
               <div className="rounded-lg bg-white/50 backdrop-blur-sm p-8">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                  <div className="space-y-4">
+                  <div className="space-y-4 flex flex-col">
+                    <img src={student1} alt="The Overwhelmed Planner" className="w-full max-w-xs h-auto rounded-lg" />
                     <div className="space-y-3">
                       <div className="text-sm font-semibold text-brand">01</div>
                       <h3 className="text-2xl font-bold text-ink">The Overwhelmed Planner</h3>
@@ -843,7 +847,8 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
               {/* Persona 2: The Inconsistent Learner */}
               <div className="rounded-lg bg-white/50 backdrop-blur-sm p-8">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                  <div className="space-y-4">
+                  <div className="space-y-4 flex flex-col">
+                    <img src={student2} alt="The Inconsistent Learner" className="w-full max-w-xs h-auto rounded-lg" />
                     <div className="space-y-3">
                       <div className="text-sm font-semibold text-green-600">02</div>
                       <h3 className="text-2xl font-bold text-ink">The Inconsistent Learner</h3>
@@ -903,7 +908,8 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
               {/* Persona 3: The Goal-Driven Achiever */}
               <div className="rounded-lg bg-white/50 backdrop-blur-sm p-8">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                  <div className="space-y-4">
+                  <div className="space-y-4 flex flex-col">
+                    <img src={student3} alt="The Goal-Driven Achiever" className="w-full max-w-xs h-auto rounded-lg" />
                     <div className="space-y-3">
                       <div className="text-sm font-semibold text-orange-500">03</div>
                       <h3 className="text-2xl font-bold text-ink">The Goal-Driven Achiever</h3>
