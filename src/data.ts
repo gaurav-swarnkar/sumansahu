@@ -17,19 +17,18 @@ export type Project = {
 
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import {
-  faSeedling,
+  faLayerGroup,
   faGraduationCap,
-  faBriefcase,
-  faLightbulb,
-  faRocket,
-  faCrown,
-  faFlagCheckered,
+  faPalette,
+  faBullseye,
+  faChessBoard,
+  faAward,
+  faBrain,
 } from "@fortawesome/free-solid-svg-icons";
 
 export type JourneyStage = {
   id: string;
   year: string;
-  title: string;
   description: string;
   gradient: string; // Tailwind classes for the placeholder image/GIF panel
   icon: IconDefinition;
@@ -38,66 +37,59 @@ export type JourneyStage = {
 export const journeyTimeline: JourneyStage[] = [
   {
     id: "stage-1",
-    year: "2015",
-    title: "Where It Began",
+    year: "6+ Years",
     description:
-      "Started exploring visual design and the fundamentals of user-centered thinking.",
-    gradient: "bg-gradient-to-br from-brand to-brand-900",
-    icon: faSeedling,
+      "Designing SaaS and commercial products across gaming, healthcare, food-tech, and transportation.",
+    gradient: "bg-gradient-to-br from-brand-600 to-brand-900",
+    icon: faLayerGroup,
   },
   {
     id: "stage-2",
-    year: "2016–17",
-    title: "Design Education",
+    year: "Mar 2015 – Oct 2018",
     description:
-      "Formal training in interaction design, sharpening research, prototyping and storytelling skills.",
-    gradient: "bg-brand-900",
+      "Graduated with a BCA from NSHM Knowledge Campus, Kolkata — sparking an interest in building front-end digital solutions.",
+    gradient: "bg-gradient-to-br from-lilac to-brand-700",
     icon: faGraduationCap,
   },
   {
     id: "stage-3",
-    year: "2018–19",
-    title: "First Steps, Real Users",
+    year: "Jan – Jun 2019",
     description:
-      "Joined my first studio role, shipping UI for fintech and retail clients under real deadlines.",
-    gradient: "bg-gradient-to-br from-brand-700 via-[#3d0079] to-[#1c0140]",
-    icon: faBriefcase,
+      "Sharpened a creative lens, learning to tune design solutions around specific user needs.",
+    gradient: "bg-gradient-to-br from-brand-700 via-[#4c04a9] to-[#2a0166]",
+    icon: faPalette,
   },
   {
     id: "stage-4",
-    year: "2020–21",
-    title: "Owning 0 to 1",
+    year: "Aug 2019 – Mar 2021",
     description:
-      "Led product design end-to-end for a logistics AI tool, shaping the experience from scratch.",
-    gradient: "bg-gradient-to-br from-brand-800 to-[#2a0166]",
-    icon: faLightbulb,
+      "UI Designer at Greenbook Labs, Bhilai — first go-to-market work on a performance-tracking platform and an ad-network SaaS product.",
+    gradient: "bg-gradient-to-br from-brand-800 to-[#1c0140]",
+    icon: faBullseye,
   },
   {
     id: "stage-5",
-    year: "2022–23",
-    title: "Scaling Impact",
+    year: "Jul – Dec 2021",
     description:
-      "Drove measurable growth across products, mentored designers and built shared design systems.",
-    gradient: "bg-gradient-to-br from-lilac to-brand-700",
-    icon: faRocket,
+      "UX/UI Designer at SquareOff — moved to Bengaluru mid-pandemic to keep building SaaS products, making board games more scalable.",
+    gradient: "bg-gradient-to-br from-lilac to-brand-600",
+    icon: faChessBoard,
   },
   {
     id: "stage-6",
-    year: "2024–25",
-    title: "Recognition",
+    year: "Jan 2022 – Feb 2026",
     description:
-      "Earned industry recognition for AI-assisted product design and spoke at design conferences.",
-    gradient: "bg-gradient-to-br from-brand-600 to-[#2a0166]",
-    icon: faCrown,
+      "Product Designer at Poynoial.ai — founding member of Pixel Studio, our design lab serving clients like Sutherland and GE. Won the Service Award, 2023–24.",
+    gradient: "bg-gradient-to-br from-brand to-brand-900",
+    icon: faAward,
   },
   {
     id: "stage-7",
-    year: "2026",
-    title: "What's Next",
+    year: "Mar – Aug 2026",
     description:
-      "Continuing to design intelligent products that put people first — the story keeps going.",
-    gradient: "bg-gradient-to-br from-brand to-lilac",
-    icon: faFlagCheckered,
+      "A break to skill up and stay ahead of the curve — reinventing as an AI-driven product designer focused on real user needs.",
+    gradient: "bg-gradient-to-br from-brand-900 to-ink",
+    icon: faBrain,
   },
 ];
 
