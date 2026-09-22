@@ -656,12 +656,6 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
                 <p className="text-sm text-ink/60">Only 1 in 10 students retained by Day 7</p>
                 <div className="text-3xl font-bold text-ink/40 pt-2">1 in 10</div>
               </div>
-              <div className="h-px bg-ink/10"></div>
-              <div className="space-y-2">
-                <p className="text-xs font-semibold text-brand uppercase tracking-wide">Target</p>
-                <p className="text-sm text-ink/60">Increase retention and engagement organically</p>
-                <div className="text-3xl font-bold text-brand pt-2">3-4 in 10</div>
-              </div>
             </div>
 
             {/* Card 2: Engagement */}
@@ -671,12 +665,6 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
                 <h3 className="text-lg font-semibold text-ink">Declining Engagement</h3>
                 <p className="text-sm text-ink/60">Average time fell below 3 minutes by Day 7</p>
                 <div className="text-3xl font-bold text-ink/40 pt-2">&lt;3 min</div>
-              </div>
-              <div className="h-px bg-ink/10"></div>
-              <div className="space-y-2">
-                <p className="text-xs font-semibold text-brand uppercase tracking-wide">Target</p>
-                <p className="text-sm text-ink/60">Increase meaningful session duration</p>
-                <div className="text-3xl font-bold text-brand pt-2">8-12 min</div>
               </div>
             </div>
 
@@ -695,21 +683,6 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
                     <div className="text-2xl font-bold text-ink/40">97%</div>
                   </div>
                 </div>
-              </div>
-              <div className="h-px bg-ink/10"></div>
-              <div className="space-y-2">
-                <p className="text-xs font-semibold text-brand uppercase tracking-wide">Target</p>
-                <div className="space-y-2 pt-1">
-                  <div className="flex justify-between items-baseline">
-                    <p className="text-xs text-ink/60">Self-Sustaining</p>
-                    <div className="text-2xl font-bold text-brand">15-20%</div>
-                  </div>
-                  <div className="flex justify-between items-baseline">
-                    <p className="text-xs text-ink/60">Re-engagement Dependent</p>
-                    <div className="text-2xl font-bold text-brand">&lt;80%</div>
-                  </div>
-                </div>
-                <div className="text-sm text-green-600 pt-1">↗ +12% growth</div>
               </div>
             </div>
           </div>
