@@ -175,7 +175,16 @@ export default function Hero() {
   const [isExiting, setIsExiting] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [showForm, setShowForm] = useState(false);
+  const [showHotspot, setShowHotspot] = useState(false);
   const [formData, setFormData] = useState({ name: "", email: "", phone: "", message: "" });
+
+  // Show hotspot after 5 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowHotspot(true);
+    }, 5000);
+    return () => clearTimeout(timer);
+  }, []);
 
   const contactInfo = {
     name: "Suman S.",
@@ -257,14 +266,50 @@ export default function Hero() {
             <CtaButton label="My Journey" splitAt={2} onClick={() => handleNavigation("/about")} variant="secondary" />
           </div>
           
-          {/* Floating Chat Button - Top Right */}
-          <button
-            onClick={() => setIsDrawerOpen(true)}
-            className="fixed top-8 right-8 lg:right-16 z-50 flex items-center justify-center size-12 sm:size-[54px] rounded-full bg-white text-lilac border-2 border-lilac hover:bg-lilac hover:text-white transition-colors duration-300"
-            title="Start a chat"
-          >
-            <FontAwesomeIcon icon={faComment} className="text-lg sm:text-xl" />
-          </button>
+          {/* Floating Chat Button - Top Right with Hotspot */}
+          <div className="fixed top-8 right-8 lg:right-16 z-50">
+            {/* Hotspot pulse rings */}
+            <AnimatePresence>
+              {showHotspot && (
+                <>
+                  {/* Outer pulse ring */}
+                  <motion.div
+                    initial={{ scale: 0.8, opacity: 1 }}
+                    animate={{ scale: 2, opacity: 0 }}
+                    transition={{ duration: 1.5, repeat: Infinity }}
+                    className="absolute inset-0 rounded-full border-2 border-lilac"
+                  />
+                  
+                  {/* Inner pulse ring */}
+                  <motion.div
+                    initial={{ scale: 0.9, opacity: 1 }}
+                    animate={{ scale: 1.6, opacity: 0 }}
+                    transition={{ duration: 1.5, repeat: Infinity, delay: 0.2 }}
+                    className="absolute inset-0 rounded-full border-2 border-lilac"
+                  />
+                  
+                  {/* Hotspot text label */}
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.3 }}
+                    className="absolute -bottom-12 left-1/2 -translate-x-1/2 whitespace-nowrap bg-white text-lilac px-3 py-1.5 rounded-full text-xs font-medium shadow-lg border border-lilac/20"
+                  >
+                    Let's Connect
+                  </motion.div>
+                </>
+              )}
+            </AnimatePresence>
+
+            {/* Button */}
+            <button
+              onClick={() => setIsDrawerOpen(true)}
+              className="relative flex items-center justify-center size-12 sm:size-[54px] rounded-full bg-white text-lilac border-2 border-lilac hover:bg-lilac hover:text-white transition-colors duration-300"
+              title="Start a chat"
+            >
+              <FontAwesomeIcon icon={faComment} className="text-lg sm:text-xl" />
+            </button>
+          </div>
         </motion.div>
 
         {/* right image panel */}
