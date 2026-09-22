@@ -116,7 +116,6 @@ export default function JourneyCarousel() {
 
       {/* scrims for text readability over video */}
       <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-white/70 to-transparent" />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-white/85 via-white/40 to-transparent" />
 
       {/* Header: progress bars and controls inline */}
       <div className="absolute inset-x-0 top-0 flex items-center justify-between gap-4 p-6 sm:p-8">
