@@ -94,7 +94,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
             <div className="flex gap-8 mb-8 mt-8">
               <button
                 onClick={() => setActiveTab("before")}
-                className={`px-6 py-2 font-semibold text-lg transition-all ${
+                className={`px-6 py-2 font-semibold text-base transition-all ${
                   activeTab === "before"
                     ? "text-brand border-b-2 border-brand"
                     : "text-white/60 hover:text-white"
@@ -104,7 +104,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
               </button>
               <button
                 onClick={() => setActiveTab("after")}
-                className={`px-6 py-2 font-semibold text-lg transition-all ${
+                className={`px-6 py-2 font-semibold text-base transition-all ${
                   activeTab === "after"
                     ? "text-brand border-b-2 border-brand"
                     : "text-white/60 hover:text-white"
@@ -114,7 +114,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
               </button>
               <button
                 onClick={() => setActiveTab("impact")}
-                className={`px-6 py-2 font-semibold text-lg transition-all ${
+                className={`px-6 py-2 font-semibold text-base transition-all ${
                   activeTab === "impact"
                     ? "text-brand border-b-2 border-brand"
                     : "text-white/60 hover:text-white"
@@ -171,7 +171,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
               <p className="text-base text-ink/60 max-w-3xl">
                 Personalised learning experience led to stronger and more consistent student outcomes.
               </p>
-              <p className="text-sm font-medium text-ink/50">12 months Data : Nov 2024 - Nov 2025</p>
+              <p className="text-xs font-medium text-ink/50">12 months Data : Nov 2024 - Nov 2025</p>
             </div>
 
             {/* KPI Cards Grid - 4 columns (Clickable Tabs) */}
@@ -333,7 +333,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
                         );
                       })}
                     </svg>
-                    <div className="text-center text-sm text-ink/60">Total: 12,400 sign-ups</div>
+                    <div className="text-center text-xs text-ink/60">Total: 12,400 sign-ups</div>
                   </>
                 )}
 
@@ -475,7 +475,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
                       <div className="space-y-2">
                         <div className="flex justify-between items-center mb-2">
                           <span className="text-sm font-medium text-ink">Completed On Time</span>
-                          <span className="text-lg font-bold text-brand">68%</span>
+                          <span className="text-base font-bold text-brand">68%</span>
                         </div>
                         <div className="w-full h-8 bg-ink/10 rounded-full overflow-hidden">
                           <div className="h-full w-[68%] bg-brand rounded-full flex items-center justify-end pr-2">
@@ -487,7 +487,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
                       <div className="space-y-2">
                         <div className="flex justify-between items-center mb-2">
                           <span className="text-sm font-medium text-ink">Missed or Incomplete</span>
-                          <span className="text-lg font-bold text-ink/60">32%</span>
+                          <span className="text-base font-bold text-ink/60">32%</span>
                         </div>
                         <div className="w-full h-8 bg-ink/10 rounded-full overflow-hidden">
                           <div className="h-full w-[32%] bg-ink/40 rounded-full flex items-center justify-end pr-2">
@@ -496,7 +496,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
                         </div>
                       </div>
                     </div>
-                    <div className="text-center text-sm text-ink/60">+32pp improvement from previous period</div>
+                    <div className="text-center text-xs text-ink/60">+32pp improvement from previous period</div>
                   </>
                 )}
 
@@ -569,7 +569,6 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
           {/* Core Outcomes */}
           <div className="space-y-6 pt-6">
             <h2 className="text-xl font-semibold text-ink">Core Outcomes</h2>
-
             <div className="space-y-6">
               {/* Outcome 1 */}
               <div className="flex gap-6">
