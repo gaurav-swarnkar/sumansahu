@@ -151,16 +151,12 @@ function CtaButton({
   return (
     <button
       onClick={onClick}
-      className="group relative flex h-12 sm:h-[54px] w-full sm:w-[224px] items-center overflow-hidden rounded-full"
+      className="group relative flex h-12 sm:h-[54px] w-full sm:w-[224px] items-center justify-center gap-4 rounded-full bg-lilac transition-colors duration-300 hover:bg-brand-600"
     >
-      {/* sliding fill from left */}
-      <span className="absolute inset-y-0 left-0 right-[35px] bg-lilac transition-all duration-500 ease-out group-hover:right-0 group-hover:bg-brand-600" />
-      <span className="relative z-10 flex w-full items-center justify-center gap-4">
-        <span className="text-sm sm:text-[20px] font-medium leading-none tracking-tight text-white">
-          {label}
-        </span>
-        <ArrowForward className="absolute right-3 size-4 sm:size-5 text-white transition-transform duration-500 ease-out group-hover:-rotate-45 flex-shrink-0" />
+      <span className="text-sm sm:text-[20px] font-medium leading-none tracking-tight text-white">
+        {label}
       </span>
+      <ArrowForward className="size-4 sm:size-5 text-white transition-transform duration-300 group-hover:-rotate-45 flex-shrink-0" />
     </button>
   );
 }
