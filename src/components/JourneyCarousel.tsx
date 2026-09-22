@@ -27,7 +27,7 @@ function ArrowForward({ className = "" }: { className?: string }) {
 export default function JourneyCarousel() {
   const [index, setIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
-  const [isMuted, setIsMuted] = useState(false);
+  const [isMuted, setIsMuted] = useState(true);
   const [isVideoReady, setIsVideoReady] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -155,6 +155,7 @@ export default function JourneyCarousel() {
           <button
             onClick={() => setIsMuted((muted) => !muted)}
             aria-label={isMuted ? "Unmute video" : "Mute video"}
+            title={isMuted ? "🔊 Click to unmute audio" : "🔇 Click to mute audio"}
             className="flex size-12 items-center justify-center rounded-full bg-white/30 text-ink backdrop-blur-sm transition-colors hover:bg-white/40"
           >
             <FontAwesomeIcon icon={isMuted ? faVolumeMute : faVolumeHigh} className="size-4" />
