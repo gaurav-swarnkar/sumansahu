@@ -531,51 +531,31 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
                       <p className="text-sm text-ink/60">Average time spent learning per day</p>
                     </div>
                     
-                    {/* Dot Metrics Chart */}
-                    <div className="px-4 py-6 rounded space-y-6">
+                    {/* Time Comparison Chart */}
+                    <div className="grid grid-cols-2 gap-6 px-4 py-6 rounded">
                       {/* Before */}
                       <div className="space-y-3">
-                        <div className="flex justify-between items-center">
-                          <span className="text-sm font-medium text-ink">Before Implementation</span>
-                          <span className="text-sm font-semibold text-ink/60">&lt;3 minutes</span>
-                        </div>
-                        <div className="flex gap-1.5 flex-wrap">
-                          {Array(3)
-                            .fill(null)
-                            .map((_, idx) => (
-                              <div
-                                key={idx}
-                                className="w-3 h-3 rounded-full bg-ink/30"
-                              />
-                            ))}
+                        <h4 className="text-xs font-semibold text-ink mb-3">Nov 2024 - Apr 2025</h4>
+                        <div className="bg-ink/5 rounded-lg p-4 text-center">
+                          <div className="text-2xl font-bold text-ink/60 mb-1">&lt;3 min</div>
+                          <p className="text-xs text-ink/50">per session</p>
                         </div>
                       </div>
 
                       {/* After */}
                       <div className="space-y-3">
-                        <div className="flex justify-between items-center">
-                          <span className="text-sm font-medium text-ink">After Implementation</span>
-                          <span className="text-sm font-semibold text-brand">8-12 minutes</span>
-                        </div>
-                        <div className="flex gap-1.5 flex-wrap">
-                          {Array(12)
-                            .fill(null)
-                            .map((_, idx) => (
-                              <div
-                                key={idx}
-                                className="w-3 h-3 rounded-full bg-brand"
-                              />
-                            ))}
+                        <h4 className="text-xs font-semibold text-ink mb-3">May 2025 - Oct 2025</h4>
+                        <div className="bg-brand/10 rounded-lg p-4 text-center">
+                          <div className="text-2xl font-bold text-brand mb-1">8-12 min</div>
+                          <p className="text-xs text-ink/50">per session</p>
                         </div>
                       </div>
-
-                      {/* Improvement indicator */}
-                      <div className="border-t border-ink/10 pt-4 mt-4">
-                        <div className="text-center">
-                          <div className="text-3xl font-bold text-brand">+3x</div>
-                          <p className="text-xs text-ink/60">Improvement in engagement time</p>
-                        </div>
-                      </div>
+                    </div>
+                    
+                    {/* Improvement indicator */}
+                    <div className="text-center px-4">
+                      <div className="text-3xl font-bold text-brand">+3x</div>
+                      <p className="text-xs text-ink/60">Improvement in daily engagement time</p>
                     </div>
                   </>
                 )}
