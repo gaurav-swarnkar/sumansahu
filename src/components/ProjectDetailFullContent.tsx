@@ -171,7 +171,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
               <p className="text-base text-ink/60 max-w-3xl">
                 Personalised learning experience led to stronger and more consistent student outcomes.
               </p>
-              <p className="text-xs font-medium text-ink/50">12 months Data : Nov 2024 - Nov 2025</p>
+              <p className="text-xs font-medium text-ink/50">Nov 2024 - Apr 2025 Vs May 2025 - Oct 2025</p>
             </div>
 
             {/* KPI Cards Grid - 4 columns (Clickable Tabs) */}
