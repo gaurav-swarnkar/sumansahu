@@ -692,21 +692,21 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
                   </div>
                   <div className="flex justify-between items-baseline">
                     <p className="text-xs text-ink/60">Re-engagement Dependent</p>
-                    <div className="text-2xl font-bold text-ink/40">100%</div>
+                    <div className="text-2xl font-bold text-ink/40">97%</div>
                   </div>
                 </div>
               </div>
               <div className="h-px bg-ink/10"></div>
               <div className="space-y-2">
-                <p className="text-xs font-semibold text-brand uppercase tracking-wide">After Implementation</p>
+                <p className="text-xs font-semibold text-brand uppercase tracking-wide">Target</p>
                 <div className="space-y-2 pt-1">
                   <div className="flex justify-between items-baseline">
                     <p className="text-xs text-ink/60">Self-Sustaining</p>
-                    <div className="text-2xl font-bold text-brand">68%</div>
+                    <div className="text-2xl font-bold text-brand">15-20%</div>
                   </div>
                   <div className="flex justify-between items-baseline">
                     <p className="text-xs text-ink/60">Re-engagement Dependent</p>
-                    <div className="text-2xl font-bold text-brand">32%</div>
+                    <div className="text-2xl font-bold text-brand">&lt;80%</div>
                   </div>
                 </div>
               </div>
