@@ -288,7 +288,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
                           fill="rgba(24, 3, 59, 0.6)"
                           textAnchor="end"
                         >
-                          {val}%
+                          {(val / 100) * 2100}
                         </text>
                       ))}
 
