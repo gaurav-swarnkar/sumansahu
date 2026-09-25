@@ -3,13 +3,17 @@ import { AnimatePresence, motion } from "motion/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay, faPause, faVolumeMute, faVolumeHigh } from "@fortawesome/free-solid-svg-icons";
 import { journeyTimeline } from "../data";
-import slide1 from "../imports/about_page/slide1.mp4";
-import slide2 from "../imports/about_page/slide2.mp4";
-import slide3 from "../imports/about_page/slide3.mp4";
-import slide4 from "../imports/about_page/slide4.mp4";
-import slide5 from "../imports/about_page/slide5.mp4";
-import slide6 from "../imports/about_page/slide6.mp4";
-import slide7 from "../imports/about_page/slide7.mp4";
+
+// Video paths
+const slides = [
+  "/imports/about_page/slide1.mp4",
+  "/imports/about_page/slide2.mp4",
+  "/imports/about_page/slide3.mp4",
+  "/imports/about_page/slide4.mp4",
+  "/imports/about_page/slide5.mp4",
+  "/imports/about_page/slide6.mp4",
+  "/imports/about_page/slide7.mp4",
+];
 
 const SLIDE_DURATION_MS = 6000;
 
@@ -37,8 +41,7 @@ export default function JourneyCarousel() {
   const slide = journeyTimeline[index];
   
   // Map videos to slides
-  const videos = [slide1, slide2, slide3, slide4, slide5, slide6, slide7];
-  const videoSrc = videos[index] || videos[0]; // Fallback to first video
+  const videoSrc = slides[index] || slides[0]; // Fallback to first video
 
   useEffect(() => {
     if (!isPlaying) return;

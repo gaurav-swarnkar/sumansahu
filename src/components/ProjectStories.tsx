@@ -2,10 +2,6 @@ import { AnimatePresence, motion } from "motion/react";
 import { projects } from "../data";
 import { useEffect, type Dispatch, type SetStateAction } from "react";
 import { useNavigate } from "react-router-dom";
-import video1 from "../imports/Main/1.mp4";
-import video2 from "../imports/Main/2.mp4";
-import video3 from "../imports/Main/3.mp4";
-import video4 from "../imports/Main/4.mp4";
 
 function Chevron({ className = "" }: { className?: string }) {
   return (
@@ -55,9 +51,16 @@ function LightningPill({ text }: { text: string }) {
   );
 }
 
+// Video paths
+const videoPaths = [
+  "/imports/Main/1.mp4",
+  "/imports/Main/2.mp4",
+  "/imports/Main/3.mp4",
+  "/imports/Main/4.mp4",
+];
+
 function VideoBackground({ index }: { index: number }) {
-  const videos = [video1, video2, video3, video4];
-  const videoSrc = videos[index % videos.length];
+  const videoSrc = videoPaths[index % videoPaths.length];
 
   return (
     <video

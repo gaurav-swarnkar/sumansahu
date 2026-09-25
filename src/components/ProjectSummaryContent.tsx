@@ -21,7 +21,7 @@ export default function ProjectSummaryContent() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
             {/* Metric 1: Retention */}
-            <div className="rounded-lg border border-ink/10 p-8 bg-white/50 backdrop-blur-sm">
+            <div className="rounded-lg p-8 bg-white/90 backdrop-blur-sm shadow-sm">
               <div className="space-y-6">
                 <div>
                   <h3 className="text-lg font-semibold text-ink mb-3">Day-7 Retention</h3>
@@ -58,7 +58,7 @@ export default function ProjectSummaryContent() {
             </div>
 
             {/* Metric 2: Engagement */}
-            <div className="rounded-lg border border-ink/10 p-8 bg-white/50 backdrop-blur-sm">
+            <div className="rounded-lg p-8 bg-white/90 backdrop-blur-sm shadow-sm">
               <div className="space-y-6">
                 <div>
                   <h3 className="text-lg font-semibold text-ink mb-3">Average Daily Engagement</h3>

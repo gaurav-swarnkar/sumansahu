@@ -1,6 +1,6 @@
-import { useParams, useNavigate } from "react-router-dom";
 import { projects } from "../data";
 import { useState, useRef } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import ProjectDetailFullContent from "./ProjectDetailFullContent";
 import video1 from "../imports/Main/1.mp4";
 import video2 from "../imports/Main/2.mp4";
@@ -49,8 +49,8 @@ function VideoBackground({ projectIndex }: { projectIndex: number }) {
 }
 
 export default function ProjectDetail() {
-  const { projectId } = useParams();
   const navigate = useNavigate();
+  const { projectId } = useParams();
   const [activeContent, setActiveContent] = useState(0);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const contentPanelRef = useRef<HTMLDivElement>(null);
@@ -140,7 +140,7 @@ export default function ProjectDetail() {
                 <div className="flex flex-col">
                   <span className="text-lg font-medium text-ink/60 flex items-center gap-2">
                     <button
-                      onClick={() => navigate("/")}
+                      onClick={() => console.log('Navigate to /')}
                       className="inline-block size-2 rounded-full bg-ink/30 hover:bg-brand transition-colors flex-shrink-0 cursor-pointer"
                       aria-label="Go to Home"
                     />

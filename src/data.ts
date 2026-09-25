@@ -234,8 +234,8 @@ export const projects: Project[] = [
     contents: [
       { id: "project-summary", label: "Project Summary" },
       { id: "business-problem", label: "Business Usecase" },
-      { id: "user-problem", label: "User Needs" },
-      { id: "research", label: "Case Study" },
+      { id: "user-problem", label: "User Problems" },
+      { id: "research", label: "Research" },
       { id: "design-strategy", label: "Design Process" },
       { id: "solution", label: "Concept and Solution" },
       { id: "validation", label: "User Validation" },
@@ -252,8 +252,8 @@ export const projects: Project[] = [
     visual: "monitor",
     contents: [
       { id: "business-problem", label: "Business Usecase" },
-      { id: "user-problem", label: "User Needs" },
-      { id: "research", label: "Case Study" },
+      { id: "user-problem", label: "User Problems" },
+      { id: "research", label: "Research" },
       { id: "design-strategy", label: "Design Process" },
       { id: "solution", label: "Concept and Solution" },
       { id: "validation", label: "User Validation" },
@@ -270,8 +270,8 @@ export const projects: Project[] = [
     visual: "truck",
     contents: [
       { id: "business-problem", label: "Business Usecase" },
-      { id: "user-problem", label: "User Needs" },
-      { id: "research", label: "Case Study" },
+      { id: "user-problem", label: "User Problems" },
+      { id: "research", label: "Research" },
       { id: "design-strategy", label: "Design Process" },
       { id: "solution", label: "Concept and Solution" },
       { id: "validation", label: "User Validation" },
@@ -289,7 +289,7 @@ export const projects: Project[] = [
     contents: [
       { id: "business-problem", label: "Business Usecase" },
       { id: "user-problem", label: "User Needs" },
-      { id: "research", label: "Case Study" },
+      { id: "research", label: "Research" },
       { id: "design-strategy", label: "Design Process" },
       { id: "solution", label: "Concept and Solution" },
       { id: "validation", label: "User Validation" },

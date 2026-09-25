@@ -1,5 +1,4 @@
 import { motion, AnimatePresence } from "motion/react";
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -22,11 +21,10 @@ function ArrowForward({ className = "" }: { className?: string }) {
 }
 
 export default function Contact() {
-  const navigate = useNavigate();
   const [isDrawerOpen, setIsDrawerOpen] = useState(true);
 
   const handleBack = () => {
-    navigate(-1);
+    window.history.back();
   };
 
   const contactInfo = {

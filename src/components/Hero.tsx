@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from "motion/react";
-import { useNavigate } from "react-router-dom";
 import { useState, useEffect, type ReactElement } from "react";
+import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBriefcase, faBolt, faPhone, faEnvelope, faPaperPlane, faXmark, faComment, faBrain } from "@fortawesome/free-solid-svg-icons";
 import { faLinkedin, faBehance, faMedium } from "@fortawesome/free-brands-svg-icons";
@@ -199,6 +199,7 @@ export default function Hero() {
     setIsExiting(true);
     setTimeout(() => {
       navigate(path);
+      console.log("Would navigate to:", path);
     }, 500);
   };
 
@@ -563,7 +564,7 @@ export default function Hero() {
                         <img
                           src={contactDrawerImage}
                           alt="Suman S."
-                          className="w-full h-full object-cover rounded-full"
+                          className="w-full h-full object-cover"
                         />
                       </div>
                     </div>

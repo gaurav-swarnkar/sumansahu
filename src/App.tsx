@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import Hero from "./components/Hero";
@@ -76,10 +76,8 @@ function AnimatedRoutes() {
 
 export default function App() {
   return (
-    <Router>
-      <div className="min-h-screen w-full bg-canvas">
-        <AnimatedRoutes />
-      </div>
-    </Router>
+    <div className="min-h-screen w-full bg-canvas">
+      <AnimatedRoutes />
+    </div>
   );
 }

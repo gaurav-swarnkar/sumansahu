@@ -1,5 +1,4 @@
 import { AnimatePresence, motion } from "motion/react";
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -9,7 +8,6 @@ import {
 
 } from "@fortawesome/free-solid-svg-icons";
 import { workExperience, education } from "../data";
-import awardImage from "../imports/about_page/award_video.mp4";
 import JourneyCarousel from "./JourneyCarousel";
 
 function ArrowForward({ className = "" }: { className?: string }) {
@@ -47,7 +45,7 @@ function WorkExperienceSection() {
                 <span className="mt-2 w-px flex-1 bg-ink/10" />
               )}
             </div>
-            <div className="flex-1 space-y-3 rounded-lg border border-ink/10 bg-white/50 p-6 backdrop-blur-sm">
+            <div className="flex-1 space-y-3 rounded-lg bg-white/90 p-6 backdrop-blur-sm shadow-sm">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <h3 className="text-lg font-semibold text-ink">
                   {exp.role} · <span className="text-brand">{exp.company}</span>
@@ -86,7 +84,7 @@ function EducationSection() {
         {education.map((edu) => (
           <div
             key={edu.id}
-            className="flex gap-6 rounded-lg border border-ink/10 bg-white/50 p-6 backdrop-blur-sm"
+            className="flex gap-6 rounded-lg bg-white/90 p-6 backdrop-blur-sm shadow-sm"
           >
             <div className="flex size-12 shrink-0 items-center justify-center rounded-full bg-lilac-100 text-brand">
               <FontAwesomeIcon icon={faGraduationCap} className="size-5" />
@@ -113,7 +111,7 @@ function EducationSection() {
 function AchievementsSection() {
   return (
     <div className="absolute inset-0 -m-0 h-full w-full overflow-hidden">
-      <video src={awardImage} className="h-full w-full object-cover" autoPlay loop muted style={{ objectPosition: "left center" }} />
+      <video src="/imports/about_page/award_video.mp4" className="h-full w-full object-cover" autoPlay loop muted style={{ objectPosition: "left center" }} />
       
       {/* Award Description Card */}
       <div className="absolute inset-0 flex items-end justify-start p-8 sm:p-12">
@@ -162,7 +160,6 @@ function DownloadResumeButton() {
 }
 
 export default function About() {
-  const navigate = useNavigate();
   const [activeSection, setActiveSection] = useState<SectionId>("summary");
 
   return (
@@ -176,7 +173,7 @@ export default function About() {
         <div className="flex flex-col gap-10 px-8 py-12 -mt-10 lg:max-h-screen lg:px-16 lg:py-20 lg:-mt-10">
           <div className="flex items-center gap-3">
             <button
-              onClick={() => navigate(-1)}
+              onClick={() => window.history.back()}
               aria-label="Go back"
               className="group flex size-12 shrink-0 items-center justify-center rounded-full bg-lilac-100 text-brand transition-colors hover:bg-brand-600 hover:text-white"
             >
