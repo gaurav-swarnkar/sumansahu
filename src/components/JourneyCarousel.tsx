@@ -192,7 +192,7 @@ export default function JourneyCarousel() {
           onMouseEnter={() => setIsPlaying(false)}
           onMouseLeave={() => setIsPlaying(true)}
         >
-          <div className="w-fit space-y-3 rounded-lg bg-white/35 backdrop-blur-sm px-6 py-4">
+          <div className="w-fit space-y-3 rounded-lg bg-white/80 px-6 py-4">
             <h3 className="inline-block border-b-4 border-brand pb-2 text-[clamp(24px,3vw,40px)] font-semibold leading-tight text-ink drop-shadow-lg">
               {slide.year}
             </h3>

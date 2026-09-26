@@ -5,7 +5,9 @@ import {
   faDownload,
   faLocationDot,
   faGraduationCap,
-
+  faBuilding,
+  faUniversity,
+  faPen,
 } from "@fortawesome/free-solid-svg-icons";
 import { workExperience, education } from "../data";
 import JourneyCarousel from "./JourneyCarousel";
@@ -76,30 +78,57 @@ function WorkExperienceSection() {
 
 function EducationSection() {
   return (
-    <div className="space-y-16">
-      <p className="text-xs font-medium uppercase tracking-wide text-ink/60">
-        Education
-      </p>
-      <div className="space-y-6">
+    <div className="space-y-8">
+      {/* Education Cards Grid */}
+      <div className="grid gap-8 grid-cols-1 md:grid-cols-2">
         {education.map((edu) => (
           <div
             key={edu.id}
-            className="flex gap-6 rounded-lg bg-white/90 p-6 backdrop-blur-sm shadow-sm"
+            className="rounded-[28px] overflow-hidden bg-[#F9F4EA] shadow-sm"
           >
-            <div className="flex size-12 shrink-0 items-center justify-center rounded-full bg-lilac-100 text-brand">
-              <FontAwesomeIcon icon={faGraduationCap} className="size-5" />
-            </div>
-            <div className="flex-1 space-y-2">
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <h3 className="text-lg font-semibold text-ink">{edu.degree}</h3>
-                <span className="text-xs font-medium text-ink/50">
-                  {edu.duration}
-                </span>
+            {/* Image Container */}
+            {edu.image && (
+              <div className="relative h-[500px] w-full overflow-hidden bg-[#F9F4EA]">
+                <img
+                  src={edu.image}
+                  alt={edu.degree}
+                  className="h-full w-full object-cover"
+                />
+                {/* Color overlay for consistency */}
+                <div className="absolute inset-0 bg-[#F9F4EA] opacity-10 mix-blend-multiply" />
               </div>
-              <p className="text-sm font-medium text-brand">
-                {edu.institution}
+            )}
+
+            {/* Content Container */}
+            <div className="space-y-6 px-10 pb-12 pt-8">
+              {/* Date with accent line */}
+              <div className="space-y-3">
+                <p className="text-xs font-semibold uppercase tracking-widest text-[#555263]">
+                  {edu.duration}
+                </p>
+                <div className="w-6 h-0.5 bg-[#6E56CF]" />
+              </div>
+
+              {/* Degree Title - Using Poppins (consistent with design) */}
+              <h3 className="text-xl font-bold leading-tight text-[#1A1625]">
+                {edu.degree}
+              </h3>
+
+              {/* Institution with Icon */}
+              <div className="flex items-center gap-2">
+                <FontAwesomeIcon 
+                  icon={edu.institution === "Self-directed" ? faPen : faUniversity} 
+                  className="w-3.5 h-3.5 text-[#6E56CF]" 
+                />
+                <p className="text-sm font-medium text-[#6E56CF]">
+                  {edu.institution}
+                </p>
+              </div>
+
+              {/* Description */}
+              <p className="text-base leading-relaxed text-[#555263]">
+                {edu.description}
               </p>
-              <p className="text-sm text-ink/60">{edu.description}</p>
             </div>
           </div>
         ))}

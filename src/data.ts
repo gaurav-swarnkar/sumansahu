@@ -108,6 +108,7 @@ export type EducationEntry = {
   institution: string;
   duration: string;
   description: string;
+  image?: string;
 };
 
 export type AchievementEntry = {
@@ -181,13 +182,15 @@ export const education: EducationEntry[] = [
     institution: "NSHM Knowledge Campus",
     duration: "Mar 2015 – Oct 2018",
     description: "Graduated with honors from Kolkata. Sparked an interest in building front-end digital solutions.",
+    image: "/src/imports/about_page/college.png",
   },
   {
     id: "edu-2",
     degree: "Creative Design & UX Learning",
     institution: "Self-directed",
-    duration: "Jan – Jun 2019",
-    description: "Sharpened creative lens through continuous learning, tuning design solutions around specific user needs.",
+    duration: "JAN 2019 - JUN 2019",
+    description: "Sharpened my creative lens through continuous learning, tuning design solutions around specific user needs.",
+    image: "/src/imports/about_page/design_thinking.png",
   },
 ];
 
