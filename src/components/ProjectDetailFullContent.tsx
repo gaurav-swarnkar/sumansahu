@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLightbulb, faCalendarDays, faFire, faClipboardList, faLock, faHeartBroken, faUsers, faChartLine, faCheckCircle, faClock, faChevronLeft, faChevronRight, faCheck, faXmark, faInfoCircle, faMagnifyingGlass, faFlask, faBrain, faCircleQuestion, faStar, faCircleXmark, faCircle } from "@fortawesome/free-solid-svg-icons";
+import { faLightbulb, faCalendarDays, faFire, faClipboardList, faLock, faHeartBroken, faUsers, faChartLine, faCheckCircle, faClock, faChevronLeft, faChevronRight, faCheck, faXmark, faInfoCircle, faMagnifyingGlass, faFlask, faBrain, faCircleQuestion, faStar, faCircleXmark, faCircle, faMobileAlt, faDesktop, faChevronDown, faExpand, faCompress, faMoon, faSun, faPalette, faBars, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { motion } from "framer-motion";
 import sumansahuImage from "../imports/Main/suman_sahu.png";
 import student1 from "../imports/project_assets/student1.png";
@@ -30,7 +30,7 @@ import video1 from "../imports/Main/1.mp4";
 import video2 from "../imports/Main/2.mp4";
 import video3 from "../imports/Main/3.mp4";
 import video4 from "../imports/Main/4.mp4";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Project } from "../data";
 
 interface ProjectDetailFullContentProps {
@@ -199,7 +199,15 @@ function SwotDiagram() {
 export default function ProjectDetailFullContent({ projectId, project }: ProjectDetailFullContentProps) {
   const [showVideoModal, setShowVideoModal] = useState(false);
   const [showExperienceModal, setShowExperienceModal] = useState(false);
-  const [activeTab, setActiveTab] = useState<"before" | "after" | "impact">("before");
+  const [activeTab, setActiveTab] = useState<"before" | "after">("before");
+  const [selectedJourney, setSelectedJourney] = useState<string>("0");
+  const [expandedJourney, setExpandedJourney] = useState<string | null>(null);
+  const [selectedSubItem, setSelectedSubItem] = useState<string | null>(null);
+  const [viewMode, setViewMode] = useState<"mobile" | "desktop">("desktop");
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isSidePanelCollapsed, setIsSidePanelCollapsed] = useState(false);
+  const [backgroundTheme, setBackgroundTheme] = useState<"light" | "dark">("light");
+  const [showThemeMenu, setShowThemeMenu] = useState(false);
   const [selectedMetric, setSelectedMetric] = useState<"acquisition" | "retention" | "on-time" | "engagement">("acquisition");
   const [currentPersona, setCurrentPersona] = useState(0);
   const [activeResearchTab, setActiveResearchTab] = useState<"findings" | "method" | "analysis">("findings");
@@ -210,6 +218,17 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
   
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   
+  // Handle ESC key to exit fullscreen
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isFullscreen) {
+        setIsFullscreen(false);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isFullscreen]);
+  
   const scroll = (direction: "left" | "right") => {
     if (scrollContainerRef.current) {
       const scrollAmount = 280; // card width + gap
@@ -217,6 +236,33 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
       const targetScroll = direction === "left" ? currentScroll - scrollAmount : currentScroll + scrollAmount;
       scrollContainerRef.current.scrollTo({ left: targetScroll, behavior: "smooth" });
     }
+  };
+  
+  // Map experience sub-items to their URLs
+  const getExperienceUrl = (subItemId: string | null): string => {
+    // Map of sub-item IDs to their experience URLs
+    const urlMap: { [key: string]: string } = {
+      // Study Planner - Before flows
+      "before-1-1": "/study-planner-old.html", // Plan > First Time User
+      "before-1-2": "https://www.sumansahu.in", // Plan > Returning User
+      "before-2-1": "https://www.sumansahu.in", // Acknowledgement > Mobile Notification
+      "before-2-2": "https://www.sumansahu.in", // Acknowledgement > Email Notification
+      "before-3-1": "https://www.sumansahu.in", // Access > From Dashboard
+      "before-3-2": "https://www.sumansahu.in", // Access > From Calendar
+      "before-4-1": "https://www.sumansahu.in", // Revoke > From Calendar
+      
+      // Study Planner - After flows
+      "after-1-1": "/study-planner-old.html", // Plan > First Time User
+      "after-1-2": "https://www.sumansahu.in", // Plan > Returning User
+      "after-2-1": "https://www.sumansahu.in", // Acknowledgement > Mobile Notification
+      "after-2-2": "https://www.sumansahu.in", // Acknowledgement > Email Notification
+      "after-3-1": "https://www.sumansahu.in", // Access > From Dashboard
+      "after-3-2": "https://www.sumansahu.in", // Access > From Calendar
+      "after-4-1": "https://www.sumansahu.in", // Revoke > From Calendar
+    };
+    
+    // Return the mapped URL or default to the portfolio site
+    return subItemId && urlMap[subItemId] ? urlMap[subItemId] : "https://www.sumansahu.in";
   };
   
   // Map project IDs to video indices
@@ -435,17 +481,17 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
         <div className="absolute inset-0 bg-black/20" />
         
         {/* Centered Container for Buttons - Matches Content Below */}
-        <div className="absolute bottom-0 left-0 right-0 w-full flex justify-center pointer-events-none hidden">
+        <div className="absolute bottom-0 left-0 right-0 w-full flex justify-center pointer-events-none">
           <div className="max-w-4xl w-full pt-32 lg:pt-40 pb-4 flex pointer-events-auto">
             {/* Buttons - Bottom Left within Centered Container */}
             <div className="flex flex-row gap-4 z-20">
-              <button disabled onClick={() => setShowVideoModal(true)} className="w-32 px-6 py-3 bg-white text-brand font-semibold transition-all duration-300 hover:bg-brand hover:text-white flex items-center justify-center gap-2 whitespace-nowrap text-sm opacity-50 cursor-not-allowed" aria-label="Play">
+              <button onClick={() => setShowVideoModal(true)} className="px-6 py-3 bg-white text-lilac border-2 border-lilac font-semibold rounded-full transition-all duration-300 hover:bg-lilac hover:text-white flex items-center justify-center gap-2 whitespace-nowrap text-sm" aria-label="Play">
                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M8 5v14l11-7z" />
                 </svg>
                 Watch
               </button>
-              <button disabled onClick={() => setShowExperienceModal(true)} className="w-32 px-6 py-3 bg-white text-brand font-semibold transition-all duration-300 hover:bg-brand hover:text-white flex items-center justify-center gap-2 whitespace-nowrap text-sm cursor-not-allowed opacity-50" aria-label="Experience">
+              <button onClick={() => setShowExperienceModal(true)} className="px-6 py-3 bg-white text-lilac border-2 border-lilac font-semibold rounded-full transition-all duration-300 hover:bg-lilac hover:text-white flex items-center justify-center gap-2 whitespace-nowrap text-sm" aria-label="Experience">
                 <span className="material-symbols-outlined text-sm">pan_tool_alt</span>
                 Experience
               </button>
@@ -474,62 +520,291 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
 
       {/* Experience Modal */}
       {showExperienceModal && (
-        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50" onClick={() => setShowExperienceModal(false)}>
-          <div className="relative w-full h-full flex flex-col items-center justify-center" onClick={(e) => e.stopPropagation()}>
-            <button onClick={() => setShowExperienceModal(false)} className="absolute top-8 right-8 text-white text-3xl z-51 hover:opacity-80">
-              ✕
-            </button>
-            
-            {/* Tabs */}
-            <div className="flex gap-8 mb-8 mt-8">
+        <div className={`${isFullscreen ? 'hidden' : 'fixed'} inset-0 bg-white/95 backdrop-blur-sm z-50 flex flex-col`} onClick={() => !isFullscreen && setShowExperienceModal(false)}>
+          {/* Slim Header - 72px */}
+          <div className="flex items-center justify-between px-8 py-3 border-b border-ink/10 h-18 bg-white" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center gap-4">
+              {/* Back Button */}
               <button
-                onClick={() => setActiveTab("before")}
-                className={`px-6 py-2 font-semibold text-base transition-all ${
-                  activeTab === "before"
-                    ? "text-brand border-b-2 border-brand"
-                    : "text-white/60 hover:text-white"
-                }`}
+                onClick={() => setShowExperienceModal(false)}
+                className="w-8 h-8 flex items-center justify-center rounded-full transition-all text-ink/60 hover:text-ink"
+                title="Go back"
               >
-                Before
+                <FontAwesomeIcon icon={faArrowLeft} className="size-4" />
               </button>
+              {/* Side Panel Toggle Button */}
               <button
-                onClick={() => setActiveTab("after")}
-                className={`px-6 py-2 font-semibold text-base transition-all ${
-                  activeTab === "after"
-                    ? "text-brand border-b-2 border-brand"
-                    : "text-white/60 hover:text-white"
-                }`}
+                onClick={() => setIsSidePanelCollapsed(!isSidePanelCollapsed)}
+                className="w-8 h-8 flex items-center justify-center rounded-full transition-all text-ink/60 hover:text-ink"
+                title={isSidePanelCollapsed ? "Open side panel" : "Close side panel"}
               >
-                After
+                <FontAwesomeIcon icon={faBars} className="size-4" />
               </button>
+              <h1 className="text-xl font-bold text-ink">Experience</h1>
+            </div>
+            <div className="flex items-center gap-6">
+              {/* View Mode Toggle with Icons */}
+              <div className="flex items-center gap-1.5 rounded-full">
+                <button
+                  onClick={() => setViewMode("mobile")}
+                  className={`w-8 h-8 flex items-center justify-center rounded-full transition-all ${
+                    viewMode === "mobile"
+                      ? "bg-lilac text-white"
+                      : "text-ink/60 hover:text-ink"
+                  }`}
+                  title="Mobile view"
+                >
+                  <FontAwesomeIcon icon={faMobileAlt} className="size-3.5" />
+                </button>
+                <button
+                  onClick={() => setViewMode("desktop")}
+                  className={`w-8 h-8 flex items-center justify-center rounded-full transition-all ${
+                    viewMode === "desktop"
+                      ? "bg-lilac text-white"
+                      : "text-ink/60 hover:text-ink"
+                  }`}
+                  title="Desktop view"
+                >
+                  <FontAwesomeIcon icon={faDesktop} className="size-4" />
+                </button>
+              </div>
+              {/* Theme Toggle Button with Dropdown */}
+              <div className="relative">
+                <button
+                  onClick={() => setShowThemeMenu(!showThemeMenu)}
+                  className="w-8 h-8 flex items-center justify-center rounded-full transition-all text-ink/60 hover:text-ink"
+                  title="Change theme"
+                >
+                  <FontAwesomeIcon icon={faPalette} className="size-3.5" />
+                </button>
+                {/* Theme Dropdown Menu */}
+                {showThemeMenu && (
+                  <div className="absolute right-0 mt-2 bg-white border border-ink/10 rounded-lg shadow-lg z-50 min-w-max">
+                    <button
+                      onClick={() => {
+                        setBackgroundTheme("light");
+                        setShowThemeMenu(false);
+                      }}
+                      className={`w-full text-left px-4 py-2.5 flex items-center gap-2 transition-all ${
+                        backgroundTheme === "light"
+                          ? "bg-lilac/10 text-lilac"
+                          : "text-ink/70 hover:bg-ink/5"
+                      }`}
+                    >
+                      <FontAwesomeIcon icon={faSun} className="size-3.5" />
+                      <span className="text-sm font-medium">Light</span>
+                    </button>
+                    <button
+                      onClick={() => {
+                        setBackgroundTheme("dark");
+                        setShowThemeMenu(false);
+                      }}
+                      className={`w-full text-left px-4 py-2.5 flex items-center gap-2 transition-all border-t border-ink/10 ${
+                        backgroundTheme === "dark"
+                          ? "bg-lilac/10 text-lilac"
+                          : "text-ink/70 hover:bg-ink/5"
+                      }`}
+                    >
+                      <FontAwesomeIcon icon={faMoon} className="size-3.5" />
+                      <span className="text-sm font-medium">Dark</span>
+                    </button>
+                  </div>
+                )}
+              </div>
+              {/* Fullscreen Button */}
               <button
-                onClick={() => setActiveTab("impact")}
-                className={`px-6 py-2 font-semibold text-base transition-all ${
-                  activeTab === "impact"
-                    ? "text-brand border-b-2 border-brand"
-                    : "text-white/60 hover:text-white"
-                }`}
+                onClick={() => setIsFullscreen(true)}
+                className="w-8 h-8 flex items-center justify-center rounded-full transition-all text-ink/60 hover:text-ink"
+                title="Fullscreen"
               >
-                Impact
+                <FontAwesomeIcon icon={faExpand} className="size-3.5" />
               </button>
+              {/* Close Button */}
+              <button
+                onClick={() => setShowExperienceModal(false)}
+                className="text-ink text-xl hover:opacity-70 transition-opacity p-1.5"
+                aria-label="Close"
+              >
+                ✕
+              </button>
+            </div>
+          </div>
+
+          {/* Main Content */}
+          <div className="flex flex-1 overflow-hidden" onClick={(e) => e.stopPropagation()}>
+            {/* Left Panel - Journey Navigation with Dot Matrix Background */}
+            <div className={`${isSidePanelCollapsed ? 'w-0' : 'w-48 lg:w-72'} bg-gray-50 border-r border-ink/10 overflow-y-auto relative transition-all duration-300`} style={{
+              backgroundImage: `radial-gradient(circle, #d4d4d8 0.5px, transparent 0.5px)`,
+              backgroundSize: '20px 20px',
+              backgroundPosition: '0 0'
+            }}>
+              {/* Overlay for better readability */}
+              <div className="absolute inset-0 bg-white/70 pointer-events-none"></div>
+              
+              {/* Before/After Tabs */}
+              <div className="flex border-b border-ink/10 sticky top-0 bg-white/95 backdrop-blur z-10">
+                <button
+                  onClick={() => {
+                    setActiveTab("before");
+                    setSelectedJourney("0");
+                    setExpandedJourney(null);
+                    setSelectedSubItem(null);
+                  }}
+                  className={`flex-1 px-2 lg:px-4 py-3 font-semibold transition-all text-xs lg:text-sm ${
+                    activeTab === "before"
+                      ? "text-lilac border-b-2 border-lilac"
+                      : "text-ink/60 hover:text-ink"
+                  }`}
+                >
+                  Before
+                </button>
+                <button
+                  onClick={() => {
+                    setActiveTab("after");
+                    setSelectedJourney("0");
+                    setExpandedJourney(null);
+                    setSelectedSubItem(null);
+                  }}
+                  className={`flex-1 px-2 lg:px-4 py-3 font-semibold transition-all text-xs lg:text-sm ${
+                    activeTab === "after"
+                      ? "text-lilac border-b-2 border-lilac"
+                      : "text-ink/60 hover:text-ink"
+                  }`}
+                >
+                  After
+                </button>
+              </div>
+
+              {/* Journey List with Accordion */}
+              <div className="p-2 lg:p-4 space-y-1.5 lg:space-y-2 relative z-20">
+                {project.experienceJourneys?.[activeTab].map((journey, index) => (
+                  <div key={journey.id}>
+                    <button
+                      onClick={() => {
+                        setSelectedJourney(index.toString());
+                        setExpandedJourney(expandedJourney === journey.id ? null : journey.id);
+                        setSelectedSubItem(null);
+                      }}
+                      className={`w-full text-left px-3 lg:px-4 py-2 lg:py-3 rounded-lg transition-all flex items-center justify-between text-xs lg:text-sm ${
+                        expandedJourney === journey.id
+                          ? "text-lilac font-semibold"
+                          : "text-ink/70 hover:text-ink/90"
+                      }`}
+                    >
+                      <span className="font-semibold">{journey.label}</span>
+                      {journey.items && journey.items.length > 0 && (
+                        <FontAwesomeIcon 
+                          icon={faChevronDown} 
+                          className={`size-3 transition-transform ${
+                            expandedJourney === journey.id ? "rotate-180 text-lilac" : "text-ink/40"
+                          }`}
+                        />
+                      )}
+                    </button>
+
+                    {/* Accordion Sub-items */}
+                    {journey.items && expandedJourney === journey.id && (
+                      <div className="mt-1 lg:mt-2 ml-3 lg:ml-4 space-y-1 border-l-2 border-lilac/30 pl-2 lg:pl-3">
+                        {journey.items.map((item) => (
+                          <button
+                            key={item.id}
+                            onClick={() => setSelectedSubItem(item.id)}
+                            className={`w-full text-left px-2 lg:px-3 py-1.5 lg:py-2 rounded-lg transition-all text-xs font-medium ${
+                              selectedSubItem === item.id
+                                ? "text-lilac font-semibold"
+                                : "text-ink/60 hover:text-ink/80"
+                            }`}
+                          >
+                            {item.label}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
             </div>
 
-            {/* Figma Iframe */}
-            <div className="w-full h-full max-w-6xl flex-1">
-              <iframe
-                width="100%"
-                height="100%"
-                src={
-                  activeTab === "before"
-                    ? "https://www.figma.com/embed?embed_host=share&url=YOUR_FIGMA_LINK_BEFORE"
-                    : activeTab === "after"
-                    ? "https://www.figma.com/embed?embed_host=share&url=YOUR_FIGMA_LINK_AFTER"
-                    : "https://www.figma.com/embed?embed_host=share&url=YOUR_FIGMA_LINK_IMPACT"
-                }
-                allowFullScreen
-                className="border-0"
-              ></iframe>
+            {/* Right Main Content Area */}
+            <div className="flex-1 overflow-auto relative transition-all duration-300" style={{
+              backgroundColor: backgroundTheme === "light" ? '#f3f4f6' : '#1f2937',
+              backgroundImage: backgroundTheme === "light" 
+                ? `radial-gradient(circle, #d4d4d8 0.5px, transparent 0.5px)`
+                : `radial-gradient(circle, #6b7280 0.5px, transparent 0.5px)`,
+              backgroundSize: '20px 20px',
+              backgroundPosition: '0 0'
+            }}>
+              {/* Content - Responsive Iframe */}
+              <div 
+                className="w-full h-full flex items-center justify-center transition-colors duration-300"
+                style={{
+                  padding: '16px',
+                  backgroundColor: backgroundTheme === "light" ? '#d6d6d6' : '#111827'
+                }}
+              >
+                <iframe
+                  title="Preview"
+                  src={getExperienceUrl(selectedSubItem)}
+                  style={{
+                    width: viewMode === "mobile" ? '365px' : 'calc(100% - 32px)',
+                    height: 'calc(100% - 32px)',
+                    border: 'none',
+                    transition: 'width 0.3s ease',
+                    borderRadius: '8px',
+                    backgroundColor: backgroundTheme === "light" ? '#f9fafb' : '#1f2937'
+                  }}
+                  className="h-full"
+                />
+              </div>
             </div>
+          </div>
+        </div>
+      )}
+      
+      {/* Fullscreen Overlay */}
+      {isFullscreen && showExperienceModal && (
+        <div className="fixed inset-0 z-50 flex flex-col group" onClick={() => setIsFullscreen(false)}>
+          {/* Top Bar - Hidden by default, shows on hover/touch */}
+          <div className="absolute top-0 left-0 right-0 h-16 bg-gradient-to-b from-black/50 to-transparent flex items-center justify-between px-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <h2 className="text-white font-bold text-lg">Experience Preview</h2>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsFullscreen(false);
+              }}
+              className="w-10 h-10 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/40 transition-all text-white"
+              title="Close (ESC)"
+            >
+              <FontAwesomeIcon icon={faXmark} className="size-5" />
+            </button>
+          </div>
+
+          {/* Main Fullscreen Content */}
+          <div 
+            className="flex-1 w-full h-full flex items-center justify-center transition-colors duration-300"
+            style={{
+              padding: '16px',
+              backgroundColor: backgroundTheme === "light" ? '#d6d6d6' : '#111827'
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <iframe
+              title="Fullscreen Preview"
+              src={getExperienceUrl(selectedSubItem)}
+              style={{
+                width: viewMode === "mobile" ? '365px' : 'calc(100% - 32px)',
+                height: 'calc(100% - 32px)',
+                border: 'none',
+                transition: 'width 0.3s ease',
+                borderRadius: '8px',
+                backgroundColor: backgroundTheme === "light" ? '#f9fafb' : '#1f2937'
+              }}
+            />
+          </div>
+
+          {/* Bottom Hint Text */}
+          <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 text-white/60 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            Press <kbd className="px-2 py-1 bg-white/20 rounded text-white/80 text-xs">ESC</kbd> to exit fullscreen
           </div>
         </div>
       )}

@@ -1,10 +1,14 @@
 import { Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "motion/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Hero from "./components/Hero";
 import ProjectStories from "./components/ProjectStories";
 import ProjectDetail from "./components/ProjectDetail";
 import About from "./components/About";
+import AdminLogin from "./admin/AdminLogin";
+import AdminDashboard from "./admin/AdminDashboard";
+import ProtectedRoute from "./admin/ProtectedRoute";
+import { initializeAnalytics, trackVisitor } from "./utils/analytics";
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -75,6 +79,37 @@ function AnimatedRoutes() {
 }
 
 export default function App() {
+  useEffect(() => {
+    // Initialize analytics system
+    initializeAnalytics();
+    
+    // Track this visitor (only for portfolio pages, not admin panel)
+    if (!window.location.pathname.startsWith('/workshop')) {
+      trackVisitor();
+    }
+  }, []);
+
+  // Admin routes - no animation
+  if (window.location.pathname.startsWith('/workshop')) {
+    return (
+      <div className="min-h-screen w-full bg-canvas">
+        <Routes>
+          <Route path="/workshop/login" element={<AdminLogin />} />
+          <Route
+            path="/workshop/dashboard"
+            element={
+              <ProtectedRoute>
+                <AdminDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/workshop/*" element={<AdminLogin />} />
+        </Routes>
+      </div>
+    );
+  }
+
+  // Portfolio routes - with animation
   return (
     <div className="min-h-screen w-full bg-canvas">
       <AnimatedRoutes />

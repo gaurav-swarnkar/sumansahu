@@ -267,51 +267,6 @@ export default function Hero() {
             <CtaButton label="Project Stories" splitAt={4} onClick={() => handleNavigation("/projects")} variant="primary" />
             <CtaButton label="My Journey" splitAt={2} onClick={() => handleNavigation("/about")} variant="secondary" />
           </div>
-          
-          {/* Floating Chat Button - Top Right with Hotspot */}
-          <div className="fixed top-8 right-8 lg:right-16 z-50">
-            {/* Hotspot pulse rings */}
-            <AnimatePresence>
-              {showHotspot && (
-                <>
-                  {/* Outer pulse ring */}
-                  <motion.div
-                    initial={{ scale: 0.8, opacity: 1 }}
-                    animate={{ scale: 2, opacity: 0 }}
-                    transition={{ duration: 1.5, repeat: Infinity }}
-                    className="absolute inset-0 rounded-full border-2 border-lilac"
-                  />
-                  
-                  {/* Inner pulse ring */}
-                  <motion.div
-                    initial={{ scale: 0.9, opacity: 1 }}
-                    animate={{ scale: 1.6, opacity: 0 }}
-                    transition={{ duration: 1.5, repeat: Infinity, delay: 0.2 }}
-                    className="absolute inset-0 rounded-full border-2 border-lilac"
-                  />
-                  
-                  {/* Hotspot text label */}
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.3 }}
-                    className="absolute -bottom-12 left-1/2 -translate-x-1/2 whitespace-nowrap bg-white text-lilac px-3 py-1.5 rounded-full text-xs font-medium shadow-lg border border-lilac/20"
-                  >
-                    Let's Connect
-                  </motion.div>
-                </>
-              )}
-            </AnimatePresence>
-
-            {/* Button */}
-            <button
-              onClick={() => setIsDrawerOpen(true)}
-              className="relative flex items-center justify-center size-12 sm:size-[54px] rounded-full bg-white text-lilac border-2 border-lilac hover:bg-lilac hover:text-white transition-colors duration-300"
-              title="Start a chat"
-            >
-              <FontAwesomeIcon icon={faComment} className="text-lg sm:text-xl" />
-            </button>
-          </div>
         </motion.div>
 
         {/* right image panel */}
@@ -335,6 +290,51 @@ export default function Hero() {
             className="absolute bottom-0 right-[24%] h-[100%] w-auto object-contain drop-shadow-2xl"
           />
         </motion.div>
+      </div>
+
+      {/* Floating Chat Button - Desktop - Fixed positioning outside animated containers */}
+      <div className="hidden lg:block fixed top-8 right-8 lg:right-16 z-50">
+        {/* Hotspot pulse rings */}
+        <AnimatePresence>
+          {showHotspot && (
+            <>
+              {/* Outer pulse ring */}
+              <motion.div
+                initial={{ scale: 0.8, opacity: 1 }}
+                animate={{ scale: 2, opacity: 0 }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+                className="absolute inset-0 rounded-full border-2 border-lilac"
+              />
+              
+              {/* Inner pulse ring */}
+              <motion.div
+                initial={{ scale: 0.9, opacity: 1 }}
+                animate={{ scale: 1.6, opacity: 0 }}
+                transition={{ duration: 1.5, repeat: Infinity, delay: 0.2 }}
+                className="absolute inset-0 rounded-full border-2 border-lilac"
+              />
+              
+              {/* Hotspot text label */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.3 }}
+                className="absolute -bottom-12 left-1/2 -translate-x-1/2 whitespace-nowrap bg-white text-lilac px-3 py-1.5 rounded-full text-xs font-medium shadow-lg border border-lilac/20"
+              >
+                Let's Connect
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>
+
+        {/* Button */}
+        <button
+          onClick={() => setIsDrawerOpen(true)}
+          className="relative flex items-center justify-center size-12 sm:size-[54px] rounded-full bg-white text-lilac border-2 border-lilac hover:bg-lilac hover:text-white transition-colors duration-300"
+          title="Start a chat"
+        >
+          <FontAwesomeIcon icon={faComment} className="text-lg sm:text-xl" />
+        </button>
       </div>
 
       {/* MOBILE: Vertical layout with top white, bottom purple */}
@@ -497,19 +497,35 @@ export default function Hero() {
       </div>
 
       {/* Bottom Navigation Menu - Mobile Only */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 w-full px-4 py-4 bg-white border-t border-ink/10 flex gap-3">
-        <button
-          onClick={() => handleNavigation("/projects")}
-          className="flex-1 h-[52px] bg-lilac text-white font-semibold text-sm rounded-full transition-all hover:bg-brand-600 active:scale-95"
-        >
-          Project Stories
-        </button>
-        <button
-          onClick={() => handleNavigation("/about")}
-          className="flex-1 h-[52px] bg-white text-lilac font-semibold text-sm border-2 border-lilac rounded-full transition-all hover:bg-lilac hover:text-white active:scale-95"
-        >
-          My Journey
-        </button>
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 w-full px-4 py-4 bg-white border-t border-ink/10 flex flex-col gap-3">
+        <div className="flex gap-3">
+          <button
+            onClick={() => handleNavigation("/projects")}
+            className="flex-1 h-[52px] bg-lilac text-white font-semibold text-sm rounded-full transition-all hover:bg-brand-600 active:scale-95"
+          >
+            Project Stories
+          </button>
+          <button
+            onClick={() => handleNavigation("/about")}
+            className="flex-1 h-[52px] bg-white text-lilac font-semibold text-sm border-2 border-lilac rounded-full transition-all hover:bg-lilac hover:text-white active:scale-95"
+          >
+            My Journey
+          </button>
+        </div>
+        <div className="flex gap-3">
+          <button
+            onClick={() => handleNavigation("/about")}
+            className="flex-1 h-[52px] bg-white text-lilac font-semibold text-sm border-2 border-lilac rounded-full transition-all hover:bg-lilac hover:text-white active:scale-95"
+          >
+            Experience
+          </button>
+          <button
+            onClick={() => window.open("https://sumansahu.in", "_blank")}
+            className="flex-1 h-[52px] bg-white text-lilac font-semibold text-sm border-2 border-lilac rounded-full transition-all hover:bg-lilac hover:text-white active:scale-95"
+          >
+            Watch
+          </button>
+        </div>
       </div>
 
       {/* ---- Contact Drawer ---- */}

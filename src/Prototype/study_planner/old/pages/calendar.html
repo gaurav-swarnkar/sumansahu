@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calendar - Notesight</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Poppins:wght@400;600&family=Inter:wght@500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles/shared.css" />
+  <link rel="stylesheet" href="../styles/calendar.css" />
+</head>
+<body>
+
+<!-- ════════════════════════════════ CALENDAR PAGE ════════════════════════════════ -->
+<div id="page-calendar" class="page active">
+  <header class="header">
+    <div class="header-logo"><img src="../assets/logo.svg" alt="Notesight" /></div>
+    <div class="profile-menu">
+      <div class="profile-account">
+        <div class="profile-avatar"><img src="../assets/avatar.png" alt="JohnDoe" /></div>
+        <span class="profile-name">JohnDoe</span>
+      </div>
+      <button class="chevron-btn"><img src="../assets/chevron-menu.svg" alt="" /></button>
+    </div>
+  </header>
+  
+  <div class="cal-page-main">
+    <div class="cal-page-header">
+      <div class="cal-page-left">
+        <a href="dashboard.html" class="btn-back">
+          <img src="../assets/back-arrow.svg" alt="‹" />
+        </a>
+        <h2 class="cal-page-title">Your Schedules</h2>
+      </div>
+      <div class="add-new-wrap">
+        <button class="btn-add-new-cal" id="addNewCalBtn">+ Add New</button>
+        <div class="add-new-dropdown" id="addNewDropdown">
+          <div class="add-new-item">
+            <img src="../assets/study-icon.svg" alt="" />
+            <span>New Study Session</span>
+          </div>
+          <div class="add-new-item">
+            <img src="../assets/assignment-icon.svg" alt="" />
+            <span>New Assignment</span>
+          </div>
+          <div class="add-new-item">
+            <img src="../assets/exam-icon.svg" alt="" />
+            <span>New Exam Reminder</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Calendar toolbar -->
+    <div class="cal-toolbar">
+      <div class="view-tabs">
+        <button class="view-tab active" data-view="today">Today</button>
+        <button class="view-tab" data-view="week">Week</button>
+        <button class="view-tab" data-view="month">Month</button>
+        <button class="view-tab" data-view="year">Year</button>
+      </div>
+      <div class="cal-nav-center">
+        <button class="cal-nav-btn" id="prevBtn">
+          <img src="../assets/chevron-left.svg" alt="‹" />
+        </button>
+        <span class="cal-period" id="calPeriod">Today</span>
+        <button class="cal-nav-btn" id="nextBtn">
+          <img src="../assets/chevron-right.svg" alt="›" />
+        </button>
+      </div>
+    </div>
+
+    <!-- TODAY VIEW -->
+    <div class="cal-today-view" id="todayView">
+      <div class="cal-day-header">
+        <div class="cal-day-label">
+          <div class="dow">Tuesday</div>
+          <div class="dom">26</div>
+        </div>
+      </div>
+      <div class="time-grid">
+        <div class="time-row">
+          <div class="time-label">8:00 AM</div>
+          <div class="time-cell"></div>
+        </div>
+        <div class="time-row">
+          <div class="time-label">9:00 AM</div>
+          <div class="time-cell">
+            <div class="cal-event">
+              <div class="cal-event-time">9:00 AM - 10:30 AM</div>
+              <div class="cal-event-title">Organic Chemistry – Ch. 7</div>
+              <div class="cal-event-sub">Review – Practice Problems</div>
+            </div>
+          </div>
+        </div>
+        <div class="time-row">
+          <div class="time-label">11:00 AM</div>
+          <div class="time-cell">
+            <div class="cal-event">
+              <div class="cal-event-time">11:30 AM - 1:00 PM</div>
+              <div class="cal-event-title">Linear Algebra Midterm</div>
+              <div class="cal-event-sub">Suggested – Flash Cards</div>
+            </div>
+          </div>
+        </div>
+        <div class="time-row">
+          <div class="time-label">2:00 PM</div>
+          <div class="time-cell">
+            <div class="cal-event">
+              <div class="cal-event-time">2:00 PM - 3:30 PM</div>
+              <div class="cal-event-title">Biology – Cell Division</div>
+              <div class="cal-event-sub">Suggested – Study Guide</div>
+            </div>
+          </div>
+        </div>
+        <div class="time-row">
+          <div class="time-label">4:00 PM</div>
+          <div class="time-cell"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WEEK VIEW (hidden by default) -->
+    <div class="cal-week-view" id="weekView" style="display: none;">
+      <div class="week-grid">
+        <div class="week-header-blank"></div>
+        <div class="week-day-col-header today-col">
+          <div class="dow">Mon</div>
+          <div class="dom">23</div>
+        </div>
+        <div class="week-day-col-header">
+          <div class="dow">Tue</div>
+          <div class="dom">24</div>
+        </div>
+        <div class="week-day-col-header">
+          <div class="dow">Wed</div>
+          <div class="dom">25</div>
+        </div>
+        <div class="week-day-col-header">
+          <div class="dow">Thu</div>
+          <div class="dom">26</div>
+        </div>
+        <div class="week-day-col-header">
+          <div class="dow">Fri</div>
+          <div class="dom">27</div>
+        </div>
+        <div class="week-day-col-header">
+          <div class="dow">Sat</div>
+          <div class="dom">28</div>
+        </div>
+        <div class="week-day-col-header">
+          <div class="dow">Sun</div>
+          <div class="dom">29</div>
+        </div>
+        
+        <div class="week-time-label">9 AM</div>
+        <div class="week-cell today-col">
+          <div class="week-event">
+            <div class="we-time">9:00</div>
+            <div class="we-title">Meeting</div>
+          </div>
+        </div>
+        <div class="week-cell"></div>
+        <div class="week-cell"></div>
+        <div class="week-cell"></div>
+        <div class="week-cell"></div>
+        <div class="week-cell"></div>
+        <div class="week-cell"></div>
+      </div>
+    </div>
+
+    <!-- MONTH VIEW (hidden by default) -->
+    <div class="cal-month-view" id="monthView" style="display: none;">
+      <div class="month-grid">
+        <div class="month-dow">Sun</div>
+        <div class="month-dow">Mon</div>
+        <div class="month-dow">Tue</div>
+        <div class="month-dow">Wed</div>
+        <div class="month-dow">Thu</div>
+        <div class="month-dow">Fri</div>
+        <div class="month-dow">Sat</div>
+        
+        <div class="month-cell other-month"><div class="month-day-num">31</div></div>
+        <div class="month-cell"><div class="month-day-num">1</div></div>
+        <div class="month-cell"><div class="month-day-num">2</div></div>
+        <div class="month-cell"><div class="month-day-num">3</div></div>
+        <div class="month-cell"><div class="month-day-num">4</div></div>
+        <div class="month-cell"><div class="month-day-num">5</div></div>
+        <div class="month-cell"><div class="month-day-num">6</div></div>
+        
+        <div class="month-cell"><div class="month-day-num">7</div></div>
+        <div class="month-cell"><div class="month-day-num">8</div></div>
+        <div class="month-cell"><div class="month-day-num">9</div></div>
+        <div class="month-cell"><div class="month-day-num">10</div></div>
+        <div class="month-cell"><div class="month-day-num">11</div></div>
+        <div class="month-cell"><div class="month-day-num">12</div></div>
+        <div class="month-cell"><div class="month-day-num">13</div></div>
+        
+        <div class="month-cell"><div class="month-day-num">14</div></div>
+        <div class="month-cell"><div class="month-day-num">15</div></div>
+        <div class="month-cell"><div class="month-day-num">16</div></div>
+        <div class="month-cell"><div class="month-day-num">17</div></div>
+        <div class="month-cell"><div class="month-day-num">18</div></div>
+        <div class="month-cell"><div class="month-day-num">19</div></div>
+        <div class="month-cell"><div class="month-day-num">20</div></div>
+        
+        <div class="month-cell"><div class="month-day-num">21</div></div>
+        <div class="month-cell"><div class="month-day-num">22</div></div>
+        <div class="month-cell"><div class="month-day-num">23</div></div>
+        <div class="month-cell"><div class="month-day-num">24</div></div>
+        <div class="month-cell"><div class="month-day-num">25</div></div>
+        <div class="month-cell"><div class="month-day-num">26</div></div>
+        <div class="month-cell"><div class="month-day-num">27</div></div>
+        
+        <div class="month-cell"><div class="month-day-num">28</div></div>
+        <div class="month-cell"><div class="month-day-num">29</div></div>
+        <div class="month-cell"><div class="month-day-num">30</div></div>
+        <div class="month-cell other-month"><div class="month-day-num">1</div></div>
+        <div class="month-cell other-month"><div class="month-day-num">2</div></div>
+        <div class="month-cell other-month"><div class="month-day-num">3</div></div>
+        <div class="month-cell other-month"><div class="month-day-num">4</div></div>
+      </div>
+    </div>
+
+    <!-- YEAR VIEW (hidden by default) -->
+    <div class="cal-year-view" id="yearView" style="display: none;">
+      <div class="year-grid" id="yearGrid">
+        <!-- Generated by JS -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="../js/shared.js"></script>
+<script src="../js/calendar.js"></script>
+
+</body>
+</html>

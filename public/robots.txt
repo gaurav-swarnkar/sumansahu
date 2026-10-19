@@ -1,0 +1,14 @@
+# Robots.txt for Suman Sahu's Portfolio
+
+# Allow all robots to crawl the public portfolio
+User-agent: *
+Allow: /
+Allow: /projects
+Allow: /project/
+Allow: /about
+
+# Disallow admin panel - not for search engines
+Disallow: /workshop
+
+# Sitemap
+Sitemap: https://sumansahu.in/sitemap.xml

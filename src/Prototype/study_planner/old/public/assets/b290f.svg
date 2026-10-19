@@ -1,0 +1,18 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="mynaui:chevron-up-solid" filter="url(#filter0_d_0_5)">
+<rect x="16" y="12" width="32" height="32" rx="16" fill="white"/>
+<path id="Vector" d="M32.53 24.5797C32.3894 24.4392 32.1988 24.3603 32 24.3603C31.8012 24.3603 31.6106 24.4392 31.47 24.5797L25.47 30.5797C25.3295 30.7203 25.2507 30.9109 25.2507 31.1097C25.2507 31.3084 25.3295 31.499 25.47 31.6397H38.53C38.6705 31.499 38.7493 31.3084 38.7493 31.1097C38.7493 30.9109 38.6705 30.7203 38.53 30.5797L32.53 24.5797Z" fill="#222222"/>
+</g>
+<defs>
+<filter id="filter0_d_0_5" x="0" y="0" width="64" height="64" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="4"/>
+<feGaussianBlur stdDeviation="8"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.156863 0 0 0 0 0.560784 0 0 0 0 1 0 0 0 0.12 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_0_5"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_0_5" result="shape"/>
+</filter>
+</defs>
+</svg>

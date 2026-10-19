@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notesight - Study Planner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Poppins:wght@400;600&family=Inter:wght@500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles/shared.css" />
+  <link rel="stylesheet" href="../styles/landing.css" />
+</head>
+<body>
+
+<!-- ════════════════════════════════ LANDING PAGE ════════════════════════════════ -->
+<div id="page-landing" class="page active">
+  <header class="header">
+    <div class="header-logo"><img src="../assets/logo.svg" alt="Notesight" /></div>
+    <div class="profile-menu">
+      <div class="profile-account">
+        <div class="profile-avatar"><img src="../assets/avatar.png" alt="JohnDoe" /></div>
+        <span class="profile-name">JohnDoe</span>
+      </div>
+      <button class="chevron-btn"><img src="../assets/chevron.svg" alt="" /></button>
+    </div>
+  </header>
+  <main class="main">
+    <div class="content-card">
+      <h1 class="card-heading">Let's Plan Your Test Preparation, John</h1>
+      <div class="empty-state">
+        <div class="empty-state-message">
+          <div class="calendar-illustration">
+            <div class="calendar-icon"><img src="../assets/calendar-icon.png" alt="Calendar" /></div>
+          </div>
+          <p class="empty-title">No Study Plans Yet</p>
+        </div>
+        <a href="create-plan.html" class="create-btn">
+          <img src="../assets/plus-icon.svg" alt="" />
+          <span>Create Your First Study Plan</span>
+        </a>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="../js/shared.js"></script>
+<script src="../js/landing.js"></script>
+
+</body>
+</html>

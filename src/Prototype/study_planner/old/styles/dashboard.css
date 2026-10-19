@@ -1,0 +1,265 @@
+/* ══════════════════════════════════════════════════════════════════════════════ */
+/* DASHBOARD PAGE STYLES */
+/* ══════════════════════════════════════════════════════════════════════════════ */
+
+#page-dashboard {
+  background: #f8f8f8;
+}
+
+#page-dashboard .main {
+  padding: 83px 80px 40px;
+}
+
+.dash-welcome {
+  font-weight: 600;
+  font-size: 28px;
+  color: #0d203a;
+  margin-bottom: 20px;
+}
+
+.dash-welcome span {
+  color: #2d8af6;
+}
+
+/* ──── Upcoming Events ──── */
+.events-card {
+  background: #fff;
+  border-radius: 8px;
+  padding: 20px 24px;
+  margin-bottom: 24px;
+  border: 1px solid #e8edf5;
+}
+
+.events-title {
+  font-weight: 600;
+  font-size: 16px;
+  color: #30415a;
+  margin-bottom: 16px;
+}
+
+.events-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  overflow-x: auto;
+}
+
+.event-card {
+  border-left: 3px solid #2d8af6;
+  padding: 10px 12px;
+  background: #fff;
+  border-radius: 0 6px 6px 0;
+  position: relative;
+  min-width: 0;
+}
+
+.event-time {
+  font-size: 11px;
+  color: #8c8c8c;
+  margin-bottom: 4px;
+}
+
+.event-name {
+  font-weight: 600;
+  font-size: 14px;
+  color: #0d203a;
+  margin-bottom: 4px;
+  line-height: 1.3;
+}
+
+.event-type {
+  font-size: 12px;
+  color: #2d8af6;
+}
+
+.event-dots {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  color: #bbb;
+  font-size: 16px;
+  line-height: 1;
+}
+
+/* ──── Search + Actions ──── */
+.dash-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.search-wrap {
+  flex: 1;
+  max-width: 320px;
+  position: relative;
+}
+
+.search-wrap input {
+  width: 100%;
+  height: 40px;
+  border: 1px solid #e0e4eb;
+  border-radius: 8px;
+  padding: 0 40px 0 16px;
+  font-size: 14px;
+  color: #30415a;
+  background: #fff;
+  outline: none;
+}
+
+.search-wrap input::placeholder {
+  color: #bbb;
+}
+
+.search-wrap img {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+}
+
+.dash-actions-right {
+  margin-left: auto;
+  display: flex;
+  gap: 12px;
+}
+
+.btn-view-cal {
+  height: 40px;
+  padding: 0 20px;
+  background: #2d8af6;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: opacity 0.2s;
+  text-decoration: none;
+}
+
+.btn-view-cal:hover {
+  opacity: 0.88;
+}
+
+.btn-view-cal img {
+  width: 16px;
+  height: 16px;
+  filter: brightness(10);
+}
+
+/* ──── Study Plans ──── */
+.plans-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.plans-title {
+  font-weight: 600;
+  font-size: 15px;
+  color: #30415a;
+}
+
+.plans-count {
+  font-size: 13px;
+  color: #8c8c8c;
+}
+
+.plan-row {
+  background: #fff;
+  border-radius: 8px;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  border: 1px solid #f0f2f5;
+  position: relative;
+  cursor: pointer;
+  transition: box-shadow 0.15s;
+}
+
+.plan-row:hover {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+}
+
+.plan-bar {
+  width: 3px;
+  height: 60px;
+  background: #bccaff;
+  border-radius: 3px;
+  margin-right: 16px;
+  flex-shrink: 0;
+}
+
+.plan-info {
+  flex: 1;
+  min-width: 0;
+  padding: 14px 0;
+}
+
+.plan-name {
+  font-weight: 500;
+  font-size: 15px;
+  color: #0d203a;
+  margin-bottom: 4px;
+}
+
+.plan-files {
+  font-size: 12px;
+  color: #8c8c8c;
+}
+
+.plan-due {
+  font-size: 14px;
+  color: #8c8c8c;
+  margin: 0 24px;
+  white-space: nowrap;
+}
+
+.plan-arrow {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+/* ──── Responsive ──── */
+@media (max-width: 768px) {
+  #page-dashboard .main {
+    padding: 83px 16px 40px;
+  }
+
+  .events-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .dash-actions {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .search-wrap {
+    width: 100%;
+    max-width: none;
+  }
+
+  .dash-actions-right {
+    width: 100%;
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .events-row {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notesight</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Poppins:wght@400;600&family=Inter:wght@500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Outfit', sans-serif; background: #f8f8f8; min-height: 100dvh; }
+
+    /* ── Pages ── */
+    .page { display: none; min-height: 100dvh; }
+    .page.active { display: block; }
+
+    /* ── Shared Header ── */
+    .header {
+      position: fixed; top: 0; left: 0; right: 0; height: 64px;
+      background: #fff; box-shadow: 0 8px 24px rgba(0,0,0,0.04);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 80px; z-index: 100;
+    }
+    .header-logo img { height: 25px; width: 130px; object-fit: contain; display: block; }
+    .profile-menu { display: flex; align-items: center; gap: 12px; }
+    .profile-account { display: flex; align-items: center; gap: 8px; padding-left: 8px; border-radius: 8px; cursor: pointer; }
+    .profile-avatar { width: 40px; height: 40px; border-radius: 50%; overflow: hidden; flex-shrink: 0; }
+    .profile-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .profile-name { font-size: 16px; line-height: 24px; color: #30415a; white-space: nowrap; }
+    .chevron-btn { display: flex; align-items: center; background: none; border: none; cursor: pointer; padding: 0; }
+    .chevron-btn img { width: 18px; height: 18px; transform: rotate(180deg); }
+
+    /* ── LANDING PAGE ── */
+    #page-landing { background: #f8f8f8; }
+    #page-landing .main { padding: 83px 80px 40px; min-height: 100dvh; }
+    .content-card {
+      background: linear-gradient(to bottom, #fff, #f7f7f7); border-radius: 8px;
+      width: 100%; min-height: 663px; display: flex; flex-direction: column;
+      align-items: center; padding: 46px 20px 60px;
+    }
+    .card-heading {
+      font-weight: 600; font-size: 32px; line-height: 44px; text-align: center;
+      background: linear-gradient(to right, #66b3f3, #3582c2);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      max-width: 692px; width: 100%; margin-bottom: 80px;
+    }
+    .empty-state { display: flex; flex-direction: column; align-items: center; gap: 80px; width: 317px; max-width: 100%; }
+    .empty-state-message { display: flex; flex-direction: column; align-items: center; gap: 24px; padding: 8px; }
+    .calendar-illustration { border: 2px dashed #bccaff; border-radius: 30px; padding: 40px; display: flex; align-items: center; justify-content: center; }
+    .calendar-icon { width: 80px; height: 80px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+    .calendar-icon img { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; }
+    .empty-title { font-weight: 500; font-size: 30px; color: #30415a; text-align: center; }
+    .create-btn {
+      width: 100%; height: 48px; background: #2d8af6; border: none; border-radius: 44px;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      gap: 8px; transition: opacity 0.2s;
+    }
+    .create-btn:hover { opacity: 0.88; }
+    .create-btn img { width: 18px; height: 18px; }
+    .create-btn span { font-weight: 500; font-size: 16px; color: #fff; }
+
+    /* ── DASHBOARD PAGE ── */
+    #page-dashboard { background: #f8f8f8; }
+    #page-dashboard .main { padding: 83px 80px 40px; }
+    .dash-welcome { font-weight: 600; font-size: 28px; color: #0d203a; margin-bottom: 20px; }
+    .dash-welcome span { color: #2d8af6; }
+
+    /* Upcoming Events */
+    .events-card { background: #fff; border-radius: 8px; padding: 20px 24px; margin-bottom: 24px; border: 1px solid #e8edf5; }
+    .events-title { font-weight: 600; font-size: 16px; color: #30415a; margin-bottom: 16px; }
+    .events-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; overflow-x: auto; }
+    .event-card {
+      border-left: 3px solid #2d8af6; padding: 10px 12px;
+      background: #fff; border-radius: 0 6px 6px 0; min-width: 0;
+    }
+    .event-time { font-size: 11px; color: #8c8c8c; margin-bottom: 4px; }
+    .event-name { font-weight: 600; font-size: 14px; color: #0d203a; margin-bottom: 4px; line-height: 1.3; }
+    .event-type { font-size: 12px; color: #2d8af6; }
+
+    /* Search + Actions row */
+    .dash-actions { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
+    .search-wrap { flex: 1; max-width: 320px; position: relative; }
+    .search-wrap input {
+      width: 100%; height: 40px; border: 1px solid #e0e4eb; border-radius: 8px;
+      padding: 0 40px 0 16px; font-size: 14px; color: #30415a; background: #fff; outline: none;
+    }
+    .search-wrap input::placeholder { color: #bbb; }
+    .btn-view-cal {
+      height: 40px; padding: 0 20px; background: #2d8af6; border: none; border-radius: 8px;
+      font-size: 14px; font-weight: 500; color: #fff; cursor: pointer; display: flex;
+      align-items: center; gap: 8px; transition: opacity 0.2s;
+    }
+    .btn-view-cal:hover { opacity: 0.88; }
+
+    /* Study plans list */
+    .plans-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+    .plans-title { font-weight: 600; font-size: 15px; color: #30415a; }
+    .plans-count { font-size: 13px; color: #8c8c8c; }
+    .plan-row {
+      background: #fff; border-radius: 8px; padding: 0 20px;
+      display: flex; align-items: center; margin-bottom: 8px;
+      border: 1px solid #f0f2f5; cursor: pointer;
+      transition: box-shadow 0.15s;
+    }
+    .plan-row:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
+    .plan-bar { width: 3px; height: 60px; background: #bccaff; border-radius: 3px; margin-right: 16px; flex-shrink: 0; }
+    .plan-info { flex: 1; min-width: 0; padding: 14px 0; }
+    .plan-name { font-weight: 500; font-size: 15px; color: #0d203a; margin-bottom: 4px; }
+    .plan-files { font-size: 12px; color: #8c8c8c; }
+    .plan-due { font-size: 14px; color: #8c8c8c; margin: 0 24px; white-space: nowrap; }
+
+    @media (max-width: 768px) {
+      .header { padding: 0 20px; }
+      .profile-name { display: none; }
+      #page-landing .main, #page-dashboard .main { padding: 83px 16px 40px; }
+      .card-heading { font-size: 22px; line-height: 32px; margin-bottom: 48px; }
+      .empty-state { width: 100%; gap: 40px; }
+      .empty-title { font-size: 22px; }
+      .events-row { grid-template-columns: repeat(2,1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════ LANDING PAGE ════════════════════════════════ -->
+<div id="page-landing" class="page active">
+  <header class="header">
+    <div class="header-logo"><img src="/assets/20652.svg" alt="Notesight" /></div>
+    <div class="profile-menu">
+      <div class="profile-account">
+        <div class="profile-avatar"><img src="/assets/6e9f5.png" alt="JohnDoe" /></div>
+        <span class="profile-name">JohnDoe</span>
+      </div>
+      <button class="chevron-btn"><img src="/assets/5b249.svg" alt="" /></button>
+    </div>
+  </header>
+  <main class="main">
+    <div class="content-card">
+      <h1 class="card-heading">Let's Plan Your Test Preparation, John</h1>
+      <div class="empty-state">
+        <div class="empty-state-message">
+          <div class="calendar-illustration">
+            <div class="calendar-icon"><img src="/assets/f7e22.png" alt="Calendar" /></div>
+          </div>
+          <p class="empty-title">No Study Plans Yet</p>
+        </div>
+        <button class="create-btn" id="openModalBtn">
+          <img src="/assets/141c6.svg" alt="" />
+          <span>Create Your First Study Plan</span>
+        </button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ════════════════════════════════ LOADING PAGE ════════════════════════════════ -->
+<div id="page-loading" class="page">
+  <header class="header">
+    <div class="header-logo"><img src="/assets/20652.svg" alt="Notesight" /></div>
+    <div class="profile-menu">
+      <div class="profile-account">
+        <div class="profile-avatar"><img src="/assets/6e9f5.png" alt="JohnDoe" /></div>
+        <span class="profile-name">JohnDoe</span>
+      </div>
+      <button class="chevron-btn"><img src="/assets/5b249.svg" alt="" /></button>
+    </div>
+  </header>
+  <main class="main">
+    <p class="loading-heading">Let's Plan Your Test Preparation, John</p>
+    <div class="loading-card">
+      <p class="loading-title">Creating your personalized plan<br>based on your feedback.</p>
+      <p class="loading-sub">Let's get you where you want to be</p>
+      <div class="spinner"></div>
+      <div class="loading-bar-track">
+        <div class="loading-bar-fill" id="loadBarFill"></div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ════════════════════════════════ DASHBOARD PAGE ════════════════════════════════ -->
+<div id="page-dashboard" class="page">
+  <header class="header">
+    <div class="header-logo"><img src="/assets/20652.svg" alt="Notesight" /></div>
+    <div class="profile-menu">
+      <div class="profile-account">
+        <div class="profile-avatar"><img src="/assets/6e9f5.png" alt="JohnDoe" /></div>
+        <span class="profile-name">JohnDoe</span>
+      </div>
+      <button class="chevron-btn"><img src="/assets/5b249.svg" alt="" /></button>
+    </div>
+  </header>
+  <main class="main">
+    <h2 class="dash-welcome">Welcome Back , <span>John Doe</span></h2>
+
+    <!-- Upcoming Events -->
+    <div class="events-card">
+      <p class="events-title">Upcoming Events</p>
+      <div class="events-row">
+        <div class="event-card">
+          <p class="event-time">Today, 9:00 AM</p>
+          <p class="event-name">Organic Chemistry – Ch. 7</p>
+          <p class="event-type">Review – Practice Problems</p>
+          <button class="event-dots">⋯</button>
+        </div>
+        <div class="event-card">
+          <p class="event-time">Today, 11:30 AM</p>
+          <p class="event-name">Linear Algebra Midterm</p>
+          <p class="event-type">Suggested – Flash Cards</p>
+          <button class="event-dots">⋯</button>
+        </div>
+        <div class="event-card">
+          <p class="event-time">Today, 2:00 PM</p>
+          <p class="event-name">Biology – Cell Division</p>
+          <p class="event-type">Suggested – Study Guide</p>
+          <button class="event-dots">⋯</button>
+        </div>
+        <div class="event-card">
+          <p class="event-time">Tomorrow, 10:00 AM</p>
+          <p class="event-name">History Essay Draft</p>
+          <p class="event-type">Suggested – Outline Review</p>
+          <button class="event-dots">⋯</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Search + Actions -->
+    <div class="dash-actions">
+      <div class="search-wrap">
+        <input type="text" placeholder="Search" />
+        <img src="/assets/a0748.svg" alt="" />
+      </div>
+      <div class="dash-actions-right">
+        <button class="btn-view-cal" id="viewCalBtn">
+          <img src="/assets/4e05a.svg" alt="" /> View Calendar
+        </button>
+        <button class="btn-add-new">
+          <img src="/assets/942ab.svg" alt="" /> Add New
+        </button>
+      </div>
+    </div>
+
+    <!-- Study plans -->
+    <div class="plans-header">
+      <span class="plans-title">Scheduled Study Plans</span>
+      <span class="plans-count">8 Active</span>
+    </div>
+    <div id="plansList">
+      <div class="plan-row"><div class="plan-bar"></div><div class="plan-info"><p class="plan-name">Organic Chemistry – Reaction Mechanisms</p><p class="plan-files">14 Files</p></div><span class="plan-due">Due : Oct 12 2026</span><img class="plan-arrow" src="/assets/b290f.svg" alt="›" /></div>
+      <div class="plan-row"><div class="plan-bar"></div><div class="plan-info"><p class="plan-name">Linear Algebra – Eigenvalues &amp; Vectors</p><p class="plan-files">09 Files</p></div><span class="plan-due">Due : Oct 18 2026</span><img class="plan-arrow" src="/assets/b290f.svg" alt="›" /></div>
+      <div class="plan-row"><div class="plan-bar"></div><div class="plan-info"><p class="plan-name">AP Biology – Cellular Respiration</p><p class="plan-files">11 Files</p></div><span class="plan-due">Due : Oct 24 2026</span><img class="plan-arrow" src="/assets/b290f.svg" alt="›" /></div>
+      <div class="plan-row"><div class="plan-bar"></div><div class="plan-info"><p class="plan-name">World History – Industrial Revolution</p><p class="plan-files">06 Files</p></div><span class="plan-due">Due : Nov 02 2026</span><img class="plan-arrow" src="/assets/b290f.svg" alt="›" /></div>
+    </div>
+  </main>
+</div>
+
+<!-- ════════════════════════════════ CALENDAR PAGE (stub) ════════════════════════════════ -->
+<div id="page-calendar" class="page">
+  <header class="header">
+    <div class="header-logo"><img src="/assets/20652.svg" alt="Notesight" /></div>
+  </header>
+  <div style="padding:20px;color:#8c8c8c;">Calendar and other pages are available in the full implementation.</div>
+</div>
+
+<!-- ════════════════════════════════ WIZARD MODAL ════════════════════════════════ -->
+<div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true">
+  <div class="modal">
+    <div class="modal-top">
+      <p class="modal-title" id="modalTitle">Test Preparation</p>
+      <p class="modal-subtitle" id="modalSubtitle">Let's personalize your plan</p>
+    </div>
+    <button class="modal-close" id="modalCloseX"><img src="/assets/615b9.svg" alt="Close" /></button>
+    <div class="modal-progress"><div class="modal-progress-fill" id="progressFill"></div></div>
+
+    <div class="modal-body">
+      <!-- Step 1: Test selection -->
+      <div class="step-panel active" id="step-1">
+        <p class="step-q large" style="margin-bottom:32px;">What test are you preparing for?&nbsp;<span class="required">*</span></p>
+        <div class="radio-options" id="testOptions" role="radiogroup">
+          <div class="radio-opt" data-group="test" data-value="PSAT" tabindex="0" role="radio" aria-checked="false"><img class="r-icon" src="/assets/4d841.svg" alt="" /><span class="r-label">PSAT</span></div>
+          <div class="radio-opt" data-group="test" data-value="SAT" tabindex="0" role="radio" aria-checked="false"><img class="r-icon" src="/assets/4d841.svg" alt="" /><span class="r-label">SAT</span></div>
+          <div class="radio-opt" data-group="test" data-value="Other" tabindex="0" role="radio" aria-checked="false"><img class="r-icon" src="/assets/4d841.svg" alt="" /><span class="r-label">Other</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-prev" id="btnPrev">Prev</button>
+      <div class="footer-right">
+        <button class="btn-skip" id="btnSkip">Skip</button>
+        <button class="btn-next" id="btnNext">Next</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ─── Page routing ─── */
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+/* ─── Modal state ─── */
+const backdrop = document.getElementById('modalBackdrop');
+const btnNext = document.getElementById('btnNext');
+
+function openModal() { 
+  backdrop.classList.add('active'); 
+  document.body.style.overflow='hidden'; 
+}
+
+function closeModal() { 
+  backdrop.classList.remove('active'); 
+  document.body.style.overflow=''; 
+}
+
+document.getElementById('openModalBtn').addEventListener('click', openModal);
+document.getElementById('modalCloseX').addEventListener('click', closeModal);
+backdrop.addEventListener('click', e => { if(e.target===backdrop) closeModal(); });
+document.addEventListener('keydown', e => { if(e.key==='Escape'&&backdrop.classList.contains('active')) closeModal(); });
+
+/* ─── Dashboard navigation ─── */
+document.getElementById('viewCalBtn').addEventListener('click', () => { 
+  showPage('calendar'); 
+});
+
+/* ─── Loading flow ─── */
+function startLoading() {
+  showPage('loading');
+  const fill = document.getElementById('loadBarFill');
+  fill.style.animation = 'none';
+  fill.offsetHeight; /* reflow */
+  fill.style.animation = '';
+  setTimeout(() => showPage('dashboard'), 3200);
+}
+
+/* ─── Wizard flow ─── */
+const ws = { step: 1, test: null };
+
+document.getElementById('testOptions').querySelectorAll('.radio-opt').forEach(opt=>{
+  opt.addEventListener('click',()=>{
+    ws.test=opt.dataset.value;
+    document.getElementById('testOptions').querySelectorAll('.radio-opt').forEach(o=>{
+      o.classList.toggle('selected',o.dataset.value===ws.test);
+      o.querySelector('.r-icon').src=o.dataset.value===ws.test?'/assets/1b8ee.svg':'/assets/4d841.svg';
+    });
+    btnNext.classList.add('enabled');
+  });
+});
+
+btnNext.addEventListener('click',()=>{
+  if(!btnNext.classList.contains('enabled')) return;
+  if(ws.test==='Other'){closeModal(); return;}
+  closeModal();
+  startLoading();
+});
+
+document.getElementById('modalCloseX').addEventListener('click', closeModal);
+</script>
+
+</body>
+</html>

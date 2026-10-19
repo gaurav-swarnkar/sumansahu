@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create Study Plan - Notesight</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Poppins:wght@400;600&family=Inter:wght@500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles/shared.css" />
+  <link rel="stylesheet" href="../styles/wizard.css" />
+</head>
+<body>
+
+<!-- ════════════════════════════════ WIZARD MODAL ════════════════════════════════ -->
+<div class="modal-backdrop active">
+  <div class="modal">
+    <div class="modal-top">
+      <h1 class="modal-title">Create Study Plan</h1>
+      <p class="modal-subtitle">Answer a few questions to get your personalized plan</p>
+      <div class="modal-progress">
+        <div class="modal-progress-fill" id="progressFill" style="width: 14.29%;"></div>
+      </div>
+    </div>
+    
+    <a href="index.html" class="modal-close" title="Close">
+      <img src="../assets/close-icon.svg" alt="✕" />
+    </a>
+
+    <div class="modal-body">
+      <!-- STEP 1: Subject Selection -->
+      <div class="step-panel active" data-step="1">
+        <h2 class="step-q">What's your <span style="color: #495aff;">primary subject</span> to study?</h2>
+        <p class="step-sub">This helps us customize your plan</p>
+        <div class="radio-options">
+          <label class="radio-opt">
+            <input type="radio" name="subject" value="math" style="display:none;">
+            <div class="r-icon">📐</div>
+            <span class="r-label">Mathematics</span>
+          </label>
+          <label class="radio-opt">
+            <input type="radio" name="subject" value="science" style="display:none;">
+            <div class="r-icon">🔬</div>
+            <span class="r-label">Science</span>
+          </label>
+          <label class="radio-opt">
+            <input type="radio" name="subject" value="english" style="display:none;">
+            <div class="r-icon">📚</div>
+            <span class="r-label">English & Literature</span>
+          </label>
+          <label class="radio-opt">
+            <input type="radio" name="subject" value="history" style="display:none;">
+            <div class="r-icon">🏛️</div>
+            <span class="r-label">History</span>
+          </label>
+          <label class="radio-opt">
+            <input type="radio" name="subject" value="other" style="display:none;">
+            <div class="r-icon">⭐</div>
+            <span class="r-label">Other</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- STEP 2: Exam Type -->
+      <div class="step-panel" data-step="2">
+        <h2 class="step-q">What exam are you preparing for?</h2>
+        <p class="step-sub">Select the relevant exam</p>
+        <div class="radio-options">
+          <label class="radio-opt">
+            <input type="radio" name="exam" value="sat" style="display:none;">
+            <div class="r-icon">🎯</div>
+            <span class="r-label">SAT</span>
+          </label>
+          <label class="radio-opt">
+            <input type="radio" name="exam" value="act" style="display:none;">
+            <div class="r-icon">🎯</div>
+            <span class="r-label">ACT</span>
+          </label>
+          <label class="radio-opt">
+            <input type="radio" name="exam" value="ap" style="display:none;">
+            <div class="r-icon">📜</div>
+            <span class="r-label">AP Exam</span>
+          </label>
+          <label class="radio-opt">
+            <input type="radio" name="exam" value="midterm" style="display:none;">
+            <div class="r-icon">📝</div>
+            <span class="r-label">Midterm/Final</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- STEP 3: Study Hours -->
+      <div class="step-panel" data-step="3">
+        <h2 class="step-q">How many <span style="color: #495aff;">hours per week</span> can you study?</h2>
+        <p class="step-sub">Be realistic about your availability</p>
+        <div class="radio-options">
+          <label class="radio-opt">
+            <input type="radio" name="hours" value="5" style="display:none;">
+            <div class="r-icon">⏱️</div>
+            <span class="r-label">5 hours or less</span>
+          </label>
+          <label class="radio-opt">
+            <input type="radio" name="hours" value="10" style="display:none;">
+            <div class="r-icon">⏱️</div>
+            <span class="r-label">5 - 10 hours</span>
+          </label>
+          <label class="radio-opt">
+            <input type="radio" name="hours" value="20" style="display:none;">
+            <div class="r-icon">⏱️</div>
+            <span class="r-label">10 - 20 hours</span>
+          </label>
+          <label class="radio-opt">
+            <input type="radio" name="hours" value="30" style="display:none;">
+            <div class="r-icon">⏱️</div>
+            <span class="r-label">20+ hours</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- STEP 4: Study Strengths -->
+      <div class="step-panel" data-step="4">
+        <h2 class="step-q">What are your <span style="color: #495aff;">study strengths?</span></h2>
+        <p class="step-sub">Select all that apply</p>
+        <div class="checkbox-grid">
+          <label class="check-opt">
+            <input type="checkbox" name="strength" value="visual" style="display:none;">
+            <div class="c-icon">👁️</div>
+            <span>Visual Learner</span>
+          </label>
+          <label class="check-opt">
+            <input type="checkbox" name="strength" value="auditory" style="display:none;">
+            <div class="c-icon">👂</div>
+            <span>Auditory Learner</span>
+          </label>
+          <label class="check-opt">
+            <input type="checkbox" name="strength" value="kinesthetic" style="display:none;">
+            <div class="c-icon">🤚</div>
+            <span>Kinesthetic</span>
+          </label>
+          <label class="check-opt">
+            <input type="checkbox" name="strength" value="reading" style="display:none;">
+            <div class="c-icon">📖</div>
+            <span>Reading/Writing</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- STEP 5: Target Score -->
+      <div class="step-panel" data-step="5">
+        <h2 class="step-q">What's your <span style="color: #495aff;">target score</span> or grade?</h2>
+        <p class="step-sub">Enter your goal</p>
+        <input type="text" class="score-input" id="targetScore" placeholder="e.g., 1400, A+, 95%" />
+      </div>
+
+      <!-- STEP 6: Exam Date -->
+      <div class="step-panel" data-step="6">
+        <h2 class="step-q">When's your <span style="color: #495aff;">exam date?</span></h2>
+        <p class="step-sub">This helps us calculate your study timeline</p>
+        <div class="calendar-wrap">
+          <div class="cal-selected-date" id="selectedDate">Select Date</div>
+          <div class="cal-nav">
+            <span class="cal-month-label" id="monthLabel">
+              October
+              <img src="../assets/chevron-down.svg" alt="" />
+            </span>
+            <div class="cal-arrows">
+              <button class="cal-arr-btn" id="prevMonthBtn">
+                <img src="../assets/chevron-left.svg" alt="" />
+              </button>
+              <button class="cal-arr-btn" id="nextMonthBtn">
+                <img src="../assets/chevron-right.svg" alt="" />
+              </button>
+            </div>
+          </div>
+          <div class="cal-grid" id="calendarGrid">
+            <!-- Generated by JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 7: Review -->
+      <div class="step-panel" data-step="7">
+        <h2 class="step-q">Ready to <span style="color: #495aff;">start your journey?</span></h2>
+        <p class="step-sub">Here's your personalized plan</p>
+        <div class="insights-wrap">
+          <div class="insights-meta">
+            <div class="insight-row">
+              <span class="insight-label">Subject:</span>
+              <span class="insight-value" id="reviewSubject">Mathematics</span>
+            </div>
+            <div class="insight-row">
+              <span class="insight-label">Exam:</span>
+              <span class="insight-value" id="reviewExam">SAT</span>
+            </div>
+            <div class="insight-row">
+              <span class="insight-label">Study Hours:</span>
+              <span class="insight-value" id="reviewHours">10 hours/week</span>
+            </div>
+            <div class="insight-row">
+              <span class="insight-label">Target:</span>
+              <span class="insight-value" id="reviewTarget">1400</span>
+            </div>
+            <div class="insight-row">
+              <span class="insight-label">Exam Date:</span>
+              <span class="insight-value" id="reviewDate">Dec 15, 2026</span>
+            </div>
+          </div>
+          <div class="breakdown-header">
+            <p>Weekly Breakdown</p>
+          </div>
+          <table class="breakdown-table">
+            <thead>
+              <tr>
+                <th>Week</th>
+                <th>Content</th>
+                <th>Practice</th>
+                <th>Review</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Week 1</td>
+                <td>Fundamentals</td>
+                <td>3 hrs</td>
+                <td>2 hrs</td>
+              </tr>
+              <tr>
+                <td>Week 2</td>
+                <td>Intermediate</td>
+                <td>4 hrs</td>
+                <td>2 hrs</td>
+              </tr>
+              <tr>
+                <td>Week 3</td>
+                <td>Advanced</td>
+                <td>5 hrs</td>
+                <td>3 hrs</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-prev" id="prevBtn" disabled>← Previous</button>
+      <button class="btn-skip" id="skipBtn">Skip</button>
+      <button class="btn-next enabled" id="nextBtn">Next →</button>
+    </div>
+  </div>
+</div>
+
+<script src="../js/shared.js"></script>
+<script src="../js/wizard.js"></script>
+
+</body>
+</html>

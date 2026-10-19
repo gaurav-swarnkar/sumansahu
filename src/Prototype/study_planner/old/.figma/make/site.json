@@ -1,0 +1,10 @@
+{
+  "description": "Showcases a professional portfolio with responsive design for desktop and mobile, highlighting skills and projects to attract potential clients or employers.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
