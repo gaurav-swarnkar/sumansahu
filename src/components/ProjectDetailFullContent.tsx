@@ -243,7 +243,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
     // Map of sub-item IDs to their experience URLs
     const urlMap: { [key: string]: string } = {
       // Study Planner - Before flows
-      "before-1-1": "/study-planner-old.html", // Plan > First Time User
+      "before-1-1": `${import.meta.env.BASE_URL}study-planner-old.html`, // Plan > First Time User
       "before-1-2": "https://www.sumansahu.in", // Plan > Returning User
       "before-2-1": "https://www.sumansahu.in", // Acknowledgement > Mobile Notification
       "before-2-2": "https://www.sumansahu.in", // Acknowledgement > Email Notification
@@ -252,7 +252,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
       "before-4-1": "https://www.sumansahu.in", // Revoke > From Calendar
       
       // Study Planner - After flows
-      "after-1-1": "/study-planner-old.html", // Plan > First Time User
+      "after-1-1": `${import.meta.env.BASE_URL}study-planner-old.html`, // Plan > First Time User
       "after-1-2": "https://www.sumansahu.in", // Plan > Returning User
       "after-2-1": "https://www.sumansahu.in", // Acknowledgement > Mobile Notification
       "after-2-2": "https://www.sumansahu.in", // Acknowledgement > Email Notification

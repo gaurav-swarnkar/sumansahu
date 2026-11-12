@@ -6,13 +6,13 @@ import { journeyTimeline } from "../data";
 
 // Video paths
 const slides = [
-  "/imports/about_page/slide1.mp4",
-  "/imports/about_page/slide2.mp4",
-  "/imports/about_page/slide3.mp4",
-  "/imports/about_page/slide4.mp4",
-  "/imports/about_page/slide5.mp4",
-  "/imports/about_page/slide6.mp4",
-  "/imports/about_page/slide7.mp4",
+  `${import.meta.env.BASE_URL}imports/about_page/slide1.mp4`,
+  `${import.meta.env.BASE_URL}imports/about_page/slide2.mp4`,
+  `${import.meta.env.BASE_URL}imports/about_page/slide3.mp4`,
+  `${import.meta.env.BASE_URL}imports/about_page/slide4.mp4`,
+  `${import.meta.env.BASE_URL}imports/about_page/slide5.mp4`,
+  `${import.meta.env.BASE_URL}imports/about_page/slide6.mp4`,
+  `${import.meta.env.BASE_URL}imports/about_page/slide7.mp4`,
 ];
 
 const SLIDE_DURATION_MS = 6000;
