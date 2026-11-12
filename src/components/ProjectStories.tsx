@@ -9,8 +9,8 @@ import ProjectMockup, { FitGraphic } from "./ProjectMockups";
 import { projectBackgrounds } from "../utils/projectTheme";
 import { useSplitVariants } from "../utils/transitions";
 
-const CAROUSEL_ITEM_WIDTH = 120;
-const CAROUSEL_STEP = 128;
+const CAROUSEL_ITEM_WIDTH = 150;
+const CAROUSEL_STEP = 156;
 
 function Chevron({ className = "" }: { className?: string }) {
   return (
@@ -94,10 +94,11 @@ export default function ProjectStories({
       {/* warm + lime glows */}
       <div className="pointer-events-none absolute -left-32 top-4 size-[620px] rounded-full bg-[#fffcf4] blur-[110px]" />
       <div className="pointer-events-none absolute -left-24 -top-28 size-[440px] rounded-full bg-lime opacity-20 blur-[70px]" />
+      {/* warm + lime glows */}
 
       <div className="relative z-10 mx-auto grid min-h-[100dvh] w-full max-w-[1920px] grid-cols-1 grid-rows-[auto_1fr] lg:min-h-screen lg:grid-rows-1 lg:grid-cols-[minmax(360px,32%)_1fr]">
         {/* ---- sidebar nav ---- */}
-        <motion.div variants={split.left} className="relative flex flex-col gap-4 px-0 pt-4 pb-6 lg:max-h-screen lg:gap-10 lg:px-16 lg:py-20 lg:-mt-10">
+        <motion.div variants={split.left} className="relative flex flex-col gap-4 px-0 pt-4 pb-6 lg:max-h-screen lg:gap-10 lg:px-10 lg:py-20 lg:-mt-10 xl:px-14">
           {/* header: back | title | contact on mobile; back + title on desktop */}
           <div className="relative flex items-center justify-between px-4 lg:justify-start lg:gap-3 lg:px-0">
             <button
@@ -122,7 +123,7 @@ export default function ProjectStories({
 
           {/* mobile: looping carousel, active item centred and scaled up */}
           <div
-            className="relative h-[72px] overflow-hidden lg:hidden"
+            className="relative h-[84px] overflow-hidden lg:hidden"
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
             style={{
@@ -140,7 +141,7 @@ export default function ProjectStories({
                   initial={false}
                   animate={{
                     x: offset * CAROUSEL_STEP,
-                    scale: isActive ? 1.15 : 0.9,
+                    scale: isActive ? 1.1 : 0.88,
                     opacity: Math.abs(offset) > 2 ? 0 : 1,
                   }}
                   transition={{ duration: 0.5, ease: "easeInOut" }}
@@ -158,7 +159,7 @@ export default function ProjectStories({
                     {p.eyebrow}
                   </span>
                   <span
-                    className={`text-xl font-semibold leading-none transition-colors duration-300 ${
+                    className={`text-base font-semibold leading-tight transition-colors duration-300 ${
                       isActive ? "text-ink" : "text-ink/40"
                     }`}
                   >
@@ -170,27 +171,27 @@ export default function ProjectStories({
           </div>
 
           {/* desktop: vertical list in the My Journey style */}
-          <nav className="hidden flex-col gap-12 pt-5 lg:flex">
+          <nav className="hidden flex-col gap-7 pt-2 lg:flex">
             {projects.map((p, index) => {
               const isActive = index === activeIndex;
               return (
-                <div key={p.id} className="flex items-end gap-3">
+                <div key={p.id} className="flex min-w-0 items-end gap-3">
                   <button
                     onClick={() => selectProject(index)}
-                    className="group flex flex-col items-start gap-3 text-left"
+                    className="group flex min-w-0 flex-col items-start gap-1.5 text-left"
                   >
                     <span
-                      className={`text-lg font-semibold uppercase tracking-wide transition-colors duration-300 ${
+                      className={`text-base font-semibold tracking-wide transition-colors duration-300 ${
                         isActive ? "text-brand" : "text-ink/40 group-hover:text-ink/60"
                       }`}
                     >
                       {p.eyebrow}
                     </span>
                     <span
-                      className={`font-semibold leading-none transition-all duration-300 ${
+                      className={`max-w-full truncate whitespace-nowrap font-semibold leading-tight transition-all duration-300 ${
                         isActive
-                          ? "text-[clamp(42px,4.5vw,60px)] text-ink"
-                          : "text-[clamp(30px,3.3vw,42px)] text-ink/50 group-hover:text-ink"
+                          ? "text-[clamp(20px,1.85vw,30px)] text-ink"
+                          : "text-[clamp(17px,1.4vw,22px)] text-ink/50 group-hover:text-ink"
                       }`}
                     >
                       {p.word}

@@ -36,10 +36,16 @@ import ProjectMockup, { FitGraphic } from "./ProjectMockups";
 import { projectBackgrounds } from "../utils/projectTheme";
 import TruckFillCaseStudy from "./case-studies/TruckFillCaseStudy";
 import RecipeStockCaseStudy from "./case-studies/RecipeStockCaseStudy";
+import BrandExperienceCaseStudy from "./case-studies/BrandExperienceCaseStudy";
+import DesignSystemsCaseStudy from "./case-studies/DesignSystemsCaseStudy";
 
 interface ProjectDetailFullContentProps {
   projectId?: string;
   project?: Project;
+  /** Breadcrumb shown inside the banner on mobile (the sidebar is hidden there). */
+  mobileNav?: React.ReactNode;
+  /** Section tabs shown under the banner on mobile; they stick to the top while scrolling. */
+  stickyTabs?: React.ReactNode;
 }
 
 // SWOT Bubble Data Structure
@@ -200,7 +206,7 @@ function SwotDiagram() {
   );
 }
 
-export default function ProjectDetailFullContent({ projectId, project }: ProjectDetailFullContentProps) {
+export default function ProjectDetailFullContent({ projectId, project, mobileNav, stickyTabs }: ProjectDetailFullContentProps) {
   const [showVideoModal, setShowVideoModal] = useState(false);
   const [showExperienceModal, setShowExperienceModal] = useState(false);
   const [activeTab, setActiveTab] = useState<"before" | "after">("before");
@@ -469,7 +475,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=pan_tool_alt" />
       {/* ===== TOP BANNER ===== */}
       <div
-        className={`relative min-h-[calc(45vh+100px)] w-full overflow-hidden ${project?.panel ?? "bg-brand"}`}
+        className={`relative w-full overflow-hidden ${project?.panel ?? "bg-brand"}`}
         style={{ backgroundImage: project ? projectBackgrounds[project.id] : undefined }}
       >
         {/* soft glow behind the graphic */}
@@ -477,15 +483,16 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
 
         {/* Same centred column as the content below (outer padding + max-w-4xl) */}
         <div className="relative px-4 lg:px-7">
-        <div className="mx-auto flex min-h-[calc(45vh+100px)] w-full max-w-4xl flex-col gap-8 pb-8 pt-16 xl:flex-row xl:items-center xl:gap-10 xl:py-14">
+        {mobileNav && <div className="mx-auto max-w-4xl pt-4 lg:hidden">{mobileNav}</div>}
+        <div className="mx-auto flex w-full max-w-4xl flex-col gap-5 pb-6 pt-6 sm:flex-row sm:items-center sm:gap-8 lg:pt-12 lg:pb-10">
           {/* Title block */}
-          <div className="flex min-w-0 flex-1 flex-col gap-5">
+          <div className="flex min-w-0 flex-1 flex-col gap-4">
             {project && (
-              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-white/70">
-                {project.eyebrow} {project.word}
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/70 sm:text-sm">
+                {project.eyebrow} · {project.word}
               </p>
             )}
-            <h1 className="max-w-[22ch] text-[clamp(30px,3.6vw,52px)] font-semibold leading-[1.1] text-white">
+            <h1 className="max-w-[22ch] text-[clamp(26px,3.2vw,44px)] font-semibold leading-[1.1] text-white">
               {project?.title}
             </h1>
             {project && project.pills.length > 0 && (
@@ -504,24 +511,11 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
               </div>
             )}
 
-            {/* Actions */}
-            <div className="mt-2 flex flex-row gap-3">
-              <button onClick={() => setShowVideoModal(true)} className="px-5 py-2.5 bg-white text-brand font-semibold rounded-full transition-all duration-300 hover:bg-lilac-100 flex items-center justify-center gap-2 whitespace-nowrap text-sm" aria-label="Play">
-                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M8 5v14l11-7z" />
-                </svg>
-                Watch
-              </button>
-              <button onClick={() => setShowExperienceModal(true)} className="px-5 py-2.5 bg-white/10 text-white border border-white/60 font-semibold rounded-full transition-all duration-300 hover:bg-white hover:text-brand flex items-center justify-center gap-2 whitespace-nowrap text-sm" aria-label="Experience">
-                <span className="material-symbols-outlined text-sm">pan_tool_alt</span>
-                Experience
-              </button>
-            </div>
           </div>
 
           {/* Project graphic */}
           {project && (
-            <FitGraphic maxScale={1.6} className="h-[230px] shrink-0 sm:h-[280px] xl:h-[300px] xl:w-[44%]">
+            <FitGraphic maxScale={1.3} className="hidden h-[200px] shrink-0 sm:block sm:w-[44%] lg:h-[230px]">
               <ProjectMockup visual={project.visual} />
             </FitGraphic>
           )}
@@ -839,10 +833,34 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
       )}
       </div>
 
+      {/* ===== ACTIONS ROW (under the banner) ===== */}
+      <div className="border-b border-ink/5 bg-white px-4 py-3 lg:px-7">
+            <div className="mx-auto flex max-w-4xl flex-wrap items-center gap-3">
+              <button onClick={() => setShowVideoModal(true)} className="px-5 py-2.5 bg-brand text-white font-semibold rounded-full transition-all duration-300 hover:bg-brand-600 flex items-center justify-center gap-2 whitespace-nowrap text-sm" aria-label="Play">
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+                Watch
+              </button>
+              <button onClick={() => setShowExperienceModal(true)} className="px-5 py-2.5 bg-white text-brand border border-brand/30 font-semibold rounded-full transition-all duration-300 hover:bg-lilac-100 flex items-center justify-center gap-2 whitespace-nowrap text-sm" aria-label="Experience">
+                <span className="material-symbols-outlined text-sm">pan_tool_alt</span>
+                Experience
+              </button>
+              <span className="ml-auto hidden text-xs text-ink/50 sm:inline">See the product in action</span>
+            </div>
+      </div>
+
+      {/* ===== MOBILE SECTION TABS (sticky) ===== */}
+      {stickyTabs && <div className="sticky top-0 z-30 lg:hidden">{stickyTabs}</div>}
+
       {project?.id === "truck-fill" ? (
         <TruckFillCaseStudy />
       ) : project?.id === "recipe-stock" ? (
         <RecipeStockCaseStudy />
+      ) : project?.id === "brand-experience" ? (
+        <BrandExperienceCaseStudy />
+      ) : project?.id === "design-systems" ? (
+        <DesignSystemsCaseStudy />
       ) : (
       <div className="flex h-full flex-col px-4 py-12 lg:px-7 lg:py-20">
         <div className="space-y-24 max-w-4xl mx-auto w-full">

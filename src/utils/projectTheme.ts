@@ -18,4 +18,14 @@ export const projectBackgrounds: Record<string, string> = {
     "radial-gradient(70% 55% at 0% 100%, rgba(255,80,170,0.38) 0%, transparent 65%)",
     "linear-gradient(160deg, #24025e 0%, #5a0fa0 50%, #a3307f 100%)",
   ].join(", "),
+  "brand-experience": [
+    "radial-gradient(75% 55% at 100% 100%, rgba(240,255,100,0.25) 0%, transparent 60%)",
+    "radial-gradient(70% 55% at 0% 100%, rgba(255,120,120,0.35) 0%, transparent 65%)",
+    "linear-gradient(160deg, #1f0547 0%, #4a12b8 50%, #7a3cf0 100%)",
+  ].join(", "),
+  "design-systems": [
+    "radial-gradient(75% 55% at 100% 100%, rgba(110,231,183,0.28) 0%, transparent 60%)",
+    "radial-gradient(70% 55% at 0% 100%, rgba(99,102,241,0.4) 0%, transparent 65%)",
+    "linear-gradient(160deg, #130433 0%, #321089 50%, #2a4bc4 100%)",
+  ].join(", "),
 };

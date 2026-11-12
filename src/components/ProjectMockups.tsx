@@ -193,6 +193,97 @@ function RecipeStockMockup({ detailed = false }: { detailed?: boolean }) {
   );
 }
 
+/* ---------- Brand experience: a website in a browser ---------- */
+function BrandWebsiteMockup({ detailed = false }: { detailed?: boolean }) {
+  return (
+    <div className="flex w-full max-w-[340px] flex-col gap-3">
+      <Card className="overflow-hidden !p-0">
+        <div className="flex items-center gap-1.5 border-b border-ink/5 bg-canvas px-3 py-2">
+          {["bg-red-400", "bg-amber-400", "bg-emerald-400"].map((c) => (
+            <span key={c} className={`size-2 rounded-full ${c}`} />
+          ))}
+          <span className="ml-2 h-3 flex-1 rounded-full bg-white" />
+        </div>
+        <div className="space-y-2.5 p-3">
+          <div className="flex items-center justify-between">
+            <span className="text-[10px] font-bold tracking-wide">NOVA</span>
+            <span className="flex gap-2">{[0, 1, 2].map((i) => <span key={i} className="h-1.5 w-6 rounded-full bg-ink/15" />)}</span>
+          </div>
+          <div className="rounded-xl bg-gradient-to-br from-brand to-brand-900 p-3 text-white">
+            <p className="text-sm font-bold leading-tight">Make every visit feel like the brand.</p>
+            <span className="mt-2 inline-block rounded-full bg-lime px-2.5 py-1 text-[9px] font-bold text-ink">Explore</span>
+          </div>
+          <div className="grid grid-cols-3 gap-1.5">
+            {["bg-lilac-100", "bg-brand/20", "bg-lime/60"].map((c) => (
+              <span key={c} className={`h-10 rounded-lg ${c}`} />
+            ))}
+          </div>
+        </div>
+      </Card>
+      {detailed && (
+        <Card className="flex items-center gap-3">
+          <div className="flex gap-1">
+            {["bg-brand", "bg-brand-900", "bg-lime", "bg-lilac-100"].map((c) => (
+              <span key={c} className={`size-6 rounded-full ${c}`} />
+            ))}
+          </div>
+          <div className="min-w-0 flex-1">
+            <p className="text-[11px] font-semibold">Aa · Poppins</p>
+            <p className="text-[9px] text-muted">Brand palette and type</p>
+          </div>
+        </Card>
+      )}
+    </div>
+  );
+}
+
+/* ---------- Design systems: tokens and components ---------- */
+function DesignSystemMockup({ detailed = false }: { detailed?: boolean }) {
+  return (
+    <div className="flex w-full max-w-[340px] flex-col gap-3">
+      <Card>
+        <div className="flex items-center justify-between">
+          <p className="text-sm font-semibold">Components</p>
+          <span className="rounded-full bg-lilac-100 px-2 py-0.5 text-[9px] font-semibold text-brand">v3.2</span>
+        </div>
+        <div className="mt-3 flex flex-wrap gap-1.5">
+          <span className="rounded-lg bg-brand px-3 py-1.5 text-[10px] font-semibold text-white">Primary</span>
+          <span className="rounded-lg border border-brand px-3 py-1.5 text-[10px] font-semibold text-brand">Secondary</span>
+          <span className="rounded-lg bg-canvas px-3 py-1.5 text-[10px] font-semibold text-ink/60">Ghost</span>
+        </div>
+        <div className="mt-3 flex items-center gap-2 rounded-lg border border-ink/10 px-2 py-1.5">
+          <span className="h-2 flex-1 rounded-full bg-ink/10" />
+          <span className="size-3 rounded-full border-2 border-brand" />
+        </div>
+        <div className="mt-3 flex items-center gap-2">
+          <span className="relative h-4 w-7 rounded-full bg-brand"><span className="absolute right-0.5 top-0.5 size-3 rounded-full bg-white" /></span>
+          <span className="flex size-4 items-center justify-center rounded bg-brand text-[9px] text-white">✓</span>
+          <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[9px] font-semibold text-emerald-700">Success</span>
+          <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[9px] font-semibold text-amber-700">Pending</span>
+        </div>
+      </Card>
+      <Card className="grid grid-cols-5 gap-1.5">
+        {["#3f0390", "#4c04a9", "#6505e7", "#7322ff", "#e1cbff"].map((c) => (
+          <div key={c} className="space-y-1">
+            <span className="block h-7 rounded-md" style={{ background: c }} />
+            <span className="block h-1 rounded bg-ink/10" />
+          </div>
+        ))}
+      </Card>
+      {detailed && (
+        <Card className="space-y-1.5">
+          {[24, 18, 14, 12].map((sz) => (
+            <div key={sz} className="flex items-baseline gap-2">
+              <span className="w-8 text-[9px] text-muted">{sz}px</span>
+              <span className="h-2 rounded bg-ink/70" style={{ width: sz * 5 }} />
+            </div>
+          ))}
+        </Card>
+      )}
+    </div>
+  );
+}
+
 export default function ProjectMockup({
   visual,
   detailed = false,
@@ -206,6 +297,10 @@ export default function ProjectMockup({
       return <TruckFillMockup detailed={detailed} />;
     case "receipt":
       return <RecipeStockMockup detailed={detailed} />;
+    case "brand":
+      return <BrandWebsiteMockup detailed={detailed} />;
+    case "system":
+      return <DesignSystemMockup detailed={detailed} />;
     case "tablets":
     case "monitor":
     default:

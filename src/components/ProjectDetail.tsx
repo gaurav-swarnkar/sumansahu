@@ -1,6 +1,6 @@
 import { motion } from "motion/react";
 import { projects } from "../data";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import ProjectDetailFullContent from "./ProjectDetailFullContent";
 import { useSplitVariants } from "../utils/transitions";
@@ -71,13 +71,24 @@ export default function ProjectDetail() {
   // While a menu click is smooth-scrolling, keep the clicked item highlighted
   const clickLockUntil = useRef(0);
 
+  // On desktop the content panel scrolls; on mobile the whole page does.
+  const panelScrolls = () => {
+    const panel = contentPanelRef.current;
+    return !!panel && panel.scrollHeight > panel.clientHeight + 1 && getComputedStyle(panel).overflowY !== "visible";
+  };
+  const MOBILE_TABS_OFFSET = 64; // height of the sticky tab bar + breathing room
+
   const scrollToSection = (index: number) => {
     setActiveContent(index);
     clickLockUntil.current = Date.now() + 1000;
     const sectionId = sectionIds[index];
     const element = contentPanelRef.current?.querySelector(`#${sectionId}`);
-    if (element) {
+    if (!element) return;
+    if (panelScrolls()) {
       element.scrollIntoView({ behavior: "smooth", block: "start" });
+    } else {
+      const top = element.getBoundingClientRect().top + window.scrollY - MOBILE_TABS_OFFSET;
+      window.scrollTo({ top, behavior: "smooth" });
     }
   };
 
@@ -90,8 +101,11 @@ export default function ProjectDetail() {
       clickLockUntil.current = Date.now() + 200;
       return;
     }
-    const panelTop = panel.getBoundingClientRect().top;
-    const atBottom = panel.scrollTop + panel.clientHeight >= panel.scrollHeight - 4;
+    const inPanel = panelScrolls();
+    const panelTop = inPanel ? panel.getBoundingClientRect().top : MOBILE_TABS_OFFSET - 160 + 80;
+    const atBottom = inPanel
+      ? panel.scrollTop + panel.clientHeight >= panel.scrollHeight - 4
+      : window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4;
     if (atBottom) {
       setActiveContent(sectionIds.length - 1);
       return;
@@ -106,6 +120,23 @@ export default function ProjectDetail() {
     }
     setActiveContent(0);
   };
+
+  // Mobile: the page itself scrolls, so track the active section on window scroll too
+  useEffect(() => {
+    const onScroll = () => {
+      if (!panelScrolls()) handleScroll();
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  });
+
+  // Keep the active mobile tab in view
+  const tabsRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const bar = tabsRef.current;
+    const tab = bar?.querySelector<HTMLElement>(`[data-tab="${activeContent}"]`);
+    if (bar && tab) bar.scrollTo({ left: tab.offsetLeft - bar.clientWidth / 2 + tab.clientWidth / 2, behavior: "smooth" });
+  }, [activeContent]);
 
   if (!project) {
     return (
@@ -125,18 +156,19 @@ export default function ProjectDetail() {
 
 
   return (
-    <section className="relative min-h-screen w-full overflow-hidden bg-canvas">
+    <section className="relative min-h-screen w-full overflow-x-clip bg-canvas">
       {/* warm + lime glows */}
       <div className="pointer-events-none absolute -left-32 top-4 size-[620px] rounded-full bg-[#fffcf4] blur-[110px]" />
       <div className="pointer-events-none absolute -left-24 -top-28 size-[440px] rounded-full bg-lime opacity-20 blur-[70px]" />
 
+      {/* warm + lime glows */}
       <div className="relative z-10 mx-auto grid min-h-screen w-full max-w-[1920px] grid-cols-1 lg:grid-cols-[minmax(360px,32%)_1fr]" style={{
         gridTemplateColumns: isSidebarCollapsed ? 'minmax(56px, 56px) 1fr' : undefined,
         transition: 'grid-template-columns 500ms ease-in-out'
       }}>
         {/* ---- sidebar nav ---- */}
         <motion.div variants={split.left} 
-          className="relative flex flex-col gap-10 overflow-hidden lg:max-h-screen overflow-y-auto"
+          className="relative hidden flex-col gap-10 overflow-hidden lg:flex lg:max-h-screen overflow-y-auto"
           style={{
             boxShadow: "12px 0 24px rgba(0, 0, 0, 0.08)",
             paddingLeft: isSidebarCollapsed ? '8px' : undefined,
@@ -148,7 +180,7 @@ export default function ProjectDetail() {
         >
           {/* Expanded State */}
           {!isSidebarCollapsed && (
-            <div className="px-4 py-12 lg:px-16 lg:py-20 flex flex-col gap-10">
+            <div className="px-4 py-12 lg:px-10 lg:py-20 xl:px-16 flex flex-col gap-10">
               {/* Breadcrumb: back + quick links to home and projects */}
               <nav aria-label="Breadcrumb" className="flex items-center gap-2">
                 <button
@@ -184,7 +216,7 @@ export default function ProjectDetail() {
               </nav>
 
               {/* Content Menu */}
-              <nav className="flex flex-col gap-5 pt-4 lg:gap-8 lg:pt-5">
+              <nav className="flex flex-col gap-5 pt-2 lg:gap-6">
                 {project.contents.map((content, index) => (
                   <button
                     key={content.id}
@@ -192,17 +224,15 @@ export default function ProjectDetail() {
                     className="group flex flex-col items-start text-left"
                   >
                     <span
-                      className={`font-semibold leading-tight transition-all duration-300 ${
+                      className={`flex max-w-full items-center gap-3 whitespace-nowrap font-semibold leading-tight transition-all duration-300 ${
                         index === activeContent
-                          ? "text-[clamp(22px,2.5vw,32px)] text-ink"
-                          : "text-[clamp(18px,2vw,24px)] text-ink/50 group-hover:text-ink"
+                          ? "text-[clamp(18px,1.6vw,26px)] text-ink"
+                          : "text-[clamp(15px,1.25vw,20px)] text-ink/50 group-hover:text-ink"
                       }`}
                     >
-                      {content.label}
-                      {/* dot sits right after the last word, even when the label wraps */}
-                      {index === activeContent && (
-                        <span className="ml-3 inline-block size-2.5 rounded-full bg-brand align-middle" />
-                      )}
+                      {/* always one line: long labels truncate rather than wrap */}
+                      <span className="truncate">{content.label}</span>
+                      {index === activeContent && <span className="size-2.5 shrink-0 rounded-full bg-brand" />}
                     </span>
                   </button>
                 ))}
@@ -272,9 +302,44 @@ export default function ProjectDetail() {
         <motion.div variants={split.right} 
           ref={contentPanelRef}
           onScroll={handleScroll}
-          className="relative min-h-[70vh] overflow-y-auto lg:max-h-screen lg:min-h-screen bg-gray-100/50"
+          className="relative min-h-[70vh] lg:overflow-y-auto lg:max-h-screen lg:min-h-screen bg-gray-100/50"
         >
-          <ProjectDetailFullContent projectId={projectId} project={project} />
+          <ProjectDetailFullContent
+            projectId={projectId}
+            project={project}
+            mobileNav={
+              <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-white">
+                <button onClick={goBack} aria-label="Go back" className="flex size-9 items-center justify-center rounded-full bg-white/15 backdrop-blur-sm">
+                  <ArrowForward className="size-4 rotate-180" />
+                </button>
+                <span className="mx-0.5 h-5 w-px bg-white/25" aria-hidden="true" />
+                <button onClick={() => navigate("/")} aria-label="Home" className="flex size-8 items-center justify-center rounded-full text-white/75">
+                  <HomeIcon className="size-4" />
+                </button>
+                <ChevronSmall className="size-3 text-white/40" />
+                <button onClick={() => navigate("/projects")} aria-label="Projects" className="flex size-8 items-center justify-center rounded-full text-white/75">
+                  <GridIcon className="size-4" />
+                </button>
+                <ChevronSmall className="size-3 text-white/40" />
+                <span className="truncate text-sm font-semibold">{project.word}</span>
+              </nav>
+            }
+            stickyTabs={
+              <div ref={tabsRef} className="hide-scrollbar flex gap-1 overflow-x-auto border-b border-ink/10 bg-white/95 px-3 shadow-sm backdrop-blur">
+                {project.contents.map((c, i) => (
+                  <button
+                    key={c.id}
+                    data-tab={i}
+                    onClick={() => scrollToSection(i)}
+                    className={`relative shrink-0 whitespace-nowrap px-3 py-3.5 text-sm font-semibold transition-colors ${i === activeContent ? "text-brand" : "text-ink/55"}`}
+                  >
+                    {c.label}
+                    {i === activeContent && <span className="absolute inset-x-3 bottom-0 h-0.5 rounded-full bg-brand" />}
+                  </button>
+                ))}
+              </div>
+            }
+          />
         </motion.div>
       </div>
     </section>

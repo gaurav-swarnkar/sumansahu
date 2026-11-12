@@ -33,7 +33,7 @@ export type Project = {
   title: string;
   pills: string[];
   panel: string; // background style for right panel
-  visual: "tablets" | "monitor" | "truck" | "receipt";
+  visual: "tablets" | "monitor" | "truck" | "receipt" | "brand" | "system";
   contents: ProjectContent[];
   experienceJourneys?: {
     before: ExperienceJourney[];
@@ -243,8 +243,8 @@ export const achievements: AchievementEntry[] = [
 export const projects: Project[] = [
   {
     id: "study-planner",
-    eyebrow: "UX FOR",
-    word: "Impact",
+    eyebrow: "01",
+    word: "Product & UX Design",
     title: "Personalized AI Study Planner for Students",
     pills: ["35%+ B2C Student Retention", "50%+ B2B Student Acquisition"],
     panel: "bg-brand",
@@ -338,9 +338,9 @@ export const projects: Project[] = [
   },
   {
     id: "truck-fill",
-    eyebrow: "AI FOR",
-    word: "Growth",
-    title: "Truck Fill AI Agent for Efficient Loading",
+    eyebrow: "02",
+    word: "AI Agent Design",
+    title: "AI-Powered Truck Loading & Optimization",
     pills: ["12% average load capacity improved for carriers"],
     panel: "bg-gradient-to-br from-brand-700 via-[#3d0079] to-[#1c0140]",
     visual: "truck",
@@ -395,9 +395,9 @@ export const projects: Project[] = [
   },
   {
     id: "recipe-stock",
-    eyebrow: "Agents for",
-    word: "Success",
-    title: "Receipt to Recipe to Stock Automation",
+    eyebrow: "03",
+    word: "Enterprise Workflows",
+    title: "Recipe-to-Inventory Automation System",
     pills: ["93% accurate stock estimates", "Daily stock count cut from 2 hrs to 15 min"],
     panel: "bg-gradient-to-br from-brand-800 to-[#2a0166]",
     visual: "receipt",
@@ -450,4 +450,37 @@ export const projects: Project[] = [
       ],
     },
   },
+  {
+    id: "brand-experience",
+    eyebrow: "04",
+    word: "Brand Experience",
+    title: "Brand Websites & Digital Experiences",
+    pills: ["Websites that tell the brand story", "Designed and shipped end to end"],
+    panel: "bg-gradient-to-br from-brand-700 to-[#1c0140]",
+    visual: "brand",
+    contents: [
+      { id: "project-summary", label: "Project Summary" },
+      { id: "challenge", label: "The Challenge" },
+      { id: "approach", label: "Approach" },
+      { id: "showcase", label: "Showcase" },
+      { id: "impact", label: "Conclusion" },
+    ],
+  },
+  {
+    id: "design-systems",
+    eyebrow: "05",
+    word: "Design Systems",
+    title: "Scalable Design Systems for SaaS Platforms",
+    pills: ["One system, many products", "Tokens to production components"],
+    panel: "bg-gradient-to-br from-brand-800 to-[#140033]",
+    visual: "system",
+    contents: [
+      { id: "project-summary", label: "Project Summary" },
+      { id: "challenge", label: "The Challenge" },
+      { id: "foundations", label: "Foundations" },
+      { id: "components", label: "Components" },
+      { id: "governance", label: "Adoption & Governance" },
+      { id: "impact", label: "Conclusion" },
+    ],
+  }
 ];
