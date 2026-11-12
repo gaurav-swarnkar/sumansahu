@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLightbulb, faCalendarDays, faFire, faClipboardList, faLock, faHeartBroken, faUsers, faChartLine, faCheckCircle, faClock, faChevronLeft, faChevronRight, faCheck, faXmark, faInfoCircle, faMagnifyingGlass, faFlask, faBrain, faCircleQuestion, faStar, faCircleXmark, faCircle, faMobileAlt, faDesktop, faChevronDown, faExpand, faCompress, faMoon, faSun, faPalette, faBars, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { faLightbulb, faCalendarDays, faFire, faClipboardList, faLock, faHeartBroken, faUsers, faChartLine, faCheckCircle, faClock, faChevronLeft, faChevronRight, faCheck, faXmark, faInfoCircle, faMagnifyingGlass, faFlask, faBrain, faCircleQuestion, faStar, faCircleXmark, faCircle, faMobileAlt, faDesktop, faChevronDown, faExpand, faCompress, faMoon, faSun, faPalette, faBars, faArrowLeft, faBullseye, faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
 import { motion } from "framer-motion";
 import sumansahuImage from "../imports/Main/suman_sahu.png";
 import student1 from "../imports/project_assets/student1.png";
@@ -35,6 +35,7 @@ import { Project } from "../data";
 import ProjectMockup, { FitGraphic } from "./ProjectMockups";
 import { projectBackgrounds } from "../utils/projectTheme";
 import TruckFillCaseStudy from "./case-studies/TruckFillCaseStudy";
+import RecipeStockCaseStudy from "./case-studies/RecipeStockCaseStudy";
 
 interface ProjectDetailFullContentProps {
   projectId?: string;
@@ -840,13 +841,15 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
 
       {project?.id === "truck-fill" ? (
         <TruckFillCaseStudy />
+      ) : project?.id === "recipe-stock" ? (
+        <RecipeStockCaseStudy />
       ) : (
       <div className="flex h-full flex-col px-4 py-12 lg:px-7 lg:py-20">
         <div className="space-y-24 max-w-4xl mx-auto w-full">
         
         {/* ===== SECTION 1: PROJECT SUMMARY ===== */}
         <section id="project-summary" className="space-y-8 scroll-mt-8">
-          <h1 className="text-4xl font-bold text-ink mt-20 mb-8">Project summary</h1>
+          <h1 className="text-4xl font-bold text-ink mb-8">Project summary</h1>
           
           <div className="space-y-4 max-w-3xl">
             <p className="text-base leading-relaxed text-ink/80">
@@ -1269,64 +1272,40 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
           {/* Core Outcomes */}
           <div className="space-y-6 pt-6">
             <h2 className="text-xl font-semibold text-ink">Core Outcomes</h2>
-            <div className="space-y-6">
-              {/* Outcome 1 */}
-              <div className="flex gap-6">
-                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-brand/10 flex items-center justify-center">
-                  <FontAwesomeIcon icon={faLightbulb} className="text-brand text-sm" />
+            <div className="grid gap-4 md:grid-cols-3">
+              {[
+                { icon: faLightbulb, title: "Less planning, more learning", text: <>Students no longer built a rigid timetable by hand. The system turned their goals and availability into an achievable daily plan.</> },
+                { icon: faCalendarDays, title: "Built for real student routines", text: <>The plan accounted for <strong>school, tuition, personal time, exams and changing schedules</strong>, so self-learning was easier to sustain.</> },
+                { icon: faFire, title: "From planning to habit", text: <>Attendance and streak mechanics gave students a visible sense of consistency and a reason to come back every day.</> },
+              ].map((o) => (
+                <div key={o.title} className="space-y-3 rounded-2xl bg-white p-6 shadow-sm ring-1 ring-ink/5">
+                  <span className="flex size-11 items-center justify-center rounded-xl bg-brand/10 text-brand">
+                    <FontAwesomeIcon icon={o.icon} className="size-5" />
+                  </span>
+                  <h3 className="text-lg font-semibold text-ink">{o.title}</h3>
+                  <p className="text-sm leading-relaxed text-ink/70">{o.text}</p>
                 </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-ink mt-6 mb-3">Less planning, more learning</h3>
-                  <p className="text-sm text-ink/60 mt-2">
-                    Students no longer had to manually build a rigid timetable—the system helped translate their goals and availability into an achievable daily plan.
-                  </p>
-                </div>
-              </div>
-
-              {/* Outcome 2 */}
-              <div className="flex gap-6">
-                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-brand/10 flex items-center justify-center">
-                  <FontAwesomeIcon icon={faCalendarDays} className="text-brand text-sm" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-ink mt-6 mb-3">Built for real student routines</h3>
-                  <p className="text-sm text-ink/60 mt-2">
-                    The experience accounted for <strong>school, tuition, personal time, exams, and changing schedules</strong>, making self-learning easier to sustain.
-                  </p>
-                </div>
-              </div>
-
-              {/* Outcome 3 */}
-              <div className="flex gap-6">
-                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-brand/10 flex items-center justify-center">
-                  <FontAwesomeIcon icon={faFire} className="text-brand text-sm" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-ink mt-6 mb-3">From planning to habit</h3>
-                  <p className="text-sm text-ink/60 mt-2">
-                    Attendance and streak mechanics gave students a visible sense of consistency and a reason to return every day.
-                  </p>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
 
           {/* My Role */}
-          <div className="space-y-6 pt-6">
+          <div className="space-y-4 pt-6">
             <h2 className="text-xl font-semibold text-ink">My Role</h2>
-            
-            <div className="flex gap-6">
-              {/* Profile Image */}
-              <div className="flex-shrink-0 w-20 h-20 rounded-full bg-brand/10 flex items-center justify-center overflow-hidden border-2 border-white shadow-md">
-                <img src={sumansahuImage} alt="Profile" className="w-full h-full object-cover" />
+            <div className="space-y-5 rounded-2xl bg-white p-6 shadow-sm ring-1 ring-ink/5">
+              <div className="flex flex-col gap-5 sm:flex-row sm:items-center">
+                <div className="size-28 shrink-0 overflow-hidden rounded-full border-4 border-white bg-lilac-100 shadow-lg ring-2 ring-brand/20">
+                  <img src={sumansahuImage} alt="Suman Sahu" className="h-full w-full object-cover" />
+                </div>
+                <div className="space-y-1">
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand">Product Designer</p>
+                  <h3 className="text-2xl font-bold text-ink">Suman Sahu</h3>
+                  <p className="text-sm text-ink/60">Polynomial.ai · Notesight · Personalised AI Study Planner</p>
+                </div>
               </div>
-              
-              <div className="flex-1 space-y-2">
-                <h3 className="text-lg font-semibold text-ink mt-6 mb-3">Product Designer from Polynomial.ai | Product: Notesight</h3>
-                <p className="text-sm text-ink/60">
-                  I redesigned Notesight's study-planning experience from a rigid timetable into an adaptive AI companion that fits study into students' real lives, driving consistency and deeper engagement.
-                </p>
-              </div>
+              <p className="text-base leading-relaxed text-ink/80">
+                I redesigned Notesight's study-planning experience from a rigid timetable into an adaptive AI companion that fits study into students' real lives, driving consistency and deeper engagement.
+              </p>
             </div>
           </div>
         </section>
@@ -1334,7 +1313,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
         {/* ===== SECTION 2: BUSINESS PROBLEM ===== */}
         <section id="business-problem" className="space-y-12 scroll-mt-8 mt-[120px]">
           <div>
-            <h1 className="text-4xl font-bold text-ink mt-20 mb-8">Business Usecases </h1>
+            <h1 className="text-4xl font-bold text-ink mt-20 mb-8">Business Usecase</h1>
             <div className="relative pl-8 border-l-4 border-brand py-6">
               <h2 className="text-3xl font-bold text-ink leading-tight mt-12 mb-6">
                 We brought students to Notesight, but <span className="text-brand">struggled to keep them learning.</span>
@@ -1554,100 +1533,51 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
             </div>
           </div>
 
-          {/* Key Problems */}
-          <div className="space-y-6">
-            <div className="flex gap-6">
-              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-brand/10 flex items-center justify-center">
-                <FontAwesomeIcon icon={faClipboardList} className="text-brand text-sm" />
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold text-ink mt-6 mb-3">Planning Burden</h3>
-                <p className="text-sm text-ink/60 mt-2">Students had to create and manage their own study schedules.</p>
-              </div>
-            </div>
-            
-            <div className="flex gap-6">
-              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-brand/10 flex items-center justify-center">
-                <FontAwesomeIcon icon={faLock} className="text-brand text-sm" />
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold text-ink mt-6 mb-3">Rigid Schedules</h3>
-                <p className="text-sm text-ink/60 mt-2">Study plans didn't adapt to students' changing routines and commitments.</p>
-              </div>
-            </div>
-            
-            <div className="flex gap-6">
-              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-brand/10 flex items-center justify-center">
-                <FontAwesomeIcon icon={faHeartBroken} className="text-brand text-sm" />
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold text-ink mt-6 mb-3">Lack of Motivation</h3>
-                <p className="text-sm text-ink/60 mt-2">The experience didn't provide enough motivation to build a consistent study habit.</p>
-              </div>
+          {/* Root causes */}
+          <div className="space-y-4">
+            <h2 className="text-2xl font-bold text-ink">Why it happened</h2>
+            <div className="grid gap-4 md:grid-cols-3">
+              {[
+                { icon: faClipboardList, title: "Planning burden", text: "Students had to create and manage their own study schedules." },
+                { icon: faLock, title: "Rigid schedules", text: "Study plans didn't adapt to students' changing routines and commitments." },
+                { icon: faHeartBroken, title: "Lack of motivation", text: "Nothing in the experience helped students build a consistent study habit." },
+              ].map((c) => (
+                <div key={c.title} className="space-y-3 rounded-2xl bg-white p-6 shadow-sm ring-1 ring-ink/5">
+                  <span className="flex size-11 items-center justify-center rounded-xl bg-amber-100 text-amber-600">
+                    <FontAwesomeIcon icon={c.icon} className="size-5" />
+                  </span>
+                  <h3 className="text-lg font-semibold text-ink">{c.title}</h3>
+                  <p className="text-sm leading-relaxed text-ink/70">{c.text}</p>
+                </div>
+              ))}
             </div>
           </div>
 
           {/* Business Objectives */}
-          <div className="space-y-8 pt-8">
-            <h2 className="text-3xl font-bold text-ink mt-12 mb-6">Business Objectives</h2>
-            
-            <div className="space-y-6">
-              {/* Objective 1 */}
-              <div className="rounded-lg bg-white/90 backdrop-blur-sm p-8 space-y-4 transition-all duration-300 hover:bg-white hover:shadow-lg" onMouseEnter={(e) => {
-                const num = e.currentTarget.querySelector('.objective-number') as HTMLElement;
-                if (num) num.style.color = '#a855f7';
-              }} onMouseLeave={(e) => {
-                const num = e.currentTarget.querySelector('.objective-number') as HTMLElement;
-                if (num) num.style.color = 'inherit';
-              }}>
-                <div className="flex items-start gap-6">
-                  <div className="objective-number text-7xl font-bold text-brand/30 transition-colors duration-300">01</div>
-                  <div className="space-y-3 flex-1">
-                    <h3 className="text-lg font-semibold text-ink mt-6 mb-3">Improve Retention</h3>
-                    <p className="text-base text-ink/70">
-                      Increase Day-7 retention from <strong>10% to 25%</strong> and build stronger long-term usage.
-                    </p>
+          <div className="space-y-6 pt-8">
+            <h2 className="text-3xl font-bold text-ink">Business Objectives</h2>
+            <div className="grid gap-4 md:grid-cols-3">
+              {[
+                { n: "01", title: "Improve retention", text: <>Lift Day-7 retention from <strong>10% to 25%</strong> and build stronger long-term usage.</>, target: "25% Day-7 retention", achieved: "37% achieved" },
+                { n: "02", title: "Increase learning activity", text: <>Drive <strong>20–30% higher engagement</strong> and more meaningful AI learning interactions.</>, target: "+20–30% engagement", achieved: "3× daily learning time" },
+                { n: "03", title: "Build daily usage", text: <>Create a daily learning habit through <strong>streaks and recurring study sessions</strong>, with less need for external nudges.</>, target: "A self-sustaining habit", achieved: null },
+              ].map((o) => (
+                <div key={o.n} className="flex flex-col rounded-2xl bg-white p-6 shadow-sm ring-1 ring-ink/5">
+                  <span className="text-5xl font-bold text-brand/25">{o.n}</span>
+                  <h3 className="mt-3 text-lg font-semibold text-ink">{o.title}</h3>
+                  <p className="mt-2 flex-1 text-sm leading-relaxed text-ink/70">{o.text}</p>
+                  <div className="mt-5 flex flex-wrap gap-2 border-t border-ink/5 pt-4 text-xs font-semibold">
+                    <span className="flex items-center gap-1.5 rounded-full bg-lilac-100/60 px-2.5 py-1 text-brand-800">
+                      <FontAwesomeIcon icon={faBullseye} className="size-3" /> {o.target}
+                    </span>
+                    {o.achieved && (
+                      <span className="flex items-center gap-1.5 rounded-full bg-green-100 px-2.5 py-1 text-green-700">
+                        <FontAwesomeIcon icon={faCheckCircle} className="size-3" /> {o.achieved}
+                      </span>
+                    )}
                   </div>
                 </div>
-              </div>
-
-              {/* Objective 2 */}
-              <div className="rounded-lg bg-white/90 backdrop-blur-sm p-8 space-y-4 transition-all duration-300 hover:bg-white hover:shadow-lg" onMouseEnter={(e) => {
-                const num = e.currentTarget.querySelector('.objective-number') as HTMLElement;
-                if (num) num.style.color = '#a855f7';
-              }} onMouseLeave={(e) => {
-                const num = e.currentTarget.querySelector('.objective-number') as HTMLElement;
-                if (num) num.style.color = 'inherit';
-              }}>
-                <div className="flex items-start gap-6">
-                  <div className="objective-number text-7xl font-bold text-brand/30 transition-colors duration-300">02</div>
-                  <div className="space-y-3 flex-1">
-                    <h3 className="text-lg font-semibold text-ink mt-6 mb-3">Increase Learning Activity</h3>
-                    <p className="text-base text-ink/70">
-                      Drive <strong>20–30% higher engagement</strong> and increase meaningful AI learning interactions.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Objective 3 */}
-              <div className="rounded-lg bg-white/90 backdrop-blur-sm p-8 space-y-4 transition-all duration-300 hover:bg-white hover:shadow-lg" onMouseEnter={(e) => {
-                const num = e.currentTarget.querySelector('.objective-number') as HTMLElement;
-                if (num) num.style.color = '#a855f7';
-              }} onMouseLeave={(e) => {
-                const num = e.currentTarget.querySelector('.objective-number') as HTMLElement;
-                if (num) num.style.color = 'inherit';
-              }}>
-                <div className="flex items-start gap-6">
-                  <div className="objective-number text-7xl font-bold text-brand/30 transition-colors duration-300">03</div>
-                  <div className="space-y-3 flex-1">
-                    <h3 className="text-lg font-semibold text-ink mt-6 mb-3">Build Daily Usage</h3>
-                    <p className="text-base text-ink/70">
-                      Create a consistent daily learning habit through <strong>streaks and recurring study sessions</strong>, reducing dependence on external interventions.
-                    </p>
-                  </div>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </section>
@@ -2097,32 +2027,19 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
               <p className="text-sm text-ink/50 pt-1">To design a planning experience that truly works for students, we need to answer these questions through focused research with real users.</p>
             </div>
 
-            {/* Research Questions - Simple List */}
-            <div className="space-y-3">
-              {/* Q1: Planning Fit */}
-              <div className="py-3 px-0 border-b border-ink/5">
-                <p className="text-base text-ink">What makes a study plan realistic and adaptable to a student's everyday life?</p>
-              </div>
-
-              {/* Q2: Planning Effort */}
-              <div className="py-3 px-0 border-b border-ink/5">
-                <p className="text-base text-ink">What makes planning difficult or time-consuming for students, and where could the experience provide more guidance?</p>
-              </div>
-
-              {/* Q3: Trust & Motivation */}
-              <div className="py-3 px-0 border-b border-ink/5">
-                <p className="text-base text-ink">What influences a student's trust and confidence in a study plan?</p>
-              </div>
-
-              {/* Q4: Habit & Adoption */}
-              <div className="py-3 px-0 border-b border-ink/5">
-                <p className="text-base text-ink">What factors influence students to develop and maintain a consistent study habit?</p>
-              </div>
-
-              {/* Q5: Progressive Learning */}
-              <div className="py-3 px-0">
-                <p className="text-base text-ink">How do students understand their progress toward a goal, and what helps them move forward?</p>
-              </div>
+            <div className="grid gap-3 md:grid-cols-2">
+              {[
+                "What makes a study plan realistic and adaptable to a student's everyday life?",
+                "What makes planning difficult or time-consuming for students, and where could the experience provide more guidance?",
+                "What influences a student's trust and confidence in a study plan?",
+                "What factors influence students to develop and maintain a consistent study habit?",
+                "How do students understand their progress toward a goal, and what helps them move forward?",
+              ].map((q, i) => (
+                <div key={q} className="flex gap-4 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-ink/5">
+                  <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-lilac-100 text-sm font-bold text-brand">{i + 1}</span>
+                  <p className="text-sm leading-relaxed text-ink/80">{q}</p>
+                </div>
+              ))}
             </div>
           </div>
 
@@ -2522,47 +2439,22 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
               <p className="text-sm text-ink/50 pt-1">Understanding how existing products address these questions helps us identify gaps and opportunities in the market.</p>
             </div>
 
-            {/* Research Questions - Simple List */}
-            <div className="space-y-3">
-              {/* Q1 */}
-              <div className="py-3 px-0 border-b border-ink/5">
-                <p className="text-base text-ink">How do existing products help students create study plans that are realistic and achievable?</p>
-              </div>
-
-              {/* Q2 */}
-              <div className="py-3 px-0 border-b border-ink/5">
-                <p className="text-base text-ink">How do they help students adapt their plans when schedules or priorities change?</p>
-              </div>
-
-              {/* Q3 */}
-              <div className="py-3 px-0 border-b border-ink/5">
-                <p className="text-base text-ink">How do they help students recover after missed or incomplete study sessions?</p>
-              </div>
-
-              {/* Q4 */}
-              <div className="py-3 px-0 border-b border-ink/5">
-                <p className="text-base text-ink">How do they reduce the effort of planning through recommendations, automation, or intelligent suggestions?</p>
-              </div>
-
-              {/* Q5 */}
-              <div className="py-3 px-0 border-b border-ink/5">
-                <p className="text-base text-ink">How do they build trust and transparency around their study recommendations?</p>
-              </div>
-
-              {/* Q6 */}
-              <div className="py-3 px-0 border-b border-ink/5">
-                <p className="text-base text-ink">How do they motivate students to consistently follow their study plans and build learning habits?</p>
-              </div>
-
-              {/* Q7 */}
-              <div className="py-3 px-0 border-b border-ink/5">
-                <p className="text-base text-ink">How do they help students understand what to do next and make progress toward their goals?</p>
-              </div>
-
-              {/* Q8 */}
-              <div className="py-3 px-0">
-                <p className="text-base text-ink">How do they measure learning progress beyond task completion or time spent?</p>
-              </div>
+            <div className="grid gap-3 md:grid-cols-2">
+              {[
+                "How do existing products help students create study plans that are realistic and achievable?",
+                "How do they help students adapt their plans when schedules or priorities change?",
+                "How do they help students recover after missed or incomplete study sessions?",
+                "How do they reduce the effort of planning through recommendations, automation, or intelligent suggestions?",
+                "How do they build trust and transparency around their study recommendations?",
+                "How do they motivate students to consistently follow their study plans and build learning habits?",
+                "How do they help students understand what to do next and make progress toward their goals?",
+                "How do they measure learning progress beyond task completion or time spent?",
+              ].map((q) => (
+                <div key={q} className="flex gap-3 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-ink/5">
+                  <FontAwesomeIcon icon={faMagnifyingGlass} className="mt-1 size-4 shrink-0 text-brand" />
+                  <p className="text-sm leading-relaxed text-ink/80">{q}</p>
+                </div>
+              ))}
             </div>
           </div>
 
@@ -3022,26 +2914,62 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
         
         {/* ===== SECTION 5: DESIGN STRATEGY ===== */}
         <section id="design-strategy" className="space-y-8 scroll-mt-8 mt-[120px]">
-          <h1 className="text-4xl font-bold text-ink mt-20 mb-8">Design Strategy</h1>
-          <p className="text-base text-ink/60">Content coming soon...</p>
+          <h1 className="text-4xl font-bold text-ink mt-20 mb-8">Design Process</h1>
+          <div className="rounded-2xl border-2 border-dashed border-brand/20 bg-white/60 p-6">
+            <p className="mb-3 flex items-center gap-2 text-sm font-semibold text-brand">
+              <FontAwesomeIcon icon={faClock} className="size-3.5" /> This chapter is being written
+            </p>
+            <ul className="grid gap-2 sm:grid-cols-2">
+              {['Design principles', 'Information architecture and flows', 'Explorations and key decisions', 'How the AI plan stays explainable'].map((t) => (
+                <li key={t} className="flex gap-2 text-sm text-ink/70"><FontAwesomeIcon icon={faCheck} className="mt-1 size-3 text-brand/60" />{t}</li>
+              ))}
+            </ul>
+          </div>
         </section>
 
         {/* ===== SECTION 6: SOLUTION ===== */}
         <section id="solution" className="space-y-8 scroll-mt-8 mt-[120px]">
-          <h1 className="text-4xl font-bold text-ink mt-20 mb-8">Solution</h1>
-          <p className="text-base text-ink/60">Content coming soon...</p>
+          <h1 className="text-4xl font-bold text-ink mt-20 mb-8">Concept and Solution</h1>
+          <div className="rounded-2xl border-2 border-dashed border-brand/20 bg-white/60 p-6">
+            <p className="mb-3 flex items-center gap-2 text-sm font-semibold text-brand">
+              <FontAwesomeIcon icon={faClock} className="size-3.5" /> This chapter is being written
+            </p>
+            <ul className="grid gap-2 sm:grid-cols-2">
+              {['The adaptive planning experience', 'Recovery when a session is missed', 'Streaks and progress that build habit', 'Before and after walkthrough'].map((t) => (
+                <li key={t} className="flex gap-2 text-sm text-ink/70"><FontAwesomeIcon icon={faCheck} className="mt-1 size-3 text-brand/60" />{t}</li>
+              ))}
+            </ul>
+          </div>
         </section>
 
         {/* ===== SECTION 7: VALIDATION ===== */}
         <section id="validation" className="space-y-8 scroll-mt-8 mt-[120px]">
-          <h1 className="text-4xl font-bold text-ink mt-20 mb-8">Validation</h1>
-          <p className="text-base text-ink/60">Content coming soon...</p>
+          <h1 className="text-4xl font-bold text-ink mt-20 mb-8">User Validation</h1>
+          <div className="rounded-2xl border-2 border-dashed border-brand/20 bg-white/60 p-6">
+            <p className="mb-3 flex items-center gap-2 text-sm font-semibold text-brand">
+              <FontAwesomeIcon icon={faClock} className="size-3.5" /> This chapter is being written
+            </p>
+            <ul className="grid gap-2 sm:grid-cols-2">
+              {['How we tested with students', 'What we changed after testing', 'Usability results'].map((t) => (
+                <li key={t} className="flex gap-2 text-sm text-ink/70"><FontAwesomeIcon icon={faCheck} className="mt-1 size-3 text-brand/60" />{t}</li>
+              ))}
+            </ul>
+          </div>
         </section>
 
         {/* ===== SECTION 8: IMPACT ===== */}
         <section id="impact" className="space-y-8 scroll-mt-8 mt-[120px]">
-          <h1 className="text-4xl font-bold text-ink mt-20 mb-8">Impact</h1>
-          <p className="text-base text-ink/60">Content coming soon...</p>
+          <h1 className="text-4xl font-bold text-ink mt-20 mb-8">Conclusion</h1>
+          <div className="rounded-2xl border-2 border-dashed border-brand/20 bg-white/60 p-6">
+            <p className="mb-3 flex items-center gap-2 text-sm font-semibold text-brand">
+              <FontAwesomeIcon icon={faClock} className="size-3.5" /> This chapter is being written
+            </p>
+            <ul className="grid gap-2 sm:grid-cols-2">
+              {['Outcomes against the business objectives', 'What I learned', "What's next"].map((t) => (
+                <li key={t} className="flex gap-2 text-sm text-ink/70"><FontAwesomeIcon icon={faCheck} className="mt-1 size-3 text-brand/60" />{t}</li>
+              ))}
+            </ul>
+          </div>
         </section>
 
         </div>

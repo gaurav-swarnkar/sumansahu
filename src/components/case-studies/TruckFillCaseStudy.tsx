@@ -1,7 +1,15 @@
 import { useState, type ReactNode } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+import { AnimatePresence, motion } from "motion/react";
 import sumansahuImage from "../../imports/Main/suman_sahu.png";
+import imgPriya from "../../imports/truck_fill/persona_priya.jpg";
+import imgRamesh from "../../imports/truck_fill/persona_ramesh.jpg";
+import imgArjun from "../../imports/truck_fill/persona_arjun.jpg";
+import imgTruckHighway from "../../imports/truck_fill/truck_highway.jpg";
+import imgWarehouseFloor from "../../imports/truck_fill/warehouse_floor.jpg";
+import imgBoxesDock from "../../imports/truck_fill/boxes_dock.jpg";
+import imgTruckRoad from "../../imports/truck_fill/truck_road.jpg";
 import {
   faTruck,
   faBoxesStacked,
@@ -113,376 +121,13 @@ function Disclaimer() {
 /* 1. Project summary: impact metrics                                  */
 /* ------------------------------------------------------------------ */
 
-type MetricKey = "fill" | "accept" | "trips" | "time" | "damage";
-
-const metricTiles: { key: MetricKey; label: string; before: string; after: string; delta: string; up: boolean }[] = [
-  { key: "fill", label: "Fill rate", before: "71%", after: "83%", delta: "+12 pts", up: true },
-  { key: "accept", label: "Plan acceptance", before: "21%", after: "76%", delta: "3.6×", up: true },
-  { key: "trips", label: "Trips needed", before: "100", after: "86", delta: "−14%", up: false },
-  { key: "time", label: "Plan to dispatch", before: "52 min", after: "34 min", delta: "−35%", up: false },
-  { key: "damage", label: "Damage claims", before: "3.2%", after: "2.0%", delta: "−38%", up: false },
-];
-
-const fillByMonth = [70, 71, 70, 72, 71, 71, 74, 77, 79, 81, 82, 83];
-const months = ["J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D"];
-
-/** Semi-circle gauge with before/after needles, plus a month-by-month heat strip */
-function FillGauge() {
-  const cx = 150;
-  const cy = 140;
-  const r = 110;
-  const angle = (v: number) => Math.PI * (1 - (v - 50) / 50); // 50%..100% mapped to 180°..0°
-  const pt = (v: number, rr = r) => [cx + rr * Math.cos(angle(v)), cy - rr * Math.sin(angle(v))];
-  const arc = (from: number, to: number) => {
-    const [x1, y1] = pt(from);
-    const [x2, y2] = pt(to);
-    return `M${x1},${y1} A${r},${r} 0 0 1 ${x2},${y2}`;
-  };
-  const needle = (v: number, color: string, w: number) => {
-    const [x, y] = pt(v, r - 22);
-    return <line x1={cx} y1={cy} x2={x} y2={y} stroke={color} strokeWidth={w} strokeLinecap="round" />;
-  };
-  const heat = (v: number) => {
-    const t = (v - 68) / 16;
-    return `rgba(115, 34, 255, ${0.15 + Math.max(0, Math.min(1, t)) * 0.85})`;
-  };
-  return (
-    <div className="grid items-center gap-6 md:grid-cols-[300px_1fr]">
-      <div className="mx-auto w-full max-w-[300px]">
-      <svg viewBox="0 0 300 170" className="w-full" role="img" aria-label="Fill rate gauge: 71% before, 83% after">
-        <path d={arc(50, 100)} fill="none" stroke="#ede9fe" strokeWidth="22" strokeLinecap="round" />
-        <path d={arc(71, 83)} fill="none" stroke="#7322ff" strokeWidth="22" />
-        <path d={arc(80, 100)} fill="none" stroke="#bbf7d0" strokeWidth="6" transform="translate(0,0)" />
-        {needle(71, "#c4b5fd", 4)}
-        {needle(83, "#18033b", 5)}
-        <circle cx={cx} cy={cy} r="8" fill="#18033b" />
-        <text x="28" y="160" fontSize="10" fill="#7d7192">50%</text>
-        <text x="252" y="160" fontSize="10" fill="#7d7192">100%</text>
-        <text x={pt(90, r + 18)[0]} y={pt(90, r + 18)[1]} fontSize="9" fill="#16a34a" textAnchor="middle">target zone</text>
-      </svg>
-      <div className="-mt-1 flex items-center justify-center gap-5 text-sm">
-        <span className="flex items-center gap-1.5 text-ink/60"><span className="h-1 w-4 rounded-full bg-lilac" />Before <strong className="text-ink/70">71%</strong></span>
-        <span className="flex items-center gap-1.5 text-ink"><span className="h-1 w-4 rounded-full bg-ink" />After <strong className="text-2xl">83%</strong></span>
-      </div>
-      </div>
-      <div className="space-y-3">
-        <p className="text-sm font-medium text-ink">Fill rate by month, 2025</p>
-        <div className="grid grid-cols-12 gap-1">
-          {fillByMonth.map((v, i) => (
-            <div key={i} className="space-y-1 text-center">
-              <div className={`flex aspect-square items-center justify-center rounded-md text-[10px] font-semibold ${v >= 77 ? "text-white" : "text-ink/70"}`} style={{ background: heat(v) }} title={`${v}%`}>
-                {v}
-              </div>
-              <span className="text-[10px] text-ink/50">{months[i]}</span>
-            </div>
-          ))}
-        </div>
-        <p className="text-xs text-ink/60">The agent launched in July. Fill climbed every month as more fleets came on board.</p>
-      </div>
-    </div>
-  );
-}
-
-/** Slope chart: plan acceptance before vs after */
-function AcceptanceSlope() {
-  const rows = [
-    { label: "Planners", before: 21, after: 76, color: "#7322ff", dy: 10 },
-    { label: "Dock supervisors", before: 34, after: 81, color: "#f97316", dy: -6 },
-    { label: "Truck owners", before: 12, after: 58, color: "#0ea5e9", dy: 0 },
-  ];
-  const y = (v: number) => 180 - v * 1.6;
-  return (
-    <div className="grid items-center gap-6 md:grid-cols-[1fr_220px]">
-      <svg viewBox="0 0 360 200" className="w-full" role="img" aria-label="Plan acceptance rose for every role">
-        <text x="60" y="196" fontSize="11" fill="#7d7192" textAnchor="middle">Before</text>
-        <text x="300" y="196" fontSize="11" fill="#7d7192" textAnchor="middle">After</text>
-        <line x1="60" x2="60" y1="10" y2="182" stroke="#18033b" strokeOpacity="0.1" />
-        <line x1="300" x2="300" y1="10" y2="182" stroke="#18033b" strokeOpacity="0.1" />
-        {rows.map((r) => (
-          <g key={r.label}>
-            <line x1="60" y1={y(r.before)} x2="300" y2={y(r.after)} stroke={r.color} strokeWidth="3" />
-            <circle cx="60" cy={y(r.before)} r="5" fill="white" stroke={r.color} strokeWidth="3" />
-            <circle cx="300" cy={y(r.after)} r="6" fill={r.color} />
-            <text x="48" y={y(r.before) + 4} fontSize="11" fill="#4b4259" textAnchor="end">{r.before}%</text>
-            <text x="312" y={y(r.after) + 4 + r.dy} fontSize="12" fontWeight="700" fill={r.color}>{r.after}%</text>
-          </g>
-        ))}
-      </svg>
-      <div className="space-y-3">
-        {rows.map((r) => (
-          <p key={r.label} className="flex items-center gap-2 text-sm text-ink/80"><span className="size-3 rounded-full" style={{ background: r.color }} />{r.label}</p>
-        ))}
-        <p className="text-xs text-ink/60">Share of plans used as suggested, without manual rework. Trust grew once every placement came with a reason.</p>
-      </div>
-    </div>
-  );
-}
-
-function TruckIcon({ faded = false, partial = 1 }: { faded?: boolean; partial?: number }) {
-  return (
-    <svg viewBox="0 0 40 24" className="h-7 w-auto" aria-hidden="true">
-      <defs>
-        <clipPath id={`tp-${partial}`}><rect x="0" y="0" width={40 * partial} height="24" /></clipPath>
-      </defs>
-      <g opacity={faded ? 0.18 : 1} clipPath={partial < 1 ? `url(#tp-${partial})` : undefined}>
-        <rect x="1" y="3" width="24" height="14" rx="2" fill="#7322ff" />
-        <path d="M26 7h7l5 5v5H26z" fill="#4c04a9" />
-        <circle cx="8" cy="20" r="3" fill="#18033b" />
-        <circle cx="31" cy="20" r="3" fill="#18033b" />
-      </g>
-    </svg>
-  );
-}
-
-/** Pictogram: 10 trucks before vs 8.6 after */
-function TripsPictogram() {
-  return (
-    <div className="space-y-5">
-      {[
-        { label: "Before", trucks: 10, text: "100 trips" },
-        { label: "After", trucks: 8.6, text: "86 trips" },
-      ].map((row) => (
-        <div key={row.label} className="grid grid-cols-[60px_1fr_auto] items-center gap-3">
-          <span className="text-sm font-medium text-ink/70">{row.label}</span>
-          <div className="flex flex-wrap gap-1.5">
-            {Array.from({ length: 10 }, (_, i) => {
-              const remaining = row.trucks - i;
-              if (remaining >= 1) return <TruckIcon key={i} />;
-              if (remaining > 0) return <TruckIcon key={i} partial={remaining} />;
-              return <TruckIcon key={i} faded />;
-            })}
-          </div>
-          <span className="text-sm font-bold text-ink">{row.text}</span>
-        </div>
-      ))}
-      <p className="text-xs text-ink/60">Each truck = 10 trips needed to move 1,000 pallets a week. Faded trucks are trips we no longer need.</p>
-    </div>
-  );
-}
-
-/** Waterfall: 52 min → savings by stage → 34 min */
-function TimeWaterfall() {
-  const steps = [
-    { label: "Before", value: 52, type: "total" as const },
-    { label: "Planning", value: -8, type: "delta" as const },
-    { label: "Finding items", value: -3, type: "delta" as const },
-    { label: "Loading", value: -1, type: "delta" as const },
-    { label: "Re-stacking", value: -6, type: "delta" as const },
-    { label: "After", value: 34, type: "total" as const },
-  ];
-  const W = 520;
-  const H = 210;
-  const max = 56;
-  const barW = 56;
-  const gap = (W - 40 - steps.length * barW) / (steps.length - 1);
-  const yv = (v: number) => H - 30 - (v / max) * (H - 50);
-  let running = 0;
-  return (
-    <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-auto" role="img" aria-label="Plan-to-dispatch time fell from 52 to 34 minutes">
-      {steps.map((s, i) => {
-        const x = 20 + i * (barW + gap);
-        let top: number;
-        let bottom: number;
-        if (s.type === "total") {
-          top = s.value;
-          bottom = 0;
-          running = s.value;
-        } else {
-          top = running;
-          bottom = running + s.value;
-          running = bottom;
-        }
-        const fill = s.type === "total" ? (i === 0 ? "#c4b5fd" : "#7322ff") : "#34d399";
-        return (
-          <g key={s.label}>
-            <rect x={x} y={yv(top)} width={barW} height={yv(bottom) - yv(top)} rx="6" fill={fill} />
-            <text x={x + barW / 2} y={yv(top) - 6} fontSize="12" fontWeight="700" fill="#18033b" textAnchor="middle">
-              {s.type === "total" ? `${s.value}m` : `${s.value}m`}
-            </text>
-            <text x={x + barW / 2} y={H - 10} fontSize="10" fill="#7d7192" textAnchor="middle">{s.label}</text>
-            {i < steps.length - 1 && (
-              <line x1={x + barW} x2={x + barW + gap} y1={yv(running)} y2={yv(running)} stroke="#18033b" strokeOpacity="0.2" strokeDasharray="3 3" />
-            )}
-          </g>
-        );
-      })}
-    </svg>
-  );
-}
-
-/** Icon grid: damaged shipments per 1,000 */
-function DamageGrid() {
-  const Box = ({ bad, tone }: { bad: boolean; tone: string }) => (
-    <span className={`aspect-square w-full rounded-[3px] ${bad ? tone : "bg-ink/10"}`} />
-  );
-  return (
-    <div className="grid gap-6 sm:grid-cols-2">
-      {[
-        { label: "Before", count: 32, tone: "bg-red-400" },
-        { label: "After", count: 20, tone: "bg-brand" },
-      ].map((g) => (
-        <div key={g.label} className="space-y-3">
-          <div className="flex items-baseline justify-between">
-            <span className="text-sm font-medium text-ink/70">{g.label}</span>
-            <span className="text-lg font-bold text-ink">{g.count} <span className="text-xs font-normal text-ink/50">per 1,000 shipments</span></span>
-          </div>
-          <div className="grid max-w-[240px] grid-cols-10 gap-1">
-            {Array.from({ length: 40 }, (_, i) => (
-              <Box key={i} bad={i < g.count} tone={g.tone} />
-            ))}
-          </div>
-        </div>
-      ))}
-      <p className="text-xs text-ink/60 sm:col-span-2">Each coloured square is one shipment with a damage claim, in every 1,000 shipped. Fragile and stacking rules are now part of every plan.</p>
-    </div>
-  );
-}
-
-function ImpactHighlights() {
-  const [selected, setSelected] = useState<MetricKey>("fill");
-  const charts: Record<MetricKey, { title: string; note: string; chart: ReactNode }> = {
-    fill: { title: "Average fill rate", note: "Volume used per dispatched truck", chart: <FillGauge /> },
-    accept: { title: "Plan acceptance", note: "Plans used as suggested, without manual rework", chart: <AcceptanceSlope /> },
-    trips: { title: "Trips per 1,000 pallets", note: "Same freight, fewer trucks on the road", chart: <TripsPictogram /> },
-    time: { title: "Where the time went", note: "Minutes per truck, from plan to dispatch", chart: <TimeWaterfall /> },
-    damage: { title: "Damage claims", note: "Shipments with a damage claim", chart: <DamageGrid /> },
-  };
-  return (
-    <div className="space-y-6">
-      <div className="grid grid-cols-2 gap-3 md:grid-cols-5">
-        {metricTiles.map((m) => {
-          const isActive = m.key === selected;
-          return (
-            <button
-              key={m.key}
-              onClick={() => setSelected(m.key)}
-              className={`group relative overflow-hidden rounded-2xl p-4 text-left transition-all ${
-                isActive ? "bg-ink text-white shadow-lg" : "bg-white text-ink ring-1 ring-ink/5 hover:ring-brand/30"
-              }`}
-            >
-              <p className={`text-xs font-medium ${isActive ? "text-white/70" : "text-ink/60"}`}>{m.label}</p>
-              <p className="mt-1 text-2xl font-bold">{m.after}</p>
-              <p className={`mt-1 flex items-center gap-1 text-xs font-semibold ${isActive ? "text-lime" : "text-emerald-600"}`}>
-                <FontAwesomeIcon icon={m.up ? faArrowTrendUp : faArrowTrendDown} className="size-3" />
-                {m.delta}
-              </p>
-              <p className={`text-[11px] ${isActive ? "text-white/50" : "text-ink/40"}`}>from {m.before}</p>
-              {isActive && <span className="absolute inset-x-0 bottom-0 h-1 bg-lime" />}
-            </button>
-          );
-        })}
-      </div>
-      <Card>
-        <h3 className="text-xl font-semibold text-ink">{charts[selected].title}</h3>
-        <p className="mb-6 text-sm text-ink/60">{charts[selected].note}</p>
-        {charts[selected].chart}
-      </Card>
-    </div>
-  );
-}
-
 /* ------------------------------------------------------------------ */
 /* 1b. Context: the story and how truck fill works                     */
 /* ------------------------------------------------------------------ */
 
-function StoryTimeline() {
-  const steps = [
-    { title: "An optimiser nobody used", text: "Let's Transport had a load-optimisation engine. Planners exported its output and re-did plans in Excel." },
-    { title: "Pressure from both sides", text: "Shippers pushed for lower freight cost. Carriers complained about part-loads and slow drops." },
-    { title: "A failed walkthrough", text: "An end-to-end review with leadership exposed broken hand-offs from plan to dock to road." },
-    { title: "The real problem", text: "The maths was fine. People couldn't see, trust or act on the plan, and carriers had no way in at all." },
-    { title: "Where I came in", text: "I took the experience end to end: research, flows across four roles, testing and the pilot." },
-  ];
-  return (
-    <ol className="relative grid gap-4 md:grid-cols-5">
-      <span className="absolute left-0 right-0 top-5 hidden h-0.5 bg-gradient-to-r from-lilac-100 via-brand/40 to-brand md:block" aria-hidden="true" />
-      {steps.map((s, i) => (
-        <li key={s.title} className="relative space-y-2">
-          <span className={`relative z-10 flex size-10 items-center justify-center rounded-full text-sm font-bold ${i === steps.length - 1 ? "bg-brand text-white" : "bg-white text-brand ring-2 ring-brand/30"}`}>
-            {String(i + 1).padStart(2, "0")}
-          </span>
-          <p className="font-semibold text-ink">{s.title}</p>
-          <p className="text-sm text-ink/70">{s.text}</p>
-        </li>
-      ))}
-    </ol>
-  );
-}
-
-function HowItWorks() {
-  const orders = ["#1042 · 12 cartons", "#1043 · 2 pallets", "#1047 · 6 cartons", "#1051 · 1 pallet", "#1052 · 9 cartons"];
-  return (
-    <div className="grid items-stretch gap-3 md:grid-cols-[1fr_auto_1.1fr_auto_1fr]">
-      <Card className="space-y-2 !p-5">
-        <p className="text-xs font-semibold uppercase tracking-wide text-ink/50">01 · Orders in</p>
-        {orders.map((o) => (
-          <p key={o} className="rounded-lg bg-canvas px-3 py-1.5 text-xs text-ink/80">{o}</p>
-        ))}
-        <p className="text-xs text-ink/50">Weight, volume, fragility, delivery windows</p>
-      </Card>
-      <FontAwesomeIcon icon={faChevronRight} className="hidden size-5 self-center text-brand md:block" />
-      <div className="flex flex-col justify-center gap-3 rounded-2xl bg-gradient-to-br from-brand to-brand-900 p-5 text-white">
-        <p className="text-xs font-semibold uppercase tracking-wide text-white/70">02 · Truck Fill AI agent</p>
-        {["Packs by volume, weight & axle load", "Orders stops along the route", "Explains each placement", "Flags what doesn't fit, with a next step"].map((t) => (
-          <p key={t} className="flex items-start gap-2 text-sm"><FontAwesomeIcon icon={faCheck} className="mt-1 size-3 text-lime" />{t}</p>
-        ))}
-      </div>
-      <FontAwesomeIcon icon={faChevronRight} className="hidden size-5 self-center text-brand md:block" />
-      <Card className="space-y-2 !p-5">
-        <p className="text-xs font-semibold uppercase tracking-wide text-ink/50">03 · Ready-to-load trucks</p>
-        {[
-          { t: "Truck A · 32 ft", f: 94 },
-          { t: "Truck B · 22 ft", f: 88 },
-        ].map((tr) => (
-          <div key={tr.t} className="rounded-lg bg-canvas p-2.5">
-            <div className="flex justify-between text-xs"><span className="font-semibold text-ink">{tr.t}</span><span className="font-semibold text-emerald-600">{tr.f}%</span></div>
-            <div className="mt-1.5 h-1.5 rounded-full bg-lilac-100"><div className="h-full rounded-full bg-brand" style={{ width: `${tr.f}%` }} /></div>
-          </div>
-        ))}
-        <p className="text-xs text-ink/50">With a fill score, load order and dock steps</p>
-      </Card>
-    </div>
-  );
-}
-
 /* ------------------------------------------------------------------ */
 /* 1c. Core outcomes with space for analytics images                   */
 /* ------------------------------------------------------------------ */
-
-type Outcome = { icon: IconDefinition; title: string; text: ReactNode; image?: string; imageAlt?: string };
-
-const coreOutcomes: Outcome[] = [
-  { icon: faGaugeHigh, title: "Fuller trucks, fewer trips", text: <>Average fill rose from <strong>71% to 83%</strong>, cutting trips for the same freight by <strong>14%</strong>.</> },
-  { icon: faTruckRampBox, title: "Unload without digging", text: <>Route-aware load order cut re-handling at drops by <strong>61%</strong>, from about 18 to 7 minutes per stop.</> },
-  { icon: faMobileScreen, title: "Planners trust the plan", text: <>Plan acceptance grew from <strong>21% to 76%</strong>, and <strong>64%</strong> of truck owners used the app weekly.</> },
-];
-
-function CoreOutcomes() {
-  return (
-    <div className="grid gap-4 md:grid-cols-3">
-      {coreOutcomes.map((o) => (
-        <Card key={o.title} className="flex flex-col gap-4 !p-0 overflow-hidden">
-          {/* analytics image slot: add `image` to show a dashboard screenshot */}
-          {o.image ? (
-            <img src={o.image} alt={o.imageAlt ?? o.title} className="aspect-[16/10] w-full object-cover" />
-          ) : (
-            <div className="m-4 mb-0 flex aspect-[16/10] flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-ink/15 bg-canvas text-ink/40">
-              <FontAwesomeIcon icon={faChartLine} className="size-6" />
-              <span className="text-xs font-medium">Analytics screenshot coming soon</span>
-            </div>
-          )}
-          <div className="space-y-2 px-6 pb-6">
-            <div className="flex items-center gap-2">
-              <FontAwesomeIcon icon={o.icon} className="size-4 text-brand" />
-              <h3 className="text-lg font-semibold text-ink">{o.title}</h3>
-            </div>
-            <Body>{o.text}</Body>
-          </div>
-        </Card>
-      ))}
-    </div>
-  );
-}
 
 /* ------------------------------------------------------------------ */
 /* 4. Research: primary research tabs, competitors, gap map             */
@@ -917,32 +562,6 @@ function SolutionShowcase() {
 /* 3. User problems: JTBD, journey map, problem statements             */
 /* ------------------------------------------------------------------ */
 
-const jobs = [
-  { role: "Load planner", icon: faClipboardList, when: "orders close for a dispatch wave", want: "to know which truck they fit into and in what order", so: "I can dispatch on time without wasting space" },
-  { role: "Dock supervisor", icon: faHelmetSafety, when: "a truck backs into my bay", want: "my crew to know exactly what goes in next", so: "we load once, safely and on time" },
-  { role: "Driver", icon: faRoute, when: "I reach a customer's stop", want: "their goods to be right at the door", so: "I can deliver and leave in minutes" },
-  { role: "Truck owner", icon: faTruck, when: "a trip is booked", want: "to know how much space is left and how to fill it", so: "every trip earns as much as it can" },
-  { role: "Agency head", icon: faUserTie, when: "I review today's fleet", want: "to see which trucks are running empty", so: "I can combine loads before they leave" },
-];
-
-function JobsToBeDone() {
-  return (
-    <div className="grid gap-3 md:grid-cols-2">
-      {jobs.map((j) => (
-        <Card key={j.role} className="flex gap-4 !p-5">
-          <IconChip icon={j.icon} />
-          <div className="space-y-1">
-            <p className="text-xs font-semibold uppercase tracking-wide text-brand">{j.role}</p>
-            <p className="text-sm leading-relaxed text-ink/80">
-              <strong>When</strong> {j.when}, <strong>I want</strong> {j.want}, <strong>so</strong> {j.so}.
-            </p>
-          </div>
-        </Card>
-      ))}
-    </div>
-  );
-}
-
 const problemStatements = [
   {
     n: 1,
@@ -1324,90 +943,6 @@ function RoleOutcomes() {
 }
 
 /* ------------------------------------------------------------------ */
-/* Illustrated avatars (no photos needed)                              */
-/* ------------------------------------------------------------------ */
-
-type AvatarProps = {
-  skin: string;
-  hair: string;
-  hairStyle: "short" | "long" | "bun" | "bald" | "curly";
-  shirt: string;
-  bg: string;
-  accessory?: "helmet" | "cap" | "glasses" | "headset" | "beard";
-  size?: number;
-};
-
-function Avatar({ skin, hair, hairStyle, shirt, bg, accessory, size = 96 }: AvatarProps) {
-  return (
-    <svg viewBox="0 0 120 120" width={size} height={size} className="shrink-0" aria-hidden="true">
-      <defs>
-        <clipPath id={`clip-${bg.replace("#", "")}-${shirt.replace("#", "")}`}>
-          <circle cx="60" cy="60" r="60" />
-        </clipPath>
-      </defs>
-      <g clipPath={`url(#clip-${bg.replace("#", "")}-${shirt.replace("#", "")})`}>
-        <rect width="120" height="120" fill={bg} />
-        {/* long hair behind */}
-        {hairStyle === "long" && <path d="M33 52c0-20 12-32 27-32s27 12 27 32v34H33z" fill={hair} />}
-        {/* shoulders */}
-        <path d="M18 120c2-24 20-36 42-36s40 12 42 36z" fill={shirt} />
-        <path d="M50 84h20l-10 12z" fill="#ffffff" opacity="0.35" />
-        {/* neck */}
-        <rect x="52" y="70" width="16" height="16" rx="6" fill={skin} />
-        {/* head */}
-        <ellipse cx="60" cy="54" rx="21" ry="24" fill={skin} />
-        {/* ears */}
-        <ellipse cx="39" cy="56" rx="4" ry="6" fill={skin} />
-        <ellipse cx="81" cy="56" rx="4" ry="6" fill={skin} />
-        {/* hair styles */}
-        {hairStyle === "short" && <path d="M38 50c0-16 10-25 22-25s22 9 22 25c-6-8-14-11-22-11s-16 3-22 11z" fill={hair} />}
-        {hairStyle === "long" && <path d="M38 52c0-17 10-27 22-27s22 10 22 27c-5-10-13-14-22-14s-17 4-22 14z" fill={hair} />}
-        {hairStyle === "bun" && (
-          <>
-            <circle cx="60" cy="24" r="9" fill={hair} />
-            <path d="M38 50c0-16 10-25 22-25s22 9 22 25c-6-8-14-11-22-11s-16 3-22 11z" fill={hair} />
-          </>
-        )}
-        {hairStyle === "curly" && (
-          <path d="M37 52c-3-10 2-22 10-25 4-6 16-7 22-3 8 0 15 7 14 16 3 4 2 9 0 12-4-9-13-14-23-14s-19 5-23 14z" fill={hair} />
-        )}
-        {/* face */}
-        <circle cx="52" cy="57" r="2.2" fill="#18033b" />
-        <circle cx="68" cy="57" r="2.2" fill="#18033b" />
-        <path d="M53 67c4 4 10 4 14 0" stroke="#18033b" strokeWidth="2" fill="none" strokeLinecap="round" />
-        {accessory === "beard" && <path d="M41 60c2 14 9 21 19 21s17-7 19-21c-4 6-10 9-19 9s-15-3-19-9z" fill={hair} />}
-        {accessory === "glasses" && (
-          <g stroke="#18033b" strokeWidth="2" fill="none">
-            <circle cx="52" cy="57" r="6" />
-            <circle cx="68" cy="57" r="6" />
-            <path d="M58 57h4" />
-          </g>
-        )}
-        {accessory === "helmet" && (
-          <>
-            <path d="M36 46c0-16 11-26 24-26s24 10 24 26z" fill="#facc15" />
-            <rect x="32" y="44" width="56" height="6" rx="3" fill="#eab308" />
-          </>
-        )}
-        {accessory === "cap" && (
-          <>
-            <path d="M38 44c0-13 10-21 22-21s22 8 22 21z" fill="#1e3a8a" />
-            <path d="M60 42h30c0 4-4 6-8 6H60z" fill="#1e40af" />
-          </>
-        )}
-        {accessory === "headset" && (
-          <g fill="none" stroke="#18033b" strokeWidth="3">
-            <path d="M38 54c0-16 10-26 22-26s22 10 22 26" />
-            <rect x="34" y="52" width="7" height="12" rx="3" fill="#18033b" />
-            <path d="M40 64c2 8 8 10 14 10" strokeWidth="2" />
-          </g>
-        )}
-      </g>
-    </svg>
-  );
-}
-
-/* ------------------------------------------------------------------ */
 /* 1. My role                                                          */
 /* ------------------------------------------------------------------ */
 
@@ -1499,113 +1034,6 @@ function BusinessIllustrated() {
           </div>
         </div>
       </div>
-    </div>
-  );
-}
-
-function StopsIllustration() {
-  const stops = [1, 2, 3, 4, 5];
-  return (
-    <svg viewBox="0 0 220 80" className="w-full h-auto" aria-hidden="true">
-      <line x1="14" x2="206" y1="40" y2="40" stroke="#18033b" strokeOpacity="0.15" strokeWidth="4" strokeLinecap="round" />
-      {stops.map((s, i) => {
-        const x = 14 + i * 48;
-        return (
-          <g key={s}>
-            <circle cx={x} cy="40" r="10" fill="#7322ff" />
-            <text x={x} y="44" fontSize="10" fill="white" textAnchor="middle" fontWeight="700">{s}</text>
-            <rect x={x - 10} y="56" width="20" height={6 + i * 2} rx="2" fill="#f87171" opacity={0.5 + i * 0.1} />
-          </g>
-        );
-      })}
-      <text x="110" y="18" fontSize="10" fill="#b91c1c" textAnchor="middle" fontWeight="600">re-handling grows at every stop</text>
-    </svg>
-  );
-}
-
-function DamageIllustration() {
-  return (
-    <svg viewBox="0 0 220 80" className="w-full h-auto" aria-hidden="true">
-      <rect x="60" y="44" width="50" height="30" rx="3" fill="#4c04a9" />
-      <text x="85" y="63" fontSize="9" fill="white" textAnchor="middle" fontWeight="700">40 kg</text>
-      <path d="M62 44l6-14h34l6 14z" fill="#fecaca" stroke="#f87171" />
-      <path d="M78 34l4 6-3 4" stroke="#b91c1c" strokeWidth="1.5" fill="none" />
-      <text x="85" y="26" fontSize="9" fill="#b91c1c" textAnchor="middle" fontWeight="700">fragile</text>
-      <rect x="120" y="30" width="44" height="44" rx="3" fill="#a78bfa" />
-      <rect x="120" y="14" width="44" height="16" rx="3" fill="#c4b5fd" />
-      <text x="142" y="56" fontSize="9" fill="white" textAnchor="middle" fontWeight="700">ok</text>
-    </svg>
-  );
-}
-
-function FillIllustration() {
-  return (
-    <svg viewBox="0 0 220 80" className="w-full h-auto" aria-hidden="true">
-      <rect x="20" y="24" width="180" height="34" rx="8" fill="#f3e8ff" />
-      <rect x="20" y="24" width={180 * 0.71} height="34" rx="8" fill="#7322ff" />
-      <rect x={20 + 180 * 0.71} y="24" width={180 * 0.29} height="34" rx="0" fill="url(#hatch)" />
-      <defs>
-        <pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-          <rect width="4" height="8" fill="#fecaca" />
-        </pattern>
-      </defs>
-      <text x={20 + 90 * 0.71} y="46" fontSize="12" fill="white" textAnchor="middle" fontWeight="700">71%</text>
-      <text x={20 + 180 * 0.855} y="72" fontSize="9" fill="#b91c1c" textAnchor="middle" fontWeight="600">empty</text>
-    </svg>
-  );
-}
-
-const businessProblems = [
-  { art: <FillIllustration />, title: "Low truck utilisation", stat: "71% average fill", text: "About 1 in 4 trips could have been avoided with fuller plans.", impact: "Every extra trip adds fuel, tolls and driver hours, and pushes freight rates up." },
-  { art: <StopsIllustration />, title: "Slow multi-drop delivery", stat: "~18 min re-handling per stop", text: "Goods loaded out of route order were dug out at almost every drop.", impact: "Missed delivery windows hurt on-time scores with enterprise clients." },
-  { art: <DamageIllustration />, title: "Damage and disputes", stat: "3.2% of shipments claimed", text: "Heavy-on-fragile stacking and shifting loads caused most claims.", impact: "Claims eat carrier margins and erode shipper–carrier trust." },
-];
-
-function BusinessProblems() {
-  return (
-    <div className="grid gap-4 md:grid-cols-3">
-      {businessProblems.map((p) => (
-        <div key={p.title} className="flex flex-col overflow-hidden rounded-2xl bg-white ring-1 ring-ink/5">
-          <div className="bg-canvas px-4 py-5">{p.art}</div>
-          <div className="flex-1 space-y-1 p-5">
-            <h3 className="text-lg font-semibold text-ink">{p.title}</h3>
-            <p className="text-sm font-semibold text-red-600">{p.stat}</p>
-            <p className="text-sm text-ink/70">{p.text}</p>
-          </div>
-          <div className="flex gap-2 bg-ink px-5 py-4 text-sm text-white/85">
-            <FontAwesomeIcon icon={faTriangleExclamation} className="mt-0.5 size-3.5 shrink-0 text-amber-300" />
-            {p.impact}
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function CauseChain() {
-  const chains = [
-    { cause: "No visibility of true fill", effect: "Planners pad every load", impact: "Under-filled trucks, more trips" },
-    { cause: "Load order decided at the dock", effect: "Goods dug out at each stop", impact: "Late deliveries, damage" },
-    { cause: "Tools built for expert planners", effect: "Carriers never adopt them", impact: "Spare capacity goes unsold" },
-  ];
-  return (
-    <div className="space-y-3">
-      <div className="hidden grid-cols-3 gap-3 px-1 text-xs font-semibold uppercase tracking-wide text-ink/50 md:grid">
-        <span>Root cause</span><span>What happens</span><span>Business impact</span>
-      </div>
-      {chains.map((c) => (
-        <div key={c.cause} className="grid gap-2 md:grid-cols-3 md:gap-3">
-          <div className="rounded-xl bg-amber-50 p-3 text-sm font-medium text-amber-900">{c.cause}</div>
-          <div className="relative rounded-xl bg-white p-3 text-sm text-ink/80 ring-1 ring-ink/5">
-            <FontAwesomeIcon icon={faChevronRight} className="absolute -left-3 top-1/2 hidden size-3 -translate-y-1/2 text-ink/30 md:block" />
-            {c.effect}
-          </div>
-          <div className="relative rounded-xl bg-red-50 p-3 text-sm font-medium text-red-800">
-            <FontAwesomeIcon icon={faChevronRight} className="absolute -left-3 top-1/2 hidden size-3 -translate-y-1/2 text-ink/30 md:block" />
-            {c.impact}
-          </div>
-        </div>
-      ))}
     </div>
   );
 }
@@ -1718,7 +1146,7 @@ type Persona = {
   location: string;
   experience: string;
   archetype: string;
-  avatar: AvatarProps;
+  photo: string;
   quote: string;
   bio: string;
   goals: string[];
@@ -1740,7 +1168,7 @@ const personaSheets: Persona[] = [
     location: "Bhiwandi, Maharashtra",
     experience: "7 yrs in 3PL operations",
     archetype: "The spreadsheet planner",
-    avatar: { skin: "#c68863", hair: "#1f130d", hairStyle: "bun", shirt: "#7322ff", bg: "#ede9fe", accessory: "glasses" },
+    photo: imgPriya,
     quote: "I plan 40 trucks before lunch. Ten minutes of spreadsheet Tetris per truck is my whole morning.",
     bio: "Priya runs outbound planning for an FMCG distributor's 3PL warehouse. She's measured on on-time dispatch and is quietly proud of her Excel templates, but knows the dock rarely follows them.",
     goals: ["Plan a truck in minutes", "Know if an order fits before promising it", "Hand the dock a plan they'll actually follow"],
@@ -1756,11 +1184,11 @@ const personaSheets: Persona[] = [
     name: "Ramesh Yadav",
     role: "Dock supervisor",
     side: "Shipper",
-    age: 44,
+    age: 36,
     location: "Bhiwandi, Maharashtra",
-    experience: "15 yrs on the dock",
+    experience: "12 yrs on the dock",
     archetype: "The experience-led loader",
-    avatar: { skin: "#a86b4a", hair: "#2b2b2b", hairStyle: "short", shirt: "#f97316", bg: "#ffedd5", accessory: "helmet" },
+    photo: imgRamesh,
     quote: "We load by experience. If the first stop's boxes end up at the back, the driver loses an hour digging.",
     bio: "Ramesh leads a crew of 8 loaders across 6 bays. He trusts his eye more than any printout and is the one blamed when cartons are crushed or a truck misses its slot.",
     goals: ["A clear load order his crew can follow", "No re-stacking or crushed cartons", "Every bay turned on time at peak"],
@@ -1780,7 +1208,7 @@ const personaSheets: Persona[] = [
     location: "Pune, Maharashtra",
     experience: "Owns 6 trucks · 10 yrs",
     archetype: "The margin-driven owner",
-    avatar: { skin: "#b07a55", hair: "#111111", hairStyle: "short", shirt: "#0ea5e9", bg: "#e0f2fe", accessory: "beard" },
+    photo: imgArjun,
     quote: "An empty corner in my truck is money I'm leaving on the road. But I won't learn complicated software.",
     bio: "Arjun started as a driver and now runs a small fleet for three regular shippers. He runs the business from his phone between calls and thinks in rupees per trip.",
     goals: ["Earn more per trip by filling spare space", "Avoid overloading fines", "Run everything from his phone"],
@@ -1791,173 +1219,18 @@ const personaSheets: Persona[] = [
     motivations: [{ label: "Speed", value: 60 }, { label: "Accuracy", value: 40 }, { label: "Cost", value: 95 }, { label: "Safety", value: 65 }],
     day: [{ time: "07:00", text: "Assigns trucks to trips" }, { time: "10:00", text: "Calls shippers for part-loads" }, { time: "14:00", text: "Sorts a driver issue" }, { time: "21:00", text: "Tallies the day's trips" }],
   },
-  {
-    id: "meera",
-    name: "Meera Kulkarni",
-    role: "Operations head",
-    side: "Carrier",
-    age: 46,
-    location: "Mumbai, Maharashtra",
-    experience: "Transport agency · 120 trucks",
-    archetype: "The fleet orchestrator",
-    avatar: { skin: "#d39b76", hair: "#3b2416", hairStyle: "long", shirt: "#10b981", bg: "#d1fae5", accessory: "headset" },
-    quote: "I manage 120 trucks across vendors. I need to see who's running half-empty, not find out at month end.",
-    bio: "Meera coordinates vendor-owned trucks for enterprise shippers. Her clients increasingly ask for utilisation and carbon numbers she can't produce reliably.",
-    goals: ["A fleet-wide view of utilisation", "Match part-loads to trucks with space", "Prove efficiency to enterprise clients"],
-    frustrations: ["Data arrives late and inconsistent", "Each vendor reports differently", "Partial trips quietly eat margin"],
-    behaviours: ["Runs a daily control-room call", "Builds weekly reports by hand", "Juggles 20+ vendor contacts"],
-    tools: ["TMS", "Excel", "WhatsApp", "Laptop"],
-    techComfort: 4,
-    motivations: [{ label: "Speed", value: 70 }, { label: "Accuracy", value: 85 }, { label: "Cost", value: 80 }, { label: "Safety", value: 60 }],
-    day: [{ time: "09:00", text: "Control-room call" }, { time: "11:00", text: "Re-assigns late trucks" }, { time: "15:00", text: "Client escalation" }, { time: "18:00", text: "Manual utilisation report" }],
-  },
-  {
-    id: "salim",
-    name: "Salim Khan",
-    role: "Driver",
-    side: "Carrier",
-    age: 29,
-    location: "Thane, Maharashtra",
-    experience: "6 yrs · multi-drop routes",
-    archetype: "The on-time runner",
-    avatar: { skin: "#8d5a3b", hair: "#0f0f0f", hairStyle: "curly", shirt: "#4c04a9", bg: "#f3e8ff", accessory: "cap" },
-    quote: "Five drops a day. If the load isn't in stop order, I'm unloading and reloading at every customer.",
-    bio: "Salim drives a 22 ft truck on city multi-drop routes. He's paid per trip, with penalties for late delivery and damage, even when the loading wasn't his.",
-    goals: ["Reach each stop's goods without moving others", "Finish the route on time", "Fewer damage disputes"],
-    frustrations: ["Later-stop goods block earlier ones", "No idea what's where inside", "Blamed for loading-side damage"],
-    behaviours: ["Photographs the load before leaving", "Re-stacks at stops himself", "Uses voice notes, not typing"],
-    tools: ["WhatsApp voice notes", "Google Maps", "Basic Android"],
-    techComfort: 2,
-    motivations: [{ label: "Speed", value: 90 }, { label: "Accuracy", value: 40 }, { label: "Cost", value: 50 }, { label: "Safety", value: 75 }],
-    day: [{ time: "07:30", text: "Waits at the dock" }, { time: "09:30", text: "Stop 1 · digs for cartons" }, { time: "13:00", text: "Stop 3 · runs late" }, { time: "18:30", text: "Damage dispute call" }],
-  },
 ];
-
-function PersonaSheets() {
-  const [id, setId] = useState(personaSheets[0].id);
-  const p = personaSheets.find((x) => x.id === id)!;
-  return (
-    <div className="space-y-4">
-      {/* persona tabs */}
-      <div className="flex gap-2 overflow-x-auto pb-1">
-        {personaSheets.map((x) => (
-          <button
-            key={x.id}
-            onClick={() => setId(x.id)}
-            className={`flex shrink-0 items-center gap-2 rounded-full py-1 pl-1 pr-4 text-left transition-colors ${x.id === id ? "bg-brand text-white" : "bg-white text-ink ring-1 ring-ink/10 hover:ring-brand/30"}`}
-          >
-            <Avatar {...x.avatar} size={36} />
-            <span>
-              <span className="block text-sm font-semibold leading-tight">{x.name.split(" ")[0]}</span>
-              <span className={`block text-[11px] leading-tight ${x.id === id ? "text-white/75" : "text-ink/50"}`}>{x.role}</span>
-            </span>
-          </button>
-        ))}
-      </div>
-
-      {/* sheet */}
-      <div className="overflow-hidden rounded-3xl bg-white ring-1 ring-ink/5">
-        <div className="grid md:grid-cols-[260px_1fr]">
-          {/* profile column */}
-          <div className="space-y-4 bg-gradient-to-b from-lilac-100/70 to-white p-6 text-center md:text-left">
-            <div className="flex justify-center md:justify-start">
-              <Avatar {...p.avatar} size={120} />
-            </div>
-            <div>
-              <h3 className="text-2xl font-bold text-ink">{p.name}</h3>
-              <p className="text-sm font-medium text-brand">{p.role}</p>
-              <span className={`mt-2 inline-block rounded-full px-2.5 py-0.5 text-xs font-semibold ${p.side === "Shipper" ? "bg-lilac-100 text-brand" : "bg-sky-100 text-sky-700"}`}>{p.side} side · {p.archetype}</span>
-            </div>
-            <dl className="grid grid-cols-2 gap-3 text-left text-xs md:grid-cols-1">
-              {[
-                { k: "Age", v: `${p.age}` },
-                { k: "Location", v: p.location },
-                { k: "Experience", v: p.experience },
-              ].map((d) => (
-                <div key={d.k}>
-                  <dt className="font-semibold uppercase tracking-wide text-ink/40">{d.k}</dt>
-                  <dd className="text-ink/80">{d.v}</dd>
-                </div>
-              ))}
-              <div>
-                <dt className="font-semibold uppercase tracking-wide text-ink/40">Tech comfort</dt>
-                <dd className="mt-1 flex gap-1">
-                  {[1, 2, 3, 4, 5].map((n) => (
-                    <span key={n} className={`h-1.5 w-5 rounded-full ${n <= p.techComfort ? "bg-brand" : "bg-ink/10"}`} />
-                  ))}
-                </dd>
-              </div>
-            </dl>
-            <div className="flex flex-wrap justify-center gap-1.5 md:justify-start">
-              {p.tools.map((t) => (
-                <span key={t} className="rounded-md bg-white px-2 py-1 text-[11px] font-medium text-ink/70 ring-1 ring-ink/10">{t}</span>
-              ))}
-            </div>
-          </div>
-
-          {/* details column */}
-          <div className="space-y-6 p-6">
-            <blockquote className="border-l-4 border-yellow-400 bg-yellow-50 py-2 pl-4 pr-3 text-base font-medium italic text-ink">"{p.quote}"</blockquote>
-            <p className="text-sm leading-relaxed text-ink/75">{p.bio}</p>
-
-            <div className="grid gap-5 sm:grid-cols-3">
-              {[
-                { title: "Goals", items: p.goals, mark: "✓", tone: "text-emerald-600" },
-                { title: "Frustrations", items: p.frustrations, mark: "!", tone: "text-red-500" },
-                { title: "Behaviours", items: p.behaviours, mark: "•", tone: "text-brand" },
-              ].map((col) => (
-                <div key={col.title}>
-                  <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-ink/50">{col.title}</p>
-                  <ul className="space-y-2">
-                    {col.items.map((it) => (
-                      <li key={it} className="flex gap-2 text-sm text-ink/80"><span className={`font-bold ${col.tone}`}>{col.mark}</span>{it}</li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-
-            <div className="grid gap-6 sm:grid-cols-2">
-              <div>
-                <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-ink/50">What drives them</p>
-                <div className="space-y-2">
-                  {p.motivations.map((m) => (
-                    <div key={m.label} className="grid grid-cols-[70px_1fr] items-center gap-2 text-xs">
-                      <span className="text-ink/70">{m.label}</span>
-                      <div className="h-2 rounded-full bg-ink/10"><div className="h-full rounded-full bg-brand" style={{ width: `${m.value}%` }} /></div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div>
-                <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-ink/50">A day in their life</p>
-                <ol className="relative space-y-2 border-l-2 border-lilac-100 pl-4">
-                  {p.day.map((d) => (
-                    <li key={d.time} className="relative text-xs text-ink/80">
-                      <span className="absolute -left-[21px] top-1 size-2.5 rounded-full bg-brand" />
-                      <span className="font-semibold text-ink">{d.time}</span> · {d.text}
-                    </li>
-                  ))}
-                </ol>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 /* ------------------------------------------------------------------ */
 /* 3b. Challenges matrix                                                */
 /* ------------------------------------------------------------------ */
 
 const challenges = [
-  { icon: faEye, title: "Invisible capacity", text: "No one sees true fill or spare space until loading is done.", affects: ["priya", "arjun", "meera"], severity: 92 },
-  { icon: faListOl, title: "Stop-order blindness", text: "Loads aren't sequenced by route, so drops need digging.", affects: ["ramesh", "salim"], severity: 88 },
-  { icon: faWeightHanging, title: "Constraint overload", text: "Weight, axle, fragility and stacking rules are too many to remember.", affects: ["ramesh", "priya", "salim"], severity: 74 },
+  { icon: faEye, title: "Invisible capacity", text: "No one sees true fill or spare space until loading is done.", affects: ["priya", "arjun"], severity: 92 },
+  { icon: faListOl, title: "Stop-order blindness", text: "Loads aren't sequenced by route, so drops need digging.", affects: ["ramesh", "arjun"], severity: 88 },
+  { icon: faWeightHanging, title: "Constraint overload", text: "Weight, axle, fragility and stacking rules are too many to remember.", affects: ["ramesh", "priya"], severity: 74 },
   { icon: faRepeat, title: "Plan-to-dock disconnect", text: "Plans are printed snapshots; changes never flow back.", affects: ["priya", "ramesh"], severity: 81 },
-  { icon: faMobileScreen, title: "Tools built for someone else", text: "Desktop planners feel complex and costly for carriers.", affects: ["arjun", "meera", "salim"], severity: 70 },
+  { icon: faMobileScreen, title: "Tools built for someone else", text: "Desktop planners feel complex and costly for carriers.", affects: ["arjun"], severity: 70 },
 ];
 
 function ChallengesMatrix() {
@@ -1970,7 +1243,7 @@ function ChallengesMatrix() {
             {personaSheets.map((p) => (
               <th key={p.id} className="p-2">
                 <div className="flex flex-col items-center gap-1">
-                  <Avatar {...p.avatar} size={36} />
+                  <PersonaPhoto id={p.id} size={36} />
                   <span className="text-[11px] font-semibold text-ink/70">{p.name.split(" ")[0]}</span>
                 </div>
               </th>
@@ -2022,121 +1295,445 @@ function ChallengesMatrix() {
 /* 3c. Journey map v2: per-persona curves, today vs with agent          */
 /* ------------------------------------------------------------------ */
 
-type JourneySide = {
-  people: [string, string]; // persona ids
-  stages: { stage: string; touchpoint: string; pain: string; better: string }[];
-  today: [number[], number[]];
-  future: [number[], number[]];
+/* ================================================================== */
+/* Shared palette (brand only, so every visual reads as one system)    */
+/* ================================================================== */
+
+const C = {
+  brand: "#7322ff",
+  brand600: "#6505e7",
+  brand800: "#4c04a9",
+  brand900: "#3f0390",
+  lilac: "#884bdb",
+  lilac300: "#b794f6",
+  lilac100: "#e1cbff",
+  lilac50: "#f5efff",
+  ink: "#18033b",
+  muted: "#7d7192",
 };
 
-const journeysV2: Record<"shipper" | "carrier", JourneySide> = {
-  shipper: {
-    people: ["priya", "ramesh"],
-    stages: [
-      { stage: "Orders close", touchpoint: "WMS export", pain: "No idea of fit until the maths is done", better: "Instant fit check per truck" },
-      { stage: "Plan", touchpoint: "Excel", pain: "Pads loads with a 'safety gap'", better: "Trusted fill score with confidence" },
-      { stage: "Hand-off", touchpoint: "Printout", pain: "Plan is stale as soon as it's printed", better: "Live plan link to the bay" },
-      { stage: "Load", touchpoint: "Dock floor", pain: "Crew improvises; re-stacking and damage", better: "One step per screen, in stop order" },
-      { stage: "Dispatch", touchpoint: "Gate", pain: "Gaps spotted too late to fill", better: "'Last call' order suggestions" },
-    ],
-    today: [
-      [3.2, 1.6, 2.2, 2.6, 1.9],
-      [3.0, 3.1, 2.0, 1.1, 2.4],
-    ],
-    future: [
-      [4.0, 4.5, 4.2, 4.0, 4.6],
-      [3.6, 3.8, 4.4, 4.3, 4.5],
-    ],
-  },
-  carrier: {
-    people: ["arjun", "salim"],
-    stages: [
-      { stage: "Booking", touchpoint: "Phone call", pain: "True load size unknown", better: "Fill % visible at booking" },
-      { stage: "At the dock", touchpoint: "Shipper's bay", pain: "Spare space can't be sold in time", better: "Verified part-loads on the route" },
-      { stage: "On the road", touchpoint: "Highway", pain: "Axle overload risk and fines", better: "Weight & axle check before leaving" },
-      { stage: "Deliveries", touchpoint: "Customer stops", pain: "Digging out goods at every stop", better: "'At the door' view per stop" },
-      { stage: "Settle", touchpoint: "WhatsApp & calls", pain: "No view of earnings per trip", better: "Trip earnings & utilisation" },
-    ],
-    today: [
-      [3.4, 2.0, 2.7, 2.3, 1.5],
-      [2.8, 2.4, 2.1, 1.0, 2.2],
-    ],
-    future: [
-      [4.3, 4.6, 4.0, 4.1, 4.5],
-      [3.8, 3.9, 4.3, 4.6, 4.0],
-    ],
-  },
-};
+/* ================================================================== */
+/* 1. How truck fill works: illustrated pipeline                        */
+/* ================================================================== */
 
-function EmotionChart({ side, mode, mark }: { side: JourneySide; mode: "today" | "future"; mark: { i: number; p: number } }) {
-  const W = 700;
-  const H = 220;
-  const padL = 86;
-  const padR = 20;
-  const padT = 16;
-  const padB = 16;
-  const n = side.stages.length;
-  const x = (i: number) => padL + ((W - padL - padR) / n) * (i + 0.5);
-  const y = (v: number) => padT + ((5 - v) / 4) * (H - padT - padB);
-  const colors = ["#7322ff", "#f97316"];
-  const smooth = (vals: number[]) =>
-    vals
-      .map((v, i) => {
-        if (i === 0) return `M${x(0)},${y(v)}`;
-        const cx = (x(i - 1) + x(i)) / 2;
-        return `C${cx},${y(vals[i - 1])} ${cx},${y(v)} ${x(i)},${y(v)}`;
-      })
-      .join(" ");
-  const series = mode === "today" ? side.today : side.future;
-  const markV = series[mark.p][mark.i];
-
+function IllOrders() {
+  const boxes = [
+    { x: 18, y: 70, w: 44, h: 34, t: "#1042" },
+    { x: 68, y: 58, w: 52, h: 46, t: "#1043" },
+    { x: 126, y: 76, w: 36, h: 28, t: "#1047" },
+    { x: 34, y: 36, w: 40, h: 30, t: "#1051" },
+    { x: 84, y: 22, w: 34, h: 32, t: "#1052" },
+  ];
   return (
-    <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-auto" role="img" aria-label={`Emotion curve ${mode === "today" ? "today" : "with the AI agent"}`}>
-      {/* bands */}
-      <rect x={padL} y={y(5)} width={W - padL - padR} height={y(3.5) - y(5)} fill="#ecfdf5" />
-      <rect x={padL} y={y(2.5)} width={W - padL - padR} height={y(1) - y(2.5)} fill="#fef2f2" />
-      {[
-        { v: 4.6, label: "😄 Delighted" },
-        { v: 3, label: "😐 Neutral" },
-        { v: 1.4, label: "😣 Frustrated" },
-      ].map((l) => (
-        <text key={l.label} x="6" y={y(l.v) + 4} fontSize="12" fill="#7d7192">{l.label}</text>
-      ))}
-      <line x1={padL} x2={W - padR} y1={y(3)} y2={y(3)} stroke="#18033b" strokeOpacity="0.12" strokeDasharray="4 4" />
-      {side.stages.map((_, i) => (
-        <line key={i} x1={x(i)} x2={x(i)} y1={padT} y2={H - padB} stroke="#18033b" strokeOpacity="0.05" />
-      ))}
-      {series.map((vals, p) => (
-        <g key={p}>
-          <path d={smooth(vals)} fill="none" stroke={colors[p]} strokeWidth="3.5" strokeLinecap="round" />
-          {vals.map((v, i) => (
-            <circle key={i} cx={x(i)} cy={y(v)} r="5.5" fill="white" stroke={colors[p]} strokeWidth="3" />
-          ))}
+    <svg viewBox="0 0 180 120" className="h-auto w-full" aria-hidden="true">
+      <ellipse cx="90" cy="108" rx="78" ry="6" fill={C.lilac100} opacity="0.6" />
+      {boxes.map((b, i) => (
+        <g key={b.t}>
+          <rect x={b.x} y={b.y} width={b.w} height={b.h} rx="4" fill={i % 2 ? C.lilac100 : "#ffffff"} stroke={C.brand800} strokeOpacity="0.35" strokeWidth="1.5" />
+          <path d={`M${b.x} ${b.y + 8}h${b.w}`} stroke={C.brand800} strokeOpacity="0.2" />
+          <rect x={b.x + 5} y={b.y + 13} width={Math.min(26, b.w - 10)} height="7" rx="2" fill={C.brand} opacity="0.8" />
+          <text x={b.x + 6} y={b.y + 19} fontSize="5.5" fill="#fff" fontWeight="700">{b.t}</text>
         </g>
       ))}
-      {/* moment that matters / biggest lift */}
-      <circle cx={x(mark.i)} cy={y(markV)} r="13" fill="none" stroke={mode === "today" ? "#ef4444" : "#10b981"} strokeWidth="2.5" strokeDasharray="3 3" />
     </svg>
   );
 }
 
-function JourneyMapV2() {
+function IllAgent() {
+  const rules = ["Volume", "Weight", "Axle", "Route"];
+  return (
+    <svg viewBox="0 0 180 120" className="h-auto w-full" aria-hidden="true">
+      <defs>
+        <linearGradient id="agentG" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor={C.brand} />
+          <stop offset="1" stopColor={C.brand900} />
+        </linearGradient>
+      </defs>
+      {/* orbit */}
+      <circle cx="90" cy="60" r="46" fill="none" stroke={C.lilac100} strokeWidth="1.5" strokeDasharray="3 4" />
+      {/* core */}
+      <rect x="62" y="32" width="56" height="56" rx="14" fill="url(#agentG)" />
+      <path d="M80 60l7 7 14-15" stroke="#fff" strokeWidth="4" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+      <text x="90" y="82" fontSize="7" fill="#fff" textAnchor="middle" fontWeight="700" opacity="0.85">AI AGENT</text>
+      {/* rule chips */}
+      {rules.map((r, i) => {
+        const a = (-90 + i * 90) * (Math.PI / 180);
+        const x = 90 + Math.cos(a) * 58;
+        const y = 60 + Math.sin(a) * 46;
+        return (
+          <g key={r}>
+            <rect x={x - 20} y={y - 8} width="40" height="16" rx="8" fill="#fff" stroke={C.brand} strokeOpacity="0.4" />
+            <text x={x} y={y + 3} fontSize="7" fill={C.brand800} textAnchor="middle" fontWeight="700">{r}</text>
+          </g>
+        );
+      })}
+    </svg>
+  );
+}
+
+function IllTruck() {
+  // stops 4..1 from cab to door, so stop 1 is by the door
+  const stopTone = [C.brand800, C.brand, C.lilac, C.lilac300];
+  const cols = 6;
+  const rows = 3;
+  return (
+    <svg viewBox="0 0 180 120" className="h-auto w-full" aria-hidden="true">
+      <ellipse cx="90" cy="108" rx="80" ry="5" fill={C.lilac100} opacity="0.6" />
+      {/* trailer */}
+      <rect x="8" y="26" width="122" height="66" rx="6" fill="#fff" stroke={C.ink} strokeOpacity="0.2" strokeWidth="2" />
+      {Array.from({ length: cols * rows }, (_, i) => {
+        const c = Math.floor(i / rows);
+        const r = i % rows;
+        const stop = 3 - Math.min(3, Math.floor((c * 4) / cols)); // 3..0
+        const isEmpty = c === cols - 1 && r === 0;
+        return isEmpty ? (
+          <rect key={i} x={14 + c * 19} y={32 + r * 19} width="16" height="16" rx="3" fill="none" stroke={C.lilac300} strokeDasharray="2 2" />
+        ) : (
+          <rect key={i} x={14 + c * 19} y={32 + r * 19} width="16" height="16" rx="3" fill={stopTone[stop]} />
+        );
+      })}
+      {/* door marker */}
+      <rect x="128" y="30" width="4" height="58" rx="2" fill={C.ink} opacity="0.5" />
+      {/* cab, on the left, so the door is on the right */}
+      <path d="M134 50h22l14 16v26h-36z" fill={C.brand800} />
+      <path d="M140 55h14l9 11h-23z" fill={C.lilac100} />
+      {[34, 104, 152].map((x) => (
+        <g key={x}>
+          <circle cx={x} cy="96" r="9" fill={C.ink} />
+          <circle cx={x} cy="96" r="3.5" fill="#e5e7eb" />
+        </g>
+      ))}
+      <rect x="70" y="8" width="54" height="14" rx="7" fill={C.lilac50} stroke={C.brand} strokeOpacity="0.3" />
+      <text x="97" y="18" fontSize="7.5" fill={C.brand800} textAnchor="middle" fontWeight="700">94% fill</text>
+    </svg>
+  );
+}
+
+function IllDock() {
+  return (
+    <svg viewBox="0 0 180 120" className="h-auto w-full" aria-hidden="true">
+      {/* route */}
+      <path d="M100 96 C 120 70, 150 90, 160 56 S 150 20, 172 14" fill="none" stroke={C.lilac300} strokeWidth="3" strokeDasharray="1 6" strokeLinecap="round" />
+      {[
+        [100, 96, "1"],
+        [138, 80, "2"],
+        [160, 50, "3"],
+        [170, 16, "4"],
+      ].map(([x, y, n]) => (
+        <g key={String(n)}>
+          <circle cx={Number(x)} cy={Number(y)} r="8" fill={C.brand} />
+          <text x={Number(x)} y={Number(y) + 3} fontSize="8" fill="#fff" textAnchor="middle" fontWeight="700">{n}</text>
+        </g>
+      ))}
+      {/* phone */}
+      <rect x="18" y="8" width="62" height="104" rx="10" fill={C.ink} />
+      <rect x="22" y="14" width="54" height="92" rx="7" fill="#fff" />
+      <text x="28" y="26" fontSize="6" fill={C.muted}>Step 3 of 9</text>
+      {[0, 1, 2].map((i) => (
+        <g key={i}>
+          <rect x="28" y={32 + i * 20} width="42" height="15" rx="4" fill={i === 1 ? C.lilac100 : C.lilac50} />
+          <circle cx="35" cy={39.5 + i * 20} r="4" fill={i === 0 ? "#10b981" : C.brand} />
+          <rect x="42" y={37 + i * 20} width="22" height="4" rx="2" fill={C.ink} opacity="0.35" />
+        </g>
+      ))}
+      <rect x="28" y="92" width="42" height="10" rx="5" fill={C.brand} />
+      <text x="49" y="99" fontSize="5.5" fill="#fff" textAnchor="middle" fontWeight="700">DONE · NEXT</text>
+    </svg>
+  );
+}
+
+const pipeline = [
+  { n: "01", title: "Orders arrive", text: "Weight, volume, fragility and delivery windows flow in from the shipper's system.", art: <IllOrders />, tag: "Input" },
+  { n: "02", title: "The agent plans", text: "It packs by volume, weight and axle load, and checks every rule before suggesting a plan.", art: <IllAgent />, tag: "AI" },
+  { n: "03", title: "Packed by stop", text: "The last stop goes in first, so each customer's goods sit by the door, with a clear fill score.", art: <IllTruck />, tag: "Output" },
+  { n: "04", title: "Guided to the road", text: "The crew loads step by step on any phone, and the driver sees what's at the door for each stop.", art: <IllDock />, tag: "Action" },
+];
+
+function HowItWorks() {
+  return (
+    <div className="rounded-3xl bg-white p-5 ring-1 ring-ink/5 md:p-8">
+      <div className="grid gap-6 md:grid-cols-4 md:gap-4">
+        {pipeline.map((s, i) => (
+          <div key={s.n} className="relative">
+            {/* connector */}
+            {i < pipeline.length - 1 && (
+              <>
+                <div className="absolute left-[calc(100%-6px)] top-[72px] z-10 hidden w-[calc(1rem+12px)] items-center md:flex" aria-hidden="true">
+                  <span className="h-0.5 flex-1 bg-gradient-to-r from-lilac-100 to-brand" />
+                  <span className="size-0 border-y-[5px] border-l-[7px] border-y-transparent border-l-brand" />
+                </div>
+                <div className="absolute -bottom-5 left-1/2 flex -translate-x-1/2 flex-col items-center md:hidden" aria-hidden="true">
+                  <span className="h-3 w-0.5 bg-brand/40" />
+                  <span className="size-0 border-x-[5px] border-t-[7px] border-x-transparent border-t-brand" />
+                </div>
+              </>
+            )}
+            <div className="flex h-full flex-col rounded-2xl bg-gradient-to-b from-lilac-100/50 to-white p-4 ring-1 ring-brand/10">
+              <div className="mb-2 flex items-center justify-between">
+                <span className="text-2xl font-bold text-brand/30">{s.n}</span>
+                <span className="rounded-full bg-white px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-brand ring-1 ring-brand/20">{s.tag}</span>
+              </div>
+              <div className="mx-auto w-full max-w-[200px]">{s.art}</div>
+              <h3 className="mt-3 font-semibold text-ink">{s.title}</h3>
+              <p className="mt-1 text-sm leading-relaxed text-ink/65">{s.text}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className="mt-6 grid gap-3 border-t border-ink/5 pt-5 text-sm md:grid-cols-2">
+        <p className="text-ink/70"><span className="font-semibold text-ink">Goes in:</span> orders, item sizes and weights, truck types, delivery route.</p>
+        <p className="text-ink/70"><span className="font-semibold text-ink">Comes out:</span> fill score, load order, dock steps, driver's stop view.</p>
+      </div>
+    </div>
+  );
+}
+
+/* ================================================================== */
+/* 2. Impact highlights: brand-consistent tiles and charts              */
+/* ================================================================== */
+
+/* ================================================================== */
+/* 3. Why it happens: illustrated cause → effect → impact flow          */
+/* ================================================================== */
+
+const causeFlows = [
+  {
+    cause: { icon: faEye, title: "No visibility of true fill", text: "Fill is judged by eye; 38% of items lack sizes." },
+    effect: { icon: faCubes, title: "Planners pad every load", text: "A 10–15% 'safety gap' becomes the habit." },
+    impact: { metric: "71%", title: "average fill", text: "About 1 in 4 trips is avoidable." },
+  },
+  {
+    cause: { icon: faListOl, title: "Load order decided at the dock", text: "Plans ignore the delivery route." },
+    effect: { icon: faPeopleCarryBox, title: "Goods dug out at each stop", text: "Re-handling and re-stacking at every drop." },
+    impact: { metric: "18 min", title: "lost per stop", text: "Late deliveries and 3.2% damage claims." },
+  },
+  {
+    cause: { icon: faSliders, title: "Tools built for expert planners", text: "Desktop-only, 3D-first, training-heavy." },
+    effect: { icon: faMobileScreen, title: "Carriers never adopt them", text: "Owners and agencies stay on calls and WhatsApp." },
+    impact: { metric: "0%", title: "spare space sold", text: "Empty capacity goes unused and unpaid." },
+  },
+];
+
+function FlowArrow() {
+  return (
+    <div className="flex items-center justify-center py-1 md:px-1 md:py-0" aria-hidden="true">
+      <svg viewBox="0 0 40 16" className="h-4 w-8 rotate-90 md:rotate-0">
+        <path d="M2 8h30" stroke={C.brand} strokeOpacity="0.45" strokeWidth="2" strokeDasharray="3 3" />
+        <path d="M30 3l7 5-7 5" fill="none" stroke={C.brand} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    </div>
+  );
+}
+
+function CauseChain() {
+  const heads = [
+    { label: "Root cause", sub: "Why" },
+    { label: "What happens", sub: "Behaviour" },
+    { label: "Business impact", sub: "Cost" },
+  ];
+  return (
+    <div className="rounded-3xl bg-white p-5 ring-1 ring-ink/5 md:p-6">
+      <div className="mb-3 hidden grid-cols-[1fr_40px_1fr_40px_1fr] md:grid">
+        {heads.map((h, i) => (
+          <div key={h.label} className={i === 1 ? "col-start-3" : i === 2 ? "col-start-5" : ""}>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-brand">{h.sub}</p>
+            <p className="text-sm font-semibold text-ink">{h.label}</p>
+          </div>
+        ))}
+      </div>
+      <div className="space-y-4">
+        {causeFlows.map((f, idx) => (
+          <div key={idx} className="grid items-stretch border-b border-ink/5 pb-5 last:border-0 last:pb-0 md:grid-cols-[1fr_40px_1fr_40px_1fr] md:border-0 md:pb-0">
+            <div className="flex gap-3 rounded-2xl bg-lilac-100/40 p-4 ring-1 ring-brand/10">
+              <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-white text-brand shadow-sm">
+                <FontAwesomeIcon icon={f.cause.icon} className="size-4" />
+              </span>
+              <div>
+                <p className="text-sm font-semibold text-ink">{f.cause.title}</p>
+                <p className="text-xs text-ink/60">{f.cause.text}</p>
+              </div>
+            </div>
+            <FlowArrow />
+            <div className="flex gap-3 rounded-2xl bg-white p-4 ring-1 ring-ink/10">
+              <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-lilac-100/60 text-brand-800">
+                <FontAwesomeIcon icon={f.effect.icon} className="size-4" />
+              </span>
+              <div>
+                <p className="text-sm font-semibold text-ink">{f.effect.title}</p>
+                <p className="text-xs text-ink/60">{f.effect.text}</p>
+              </div>
+            </div>
+            <FlowArrow />
+            <div className="flex items-center gap-4 rounded-2xl bg-gradient-to-br from-brand to-brand-900 p-4 text-white">
+              <div className="shrink-0 text-center">
+                <p className="text-2xl font-bold leading-none">{f.impact.metric}</p>
+                <p className="mt-1 text-[10px] uppercase tracking-wide text-white/70">{f.impact.title}</p>
+              </div>
+              <p className="border-l border-white/20 pl-4 text-xs text-white/85">{f.impact.text}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ================================================================== */
+/* 4. Jobs to be done: structured job stories per persona               */
+/* ================================================================== */
+
+/* ================================================================== */
+/* 5. Journey map: full data rows + per-persona emotion curves          */
+/* ================================================================== */
+
+type JStage = {
+  stage: string;
+  touchpoint: string;
+  doing: [string, string];
+  thinking: [string, string];
+  pain: string;
+  opportunity: string;
+  doingAfter: [string, string];
+  thinkingAfter: [string, string];
+};
+
+type JourneyData = { people: string[]; stages: JStage[]; today: [number[], number[]]; future: [number[], number[]] };
+
+const journeyData: Record<"shipper" | "carrier", JourneyData> = {
+  shipper: {
+    people: ["priya", "ramesh"],
+    stages: [
+      {
+        stage: "Orders close", touchpoint: "WMS export",
+        doing: ["Exports orders, checks truck availability", "Prepares bays for the morning wave"],
+        thinking: ["Will all of this fit in the trucks I have?", "How many trucks today, and when?"],
+        pain: "No idea of fit until the maths is done", opportunity: "Instant fit check per truck",
+        doingAfter: ["Sees fit and fill for every truck instantly", "Gets bay schedule with truck ETAs"],
+        thinkingAfter: ["I know what fits before I promise it", "I can plan my crew around this"],
+      },
+      {
+        stage: "Plan", touchpoint: "Excel",
+        doing: ["Estimates volume, assigns orders to trucks", "Waits for the plan"],
+        thinking: ["I'll leave some margin just in case", "Hope the plan isn't late again"],
+        pain: "Pads loads with a 'safety gap'", opportunity: "Trusted fill score with confidence",
+        doingAfter: ["Reviews the agent's plan and reasons", "Gets the plan pushed to his bay"],
+        thinkingAfter: ["The reasons make sense, I'll ship it", "It's here already"],
+      },
+      {
+        stage: "Hand-off", touchpoint: "Printout",
+        doing: ["Prints the list, walks it to the dock", "Receives a printout that's already stale"],
+        thinking: ["Hope they follow it this time", "This doesn't match what just arrived"],
+        pain: "Plan is stale as soon as it's printed", opportunity: "Live plan link to the bay",
+        doingAfter: ["Shares a live link; changes sync", "Opens the dock view on a shared phone"],
+        thinkingAfter: ["Changes reach the dock on their own", "What I see is what's on the floor"],
+      },
+      {
+        stage: "Load", touchpoint: "Dock floor",
+        doing: ["Takes calls when things don't fit", "Crew loads by habit, mixing heavy and fragile"],
+        thinking: ["Another call from the dock", "Where does this go? Who's first?"],
+        pain: "Crew improvises; re-stacking and damage", opportunity: "One step per screen, in stop order",
+        doingAfter: ["Sees progress live, no calls", "Crew follows steps in stop order"],
+        thinkingAfter: ["Quiet for once", "Done once, no re-stacking"],
+      },
+      {
+        stage: "Dispatch", touchpoint: "Gate",
+        doing: ["Closes the truck, notes late dispatches", "Spots gaps at the doors"],
+        thinking: ["We could have fit another order", "Too late to add anything now"],
+        pain: "Gaps spotted too late to fill", opportunity: "'Last call' order suggestions",
+        doingAfter: ["Adds a 'last call' order to fill the gap", "Closes a full, balanced truck"],
+        thinkingAfter: ["That's one less truck tomorrow", "Full and on time"],
+      },
+    ],
+    today: [[3.2, 1.6, 2.2, 2.6, 1.9], [3.0, 3.1, 2.0, 1.1, 2.4]],
+    future: [[4.0, 4.5, 4.2, 4.0, 4.6], [3.6, 3.8, 4.4, 4.3, 4.5]],
+  },
+  carrier: {
+    people: ["arjun"],
+    stages: [
+      {
+        stage: "Booking", touchpoint: "Phone call",
+        doing: ["Accepts a trip over a call", "Gets told where to report"],
+        thinking: ["Is this a full load or a part load?", "Which dock, what time?"],
+        pain: "True load size unknown", opportunity: "Fill % visible at booking",
+        doingAfter: ["Sees fill % and route at booking", "Gets dock, slot and stops on his phone"],
+        thinkingAfter: ["I know what I'm earning", "Clear plan for the day"],
+      },
+      {
+        stage: "At the dock", touchpoint: "Shipper's bay",
+        doing: ["Calls around for part-loads", "Waits while the shipper loads"],
+        thinking: ["There's still space at the back", "This is taking forever"],
+        pain: "Spare space can't be sold in time", opportunity: "Verified part-loads on the route",
+        doingAfter: ["Accepts a verified part-load in one tap", "Watches loading progress on the plan"],
+        thinkingAfter: ["Empty corner, now paid", "Loading is moving fast"],
+      },
+      {
+        stage: "On the road", touchpoint: "Highway",
+        doing: ["Hopes the truck isn't overloaded", "Drives with an unbalanced load"],
+        thinking: ["One fine wipes out the trip's profit", "Hope the axle check is fine"],
+        pain: "Axle overload risk and fines", opportunity: "Weight & axle check before leaving",
+        doingAfter: ["Gets a green axle and weight check", "Drives a balanced load"],
+        thinkingAfter: ["No surprise fines", "Truck handles well"],
+      },
+      {
+        stage: "Deliveries", touchpoint: "Customer stops",
+        doing: ["Handles calls about delays", "Digs out each stop's goods from behind others"],
+        thinking: ["Why is everything late?", "Every stop takes forever"],
+        pain: "Digging out goods at every stop", opportunity: "'At the door' view per stop",
+        doingAfter: ["Sees stops completing on time", "Unloads what's at the door, moves on"],
+        thinkingAfter: ["Clients are happy", "In and out in minutes"],
+      },
+      {
+        stage: "Settle", touchpoint: "WhatsApp & calls",
+        doing: ["Reconciles trips and claims by hand", "Argues a damage claim"],
+        thinking: ["Did this trip even make money?", "Not my fault, it was loaded that way"],
+        pain: "No view of earnings per trip", opportunity: "Trip earnings & utilisation",
+        doingAfter: ["Sees earnings and fill per trip", "Shares the load photo and plan as proof"],
+        thinkingAfter: ["Now I know which trips pay", "The plan backs me up"],
+      },
+    ],
+    today: [[3.4, 2.0, 2.7, 2.3, 1.5], [2.8, 2.4, 2.1, 1.0, 2.2]],
+    future: [[4.3, 4.6, 4.0, 4.1, 4.5], [3.8, 3.9, 4.3, 4.6, 4.0]],
+  },
+};
+
+const personaColors = [C.brand, "#f59e0b"];
+
+function JourneyMap() {
   const [sideKey, setSideKey] = useState<"shipper" | "carrier">("shipper");
   const [mode, setMode] = useState<"today" | "future">("today");
-  const side = journeysV2[sideKey];
-  const people = side.people.map((id) => personaSheets.find((p) => p.id === id)!);
-  const colors = ["bg-brand", "bg-orange-500"];
+  const j = journeyData[sideKey];
+  const people = j.people.map((id) => personaSheets.find((p) => p.id === id)!);
+  const n = j.stages.length;
+  const series = (mode === "today" ? j.today : j.future).slice(0, j.people.length);
+  const cols = `120px repeat(${n}, minmax(0, 1fr))`;
 
-  // Today: the lowest moment. With the agent: the biggest improvement over today.
-  let low = { v: 9, i: 0, p: 0 };
-  side.today.forEach((vals, p) => vals.forEach((v, i) => { if (v < low.v) low = { v, i, p }; }));
-  let lift = { v: -9, i: 0, p: 0 };
-  side.future.forEach((vals, p) => vals.forEach((v, i) => { const d = v - side.today[p][i]; if (d > lift.v) lift = { v: d, i, p }; }));
-  const mark = mode === "today" ? low : lift;
-  const markText =
-    mode === "today"
-      ? `Moment that matters: ${side.stages[low.i].stage} (${people[low.p].name.split(" ")[0]})`
-      : `Biggest lift: ${side.stages[lift.i].stage} (${people[lift.p].name.split(" ")[0]}, +${lift.v.toFixed(1)})`;
+  // moment that matters (today) / biggest lift (future)
+  let mark = { v: 9, i: 0, p: 0 };
+  if (mode === "today") j.today.slice(0, j.people.length).forEach((vals, p) => vals.forEach((v, i) => { if (v < mark.v) mark = { v, i, p }; }));
+  else {
+    mark = { v: -9, i: 0, p: 0 };
+    j.future.slice(0, j.people.length).forEach((vals, p) => vals.forEach((v, i) => { const d = v - j.today[p][i]; if (d > mark.v) mark = { v: d, i, p }; }));
+  }
+
+  const yPct = (v: number) => 8 + ((5 - v) / 4) * 84; // % from top
+  const xPct = (i: number) => ((i + 0.5) / n) * 100;
+  const pathFor = (vals: number[]) =>
+    vals
+      .map((v, i) => {
+        const x = xPct(i) * 10;
+        const y = yPct(v) * 2;
+        if (i === 0) return `M${x},${y}`;
+        const px = xPct(i - 1) * 10;
+        const py = yPct(vals[i - 1]) * 2;
+        const cx = (px + x) / 2;
+        return `C${cx},${py} ${cx},${y} ${x},${y}`;
+      })
+      .join(" ");
+
+  const RowLabel = ({ children }: { children: ReactNode }) => (
+    <div className="sticky left-0 z-10 flex items-start bg-white p-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-ink/45">{children}</div>
+  );
+
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -2152,55 +1749,446 @@ function JourneyMapV2() {
             { k: "today", l: "Today" },
             { k: "future", l: "With the AI agent" },
           ] as const).map((t) => (
-            <button key={t.k} onClick={() => setMode(t.k)} className={`rounded-full px-4 py-2 text-sm font-semibold transition-colors ${mode === t.k ? (t.k === "today" ? "bg-ink text-white" : "bg-emerald-600 text-white") : "text-ink/60 hover:text-ink"}`}>
+            <button key={t.k} onClick={() => setMode(t.k)} className={`rounded-full px-4 py-2 text-sm font-semibold transition-colors ${mode === t.k ? "bg-brand text-white" : "text-ink/60 hover:text-ink"}`}>
               {t.l}
             </button>
           ))}
         </div>
       </div>
 
-      <div className="rounded-3xl bg-white p-4 ring-1 ring-ink/5 md:p-6">
+      <div className="overflow-hidden rounded-3xl bg-white ring-1 ring-ink/5">
         {/* legend */}
-        <div className="mb-3 flex flex-wrap gap-4">
+        <div className="flex flex-wrap items-center gap-x-5 gap-y-2 border-b border-ink/5 px-5 py-3">
           {people.map((p, i) => (
             <span key={p.id} className="flex items-center gap-2 text-sm text-ink/80">
-              <Avatar {...p.avatar} size={28} />
-              <span className={`h-1 w-5 rounded-full ${colors[i]}`} />
+              <PersonaPhoto id={p.id} size={28} />
+              <span className="h-1 w-5 rounded-full" style={{ background: personaColors[i] }} />
               {p.name.split(" ")[0]} · {p.role}
             </span>
           ))}
-          <span className={`flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold ${mode === "today" ? "bg-red-50 text-red-700" : "bg-emerald-50 text-emerald-700"}`}>
-            <span className={`size-3 rounded-full border-2 border-dashed ${mode === "today" ? "border-red-500" : "border-emerald-500"}`} />
-            {markText}
+          <span className="ml-auto rounded-full bg-lilac-100/60 px-3 py-1 text-xs font-semibold text-brand-800">
+            {mode === "today" ? "◎ Moment that matters" : "◎ Biggest lift"}: {j.stages[mark.i].stage} · {people[mark.p].name.split(" ")[0]}
           </span>
         </div>
 
         <div className="overflow-x-auto">
-          <div className="min-w-[680px]">
-            {/* stage header */}
-            <div className="grid" style={{ gridTemplateColumns: `86px repeat(${side.stages.length}, 1fr)` }}>
-              <div />
-              {side.stages.map((s, i) => (
-                <div key={s.stage} className="px-2 pb-2 text-center">
-                  <span className="text-[11px] font-semibold text-brand">Stage {i + 1}</span>
+          <div className="min-w-[860px]">
+            {/* stages */}
+            <div className="grid border-b border-ink/5 bg-canvas/60" style={{ gridTemplateColumns: cols }}>
+              <RowLabel>Stage</RowLabel>
+              {j.stages.map((s, i) => (
+                <div key={s.stage} className="border-l border-ink/5 p-3">
+                  <p className="text-[11px] font-semibold text-brand">0{i + 1}</p>
                   <p className="text-sm font-bold text-ink">{s.stage}</p>
                   <p className="text-[11px] text-ink/50">{s.touchpoint}</p>
                 </div>
               ))}
             </div>
-            <EmotionChart side={side} mode={mode} mark={mark} />
-            {/* details row */}
-            <div className="mt-2 grid" style={{ gridTemplateColumns: `86px repeat(${side.stages.length}, 1fr)` }}>
-              <div className="pt-2 text-[11px] font-semibold uppercase tracking-wide text-ink/50">{mode === "today" ? "Pain" : "What changes"}</div>
-              {side.stages.map((s) => (
-                <div key={s.stage} className="p-1.5">
-                  <p className={`h-full rounded-xl p-2.5 text-xs ${mode === "today" ? "bg-red-50 text-red-800" : "bg-emerald-50 text-emerald-800"}`}>{mode === "today" ? s.pain : s.better}</p>
-                </div>
-              ))}
+
+            {/* doing / thinking, per persona */}
+            {[
+              { label: "Doing", key: mode === "today" ? ("doing" as const) : ("doingAfter" as const), quote: false },
+              { label: "Thinking", key: mode === "today" ? ("thinking" as const) : ("thinkingAfter" as const), quote: true },
+            ].map((row) => (
+              <div key={row.label} className="grid border-b border-ink/5" style={{ gridTemplateColumns: cols }}>
+                <RowLabel>{row.label}</RowLabel>
+                {j.stages.map((s) => (
+                  <div key={s.stage} className="space-y-1.5 border-l border-ink/5 p-2.5">
+                    {s[row.key].slice(0, j.people.length).map((t, pi) => (
+                      <p key={pi} className={`flex gap-1.5 text-xs leading-snug ${row.quote ? "italic text-ink/70" : "text-ink/80"}`}>
+                        <span className="mt-1.5 size-1.5 shrink-0 rounded-full" style={{ background: personaColors[pi] }} />
+                        {row.quote ? `"${t}"` : t}
+                      </p>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            ))}
+
+            {/* feeling curve */}
+            <div className="relative grid border-b border-ink/5" style={{ gridTemplateColumns: cols }}>
+              <div className="sticky left-0 z-10 h-48 bg-white text-[11px] text-ink/50">
+                <span className="absolute left-3 top-2 font-semibold uppercase tracking-[0.14em] text-ink/45">Feeling</span>
+                {[
+                  { v: 4.6, l: "😄 Delighted" },
+                  { v: 3, l: "😐 Neutral" },
+                  { v: 1.4, l: "😣 Frustrated" },
+                ].map((t) => (
+                  <span key={t.l} className="absolute left-3 -translate-y-1/2 whitespace-nowrap" style={{ top: `${yPct(t.v)}%` }}>{t.l}</span>
+                ))}
+              </div>
+              <div className="relative h-48" style={{ gridColumn: `2 / span ${n}` }}>
+                <div className="absolute inset-x-0 top-0 h-[30%] bg-emerald-50/70" />
+                <div className="absolute inset-x-0 bottom-0 h-[30%] bg-rose-50/70" />
+                <div className="absolute inset-x-0 top-1/2 border-t border-dashed border-ink/10" />
+                {j.stages.map((_, i) => (
+                  <div key={i} className="absolute inset-y-0 border-l border-ink/5" style={{ left: `${(i / n) * 100}%` }} />
+                ))}
+                <svg viewBox="0 0 1000 200" preserveAspectRatio="none" className="absolute inset-0 h-full w-full">
+                  {series.map((vals, p) => (
+                    <path key={p} d={pathFor(vals)} fill="none" stroke={personaColors[p]} strokeWidth="3" vectorEffect="non-scaling-stroke" strokeLinecap="round" />
+                  ))}
+                </svg>
+                {series.map((vals, p) =>
+                  vals.map((v, i) => (
+                    <span
+                      key={`${p}-${i}`}
+                      className="absolute size-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full border-[3px] bg-white"
+                      style={{ left: `${xPct(i)}%`, top: `${yPct(v)}%`, borderColor: personaColors[p] }}
+                      title={`${people[p].name.split(" ")[0]}: ${v.toFixed(1)} / 5`}
+                    />
+                  )),
+                )}
+                <span
+                  className="absolute size-8 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-dashed border-brand"
+                  style={{ left: `${xPct(mark.i)}%`, top: `${yPct(series[mark.p][mark.i])}%` }}
+                  aria-hidden="true"
+                />
+              </div>
             </div>
+
+            {/* pain + opportunity */}
+            {[
+              { label: mode === "today" ? "Pain point" : "Pain removed", key: "pain" as const, cls: mode === "today" ? "bg-rose-50 text-rose-800" : "bg-canvas text-ink/40 line-through" },
+              { label: mode === "today" ? "Opportunity" : "What changed", key: "opportunity" as const, cls: "bg-lilac-100/60 text-brand-800" },
+            ].map((row) => (
+              <div key={row.label} className="grid border-b border-ink/5 last:border-0" style={{ gridTemplateColumns: cols }}>
+                <RowLabel>{row.label}</RowLabel>
+                {j.stages.map((s) => (
+                  <div key={s.stage} className="border-l border-ink/5 p-2">
+                    <p className={`h-full rounded-lg p-2.5 text-xs leading-snug ${row.cls}`}>{s[row.key]}</p>
+                  </div>
+                ))}
+              </div>
+            ))}
           </div>
         </div>
       </div>
+      <p className="text-xs text-ink/50">Feeling scores (1–5) come from interviews and dock observations; "with the AI agent" scores come from pilot follow-ups.</p>
+    </div>
+  );
+}
+
+/* ================================================================== */
+/* v6: story carousel, impact visuals, photo personas, JTBD carousel   */
+/* Photos: Unsplash (unsplash.com/license), stored locally.            */
+/* ================================================================== */
+
+function CarouselControls({ index, count, onChange, label }: { index: number; count: number; onChange: (i: number) => void; label: string }) {
+  return (
+    <div className="flex items-center justify-between gap-4">
+      <div className="flex gap-2">
+        {Array.from({ length: count }, (_, i) => (
+          <button
+            key={i}
+            onClick={() => onChange(i)}
+            aria-label={`${label} ${i + 1}`}
+            className={`h-2 rounded-full transition-all ${i === index ? "w-7 bg-brand" : "w-2 bg-ink/20 hover:bg-ink/35"}`}
+          />
+        ))}
+      </div>
+      <div className="flex gap-2">
+        <button onClick={() => onChange((index - 1 + count) % count)} aria-label={`Previous ${label}`} className="flex size-10 items-center justify-center rounded-full bg-white text-brand ring-1 ring-ink/10 transition-colors hover:bg-lilac-100">
+          <FontAwesomeIcon icon={faChevronLeft} className="size-4" />
+        </button>
+        <button onClick={() => onChange((index + 1) % count)} aria-label={`Next ${label}`} className="flex size-10 items-center justify-center rounded-full bg-brand text-white transition-colors hover:bg-brand-600">
+          <FontAwesomeIcon icon={faChevronRight} className="size-4" />
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/* ---------- How it started: small story carousel ---------- */
+
+const storySlides = [
+  { img: imgWarehouseFloor, title: "An optimiser nobody used", text: "Let's Transport already had a load-planning engine. Planners exported its output and redid the plans in Excel." },
+  { img: imgBoxesDock, title: "Plans fell apart at the dock", text: "Even good plans broke once loading began. Crews improvised, and carriers had no view of the load at all." },
+  { img: imgTruckRoad, title: "Where I came in", text: "I was asked to make the plan something every role could see, trust and act on, from the planner's desk to the driver's last stop." },
+];
+
+function StoryCarousel() {
+  const [i, setI] = useState(0);
+  const s = storySlides[i];
+  return (
+    <div className="space-y-4">
+      <div className="overflow-hidden rounded-3xl bg-white ring-1 ring-ink/5">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, x: 24 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -24 }}
+            transition={{ duration: 0.3 }}
+            className="grid md:grid-cols-[1.1fr_1fr]"
+          >
+            <img src={s.img} alt="" className="h-52 w-full object-cover md:h-full md:min-h-[260px]" />
+            <div className="flex flex-col justify-center gap-3 p-6 md:p-8">
+              <span className="text-sm font-semibold text-brand">{String(i + 1).padStart(2, "0")} / {String(storySlides.length).padStart(2, "0")}</span>
+              <h3 className="text-2xl font-bold leading-tight text-ink">{s.title}</h3>
+              <p className="text-base leading-relaxed text-ink/70">{s.text}</p>
+            </div>
+          </motion.div>
+        </AnimatePresence>
+      </div>
+      <CarouselControls index={i} count={storySlides.length} onChange={setI} label="story slide" />
+    </div>
+  );
+}
+
+/* ---------- Impact highlights ---------- */
+
+function FillRing({ value }: { value: number }) {
+  const c = 2 * Math.PI * 42;
+  return (
+    <svg viewBox="0 0 100 100" className="size-36 -rotate-90" aria-hidden="true">
+      <circle cx="50" cy="50" r="42" fill="none" stroke="rgba(255,255,255,0.18)" strokeWidth="10" />
+      <circle cx="50" cy="50" r="42" fill="none" stroke="rgba(255,255,255,0.45)" strokeWidth="10" strokeDasharray={c} strokeDashoffset={c * (1 - 0.71)} />
+      <circle cx="50" cy="50" r="42" fill="none" stroke="#f0ff64" strokeWidth="10" strokeLinecap="round" strokeDasharray={c} strokeDashoffset={c * (1 - value / 100)} />
+    </svg>
+  );
+}
+
+const impactCards: { label: string; icon: IconDefinition; before: number; after: number; unit: string; delta: string; note: string; down?: boolean }[] = [
+  { label: "Trips needed", icon: faTruck, before: 100, after: 86, unit: "", delta: "14% fewer trips", note: "per 1,000 pallets", down: true },
+  { label: "Loading time", icon: faClock, before: 52, after: 34, unit: " min", delta: "35% faster", note: "plan to dispatch", down: true },
+  { label: "Damage claims", icon: faBoxOpen, before: 3.2, after: 2.0, unit: "%", delta: "38% fewer", note: "of shipments", down: true },
+];
+
+function ImpactHighlights() {
+  return (
+    <div className="space-y-4">
+      {/* hero metric */}
+      <div className="relative overflow-hidden rounded-3xl">
+        <img src={imgTruckHighway} alt="" className="absolute inset-0 h-full w-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-r from-brand-900/95 via-brand-800/85 to-brand/40" />
+        <div className="relative flex flex-col gap-6 p-6 text-white sm:flex-row sm:items-center sm:justify-between md:p-8">
+          <div className="space-y-3">
+            <span className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold backdrop-blur-sm">
+              <FontAwesomeIcon icon={faGaugeHigh} className="size-3.5" /> Truck fill rate
+            </span>
+            <p className="text-6xl font-bold leading-none">83<span className="text-3xl">%</span></p>
+            <p className="text-base text-white/85">
+              up from <strong>71%</strong>: <span className="font-semibold text-lime">+12 pts</span> more freight on every truck
+            </p>
+          </div>
+          <div className="relative self-center">
+            <FillRing value={83} />
+            <span className="absolute inset-0 flex flex-col items-center justify-center text-center">
+              <span className="text-xs text-white/70">target 80%</span>
+              <span className="text-sm font-semibold text-lime">beaten</span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* supporting metrics */}
+      <div className="grid gap-4 sm:grid-cols-3">
+        {impactCards.map((m) => {
+          const fmt = (v: number) => (Number.isInteger(m.before) ? `${v}` : v.toFixed(1));
+          const pct = (m.after / m.before) * 100;
+          return (
+            <div key={m.label} className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-ink/5">
+              <div className="flex items-center gap-3">
+                <span className="flex size-12 items-center justify-center rounded-2xl bg-brand/10 text-brand">
+                  <FontAwesomeIcon icon={m.icon} className="size-6" />
+                </span>
+                <div>
+                  <p className="text-sm font-semibold text-ink/70">{m.label}</p>
+                  <p className="text-xs text-ink/45">{m.note}</p>
+                </div>
+              </div>
+              <p className="mt-4 text-4xl font-bold text-ink">{fmt(m.after)}<span className="text-xl">{m.unit}</span></p>
+              <p className="mt-1 text-sm font-semibold text-green-600">↘ {m.delta}</p>
+              {/* before vs after, as one simple bar */}
+              <div className="mt-4 space-y-1.5">
+                <div className="h-2.5 rounded-full bg-lilac-100" />
+                <div className="h-2.5 rounded-full bg-brand" style={{ width: `${pct}%` }} />
+                <div className="flex justify-between text-[11px] text-ink/50">
+                  <span>Before {fmt(m.before)}{m.unit}</span>
+                  <span className="font-semibold text-brand">After {fmt(m.after)}{m.unit}</span>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+/* ---------- Personas: 3 photo-based persona cards ---------- */
+
+function PersonaPhoto({ id, size = 40, className = "" }: { id: string; size?: number; className?: string }) {
+  const p = personaSheets.find((x) => x.id === id)!;
+  return <img src={p.photo} alt={p.name} width={size} height={size} className={`shrink-0 rounded-full object-cover ${className}`} style={{ width: size, height: size }} />;
+}
+
+function PersonaSheets() {
+  const [id, setId] = useState(personaSheets[0].id);
+  const p = personaSheets.find((x) => x.id === id)!;
+  return (
+    <div className="space-y-4">
+      <div className="grid grid-cols-3 gap-2 sm:gap-3">
+        {personaSheets.map((x) => (
+          <button
+            key={x.id}
+            onClick={() => setId(x.id)}
+            className={`flex flex-col items-center gap-2 rounded-2xl p-2 text-center transition-all sm:flex-row sm:pr-3 sm:text-left ${x.id === id ? "bg-brand/5 ring-2 ring-brand" : "bg-white ring-1 ring-ink/10 hover:ring-brand/30"}`}
+          >
+            <PersonaPhoto id={x.id} size={44} />
+            <span className="min-w-0">
+              <span className="block truncate text-sm font-semibold text-ink">{x.name.split(" ")[0]}</span>
+              <span className="hidden truncate text-xs text-ink/55 sm:block">{x.role}</span>
+            </span>
+          </button>
+        ))}
+      </div>
+
+      <AnimatePresence mode="wait">
+        <motion.div key={p.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.25 }} className="overflow-hidden rounded-3xl bg-white ring-1 ring-ink/5">
+          <div className="grid md:grid-cols-[240px_1fr]">
+            <div className="relative">
+              <img src={p.photo} alt={p.name} className="h-64 w-full object-cover md:h-full" />
+              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/85 to-transparent p-4 text-white">
+                <p className="text-lg font-bold">{p.name}</p>
+                <p className="text-sm text-white/80">{p.role} · {p.age}</p>
+              </div>
+            </div>
+            <div className="space-y-5 p-6">
+              <div className="flex flex-wrap gap-2 text-xs">
+                <span className="rounded-full bg-brand/10 px-2.5 py-1 font-semibold text-brand">{p.archetype}</span>
+                <span className="rounded-full bg-canvas px-2.5 py-1 text-ink/70">{p.location}</span>
+                <span className="rounded-full bg-canvas px-2.5 py-1 text-ink/70">{p.experience}</span>
+              </div>
+              <blockquote className="border-l-4 border-brand pl-4 text-base font-medium italic text-ink">"{p.quote}"</blockquote>
+              <div className="grid gap-5 sm:grid-cols-2">
+                <div>
+                  <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-ink/45">Goals</p>
+                  <ul className="space-y-1.5">
+                    {p.goals.map((g) => (
+                      <li key={g} className="flex gap-2 text-sm text-ink/80"><FontAwesomeIcon icon={faCircleCheck} className="mt-0.5 size-3.5 shrink-0 text-brand" />{g}</li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-ink/45">Frustrations</p>
+                  <ul className="space-y-1.5">
+                    {p.frustrations.map((g) => (
+                      <li key={g} className="flex gap-2 text-sm text-ink/80"><FontAwesomeIcon icon={faTriangleExclamation} className="mt-0.5 size-3.5 shrink-0 text-lilac" />{g}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+              <div className="flex flex-wrap items-center gap-4 border-t border-ink/5 pt-4 text-xs text-ink/60">
+                <span className="flex items-center gap-2">
+                  Tech comfort
+                  <span className="flex gap-1">
+                    {[1, 2, 3, 4, 5].map((n) => (
+                      <span key={n} className={`h-1.5 w-4 rounded-full ${n <= p.techComfort ? "bg-brand" : "bg-ink/10"}`} />
+                    ))}
+                  </span>
+                </span>
+                <span className="text-ink/30">·</span>
+                <span>Uses {p.tools.join(", ")}</span>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      </AnimatePresence>
+    </div>
+  );
+}
+
+/* ---------- Jobs to be done: one card per persona, in a carousel ---------- */
+
+const jobStories = [
+  { persona: "priya", when: "orders close for a dispatch wave", want: "know which truck each order fits into, and in what order", so: "dispatch on time without wasting space", today: "Excel and a 10–15% safety gap", success: "Plan a truck in under 3 minutes" },
+  { persona: "ramesh", when: "a truck backs into my bay", want: "my crew to know exactly what goes in next", so: "load once, safely and on time", today: "Printouts and experience", success: "No re-stacking, no crushed cartons" },
+  { persona: "arjun", when: "a trip is booked", want: "to know how much space is left and how to fill it", so: "every trip earns as much as it can", today: "Phone calls and guesswork", success: "Spare space sold before dispatch" },
+];
+
+function JobsToBeDone() {
+  const [i, setI] = useState(0);
+  const j = jobStories[i];
+  const p = personaSheets.find((x) => x.id === j.persona)!;
+  return (
+    <div className="space-y-4">
+      <AnimatePresence mode="wait">
+        <motion.div key={j.persona} initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -24 }} transition={{ duration: 0.3 }} className="overflow-hidden rounded-3xl bg-white ring-1 ring-ink/5">
+          <div className="flex items-center gap-4 border-b border-ink/5 bg-gradient-to-r from-brand/10 to-white px-6 py-4">
+            <PersonaPhoto id={p.id} size={56} className="ring-4 ring-white" />
+            <div>
+              <p className="text-lg font-bold text-ink">{p.name}</p>
+              <p className="text-sm text-ink/60">{p.role}</p>
+            </div>
+          </div>
+          <div className="grid gap-px bg-ink/5 md:grid-cols-3">
+            {[
+              { k: "When", v: j.when, icon: faClock },
+              { k: "I want to", v: j.want, icon: faBullseye },
+              { k: "So I can", v: j.so, icon: faCircleCheck },
+            ].map((row, idx) => (
+              <div key={row.k} className="space-y-3 bg-white p-6">
+                <div className="flex items-center gap-2">
+                  <span className="flex size-9 items-center justify-center rounded-xl bg-brand/10 text-brand">
+                    <FontAwesomeIcon icon={row.icon} className="size-4" />
+                  </span>
+                  <span className="text-xs font-semibold uppercase tracking-[0.14em] text-brand">{idx + 1} · {row.k}</span>
+                </div>
+                <p className="text-lg font-semibold leading-snug text-ink">{row.v}</p>
+              </div>
+            ))}
+          </div>
+          <div className="grid border-t border-ink/5 sm:grid-cols-2">
+            <div className="px-6 py-4 sm:border-r sm:border-ink/5">
+              <p className="text-xs font-semibold uppercase tracking-wide text-ink/40">Hired today</p>
+              <p className="mt-1 text-sm text-ink/75">{j.today}</p>
+            </div>
+            <div className="px-6 py-4">
+              <p className="text-xs font-semibold uppercase tracking-wide text-ink/40">Success looks like</p>
+              <p className="mt-1 text-sm font-semibold text-brand">{j.success}</p>
+            </div>
+          </div>
+        </motion.div>
+      </AnimatePresence>
+      <CarouselControls index={i} count={jobStories.length} onChange={setI} label="job story" />
+    </div>
+  );
+}
+
+/* ---------- Core outcomes: qualitative, room for analytics images ---------- */
+
+type Outcome = { icon: IconDefinition; title: string; text: string; image?: string; imageAlt?: string };
+
+const coreOutcomes: Outcome[] = [
+  { icon: faEye, title: "Fill you can see", text: "Planners and owners know a truck's real capacity before anything is loaded." },
+  { icon: faTruckRampBox, title: "Unload without digging", text: "Every stop's goods sit by the door, so drops take minutes, not a dig." },
+  { icon: faHandshake, title: "Carriers on board", text: "Owners and agencies plan from their phones and sell space that used to travel empty." },
+];
+
+function CoreOutcomes() {
+  return (
+    <div className="grid gap-4 md:grid-cols-3">
+      {coreOutcomes.map((o) => (
+        <Card key={o.title} className="flex flex-col gap-4 overflow-hidden !p-0">
+          {o.image ? (
+            <img src={o.image} alt={o.imageAlt ?? o.title} className="aspect-[16/10] w-full object-cover" />
+          ) : (
+            <div className="m-4 mb-0 flex aspect-[16/10] flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-ink/15 bg-canvas text-ink/40">
+              <FontAwesomeIcon icon={faChartLine} className="size-6" />
+              <span className="text-xs font-medium">Analytics screenshot coming soon</span>
+            </div>
+          )}
+          <div className="space-y-2 px-6 pb-6">
+            <div className="flex items-center gap-2">
+              <FontAwesomeIcon icon={o.icon} className="size-4 text-brand" />
+              <h3 className="text-lg font-semibold text-ink">{o.title}</h3>
+            </div>
+            <Body>{o.text}</Body>
+          </div>
+        </Card>
+      ))}
     </div>
   );
 }
@@ -2218,19 +2206,16 @@ export default function TruckFillCaseStudy() {
           <SectionTitle>Project summary</SectionTitle>
           <div className="space-y-4 max-w-3xl">
             <Body>
-              <strong>Let's Transport</strong> is a tech-led trucking and logistics platform that connects shippers (warehouses, 3PLs and enterprise brands) with transport agencies and truck owners to plan, load and move freight across India.
+              <strong>Let's Transport</strong> is a logistics solutions platform that gives enterprises, organisations and individual truck owners the tools to book, manage, track and report on logistics, end to end.
             </Body>
             <Body>
-              Our partner fleets were busy but not efficient: <Mark>trucks were leaving the dock feeling full while carrying only about 71% of their capacity.</Mark> Multi-drop loads were packed in the wrong order, drivers re-handled goods at every stop, and the carriers who owned the trucks had no simple way to see or sell their spare space.
-            </Body>
-            <Body>
-              I designed the <strong>Truck Fill AI Agent</strong> for Let's Transport to close that gap. It calculates a true fill score before loading, sequences each load around the delivery route, guides the dock crew step by step, and gives truck owners and agencies a mobile-first view of spare capacity they can act on.
+              I designed its <strong>Truck Fill AI Agent</strong>: a planning assistant that shows how full a truck really is before loading, packs each load around the delivery route, guides the dock crew step by step, and lets truck owners fill their spare space from their phone.
             </Body>
           </div>
 
           <div className="space-y-6 pt-6">
-            <SubTitle note="The technology existed long before people trusted it.">How it started</SubTitle>
-            <StoryTimeline />
+            <SubTitle>How it started</SubTitle>
+            <StoryCarousel />
           </div>
 
           <div className="space-y-6">
@@ -2268,11 +2253,6 @@ export default function TruckFillCaseStudy() {
           </div>
 
           <BusinessIllustrated />
-
-          <div className="space-y-4">
-            <h2 className="text-2xl font-bold text-ink">Where the value leaks</h2>
-            <BusinessProblems />
-          </div>
 
           <div className="space-y-4">
             <h2 className="text-2xl font-bold text-ink">Why it happens</h2>
@@ -2314,14 +2294,14 @@ export default function TruckFillCaseStudy() {
             ))}
           </div>
 
-          <SubTitle note="Five people touch every load. Each sees a different part of the problem.">Different roles. Real challenges.</SubTitle>
+          <SubTitle note="Three people shape every load. Each one sees a different part of the problem.">Different roles. Real challenges.</SubTitle>
           <PersonaSheets />
 
           <SubTitle note="Stripping away the role, each person is trying to get one job done.">Jobs to be done</SubTitle>
           <JobsToBeDone />
 
-          <SubTitle note="We mapped a typical multi-drop load end to end, from both sides. The lowest moments are where value leaks out.">Current journey</SubTitle>
-          <JourneyMapV2 />
+          <SubTitle note="We mapped a typical multi-drop load end to end: the shipper side (Priya and Ramesh) and the carrier side (Arjun). The lowest moments are where value leaks out.">Current journey</SubTitle>
+          <JourneyMap />
 
           <SubTitle note="We surveyed 480 planners, supervisors and owners. Three distinct loading behaviours emerged.">Behavioural Segmentation</SubTitle>
           <Card className="space-y-5">
