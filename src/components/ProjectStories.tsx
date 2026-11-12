@@ -5,7 +5,9 @@ import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment } from "@fortawesome/free-solid-svg-icons";
 import ConnectButton from "./ConnectButton";
-import ProjectMockup from "./ProjectMockups";
+import ProjectMockup, { FitGraphic } from "./ProjectMockups";
+import { projectBackgrounds } from "../utils/projectTheme";
+import { useSplitVariants } from "../utils/transitions";
 
 const CAROUSEL_ITEM_WIDTH = 120;
 const CAROUSEL_STEP = 128;
@@ -24,6 +26,17 @@ function Chevron({ className = "" }: { className?: string }) {
   );
 }
 
+function HomeIcon({ className = "" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 32 32" className={className} fill="none" aria-hidden="true">
+      <path
+        d="M16 4L4 14v12c0 1.1.9 2 2 2h8v-8h4v8h8c1.1 0 2-.9 2-2V14l-12-10z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+
 function ArrowForward({ className = "" }: { className?: string }) {
   return (
     <svg viewBox="0 0 32 32" className={className} fill="none">
@@ -32,29 +45,6 @@ function ArrowForward({ className = "" }: { className?: string }) {
         fill="currentColor"
       />
     </svg>
-  );
-}
-
-function LightningPill({ text }: { text: string }) {
-  return (
-    <div 
-      className="flex items-center gap-2 rounded-full bg-brand-600/70 px-3 py-2"
-      style={{
-        backgroundImage: 'linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0) 100%)',
-        backgroundSize: '200% 100%',
-        animation: 'shine 3s linear 2s infinite'
-      }}
-    >
-      <svg viewBox="0 0 28 28" className="size-4 shrink-0" fill="none">
-        <path
-          d="M13 2 5 15h6l-2 11 10-14h-7l3-10z"
-          fill="white"
-        />
-      </svg>
-      <span className="text-[13px] font-normal text-white sm:text-[15px]">
-        {text}
-      </span>
-    </div>
   );
 }
 
@@ -67,6 +57,7 @@ export default function ProjectStories({
   onBack: () => void;
 }) {
   const navigate = useNavigate();
+  const split = useSplitVariants();
   // `active` is an unbounded position so the mobile carousel can loop forever;
   // the project shown is that position wrapped into the projects list.
   const total = projects.length;
@@ -106,15 +97,15 @@ export default function ProjectStories({
 
       <div className="relative z-10 mx-auto grid min-h-[100dvh] w-full max-w-[1920px] grid-cols-1 grid-rows-[auto_1fr] lg:min-h-screen lg:grid-rows-1 lg:grid-cols-[minmax(360px,32%)_1fr]">
         {/* ---- sidebar nav ---- */}
-        <div className="relative flex flex-col gap-4 px-0 pt-4 pb-6 lg:max-h-screen lg:gap-10 lg:px-16 lg:py-20 lg:-mt-10">
+        <motion.div variants={split.left} className="relative flex flex-col gap-4 px-0 pt-4 pb-6 lg:max-h-screen lg:gap-10 lg:px-16 lg:py-20 lg:-mt-10">
           {/* header: back | title | contact on mobile; back + title on desktop */}
           <div className="relative flex items-center justify-between px-4 lg:justify-start lg:gap-3 lg:px-0">
             <button
               onClick={() => navigate("/")}
-              aria-label="Back to home"
+              aria-label="Go to home"
               className="group flex size-10 shrink-0 items-center justify-center rounded-full bg-lilac-100 text-brand transition-colors hover:bg-brand-600 hover:text-white lg:size-12"
             >
-              <ArrowForward className="size-4 rotate-180 transition-transform duration-300 group-hover:rotate-135 lg:size-5" />
+              <HomeIcon className="size-4 transition-transform duration-300 group-hover:scale-110 lg:size-5" />
             </button>
             <span className="absolute left-1/2 -translate-x-1/2 text-base font-medium text-ink/70 lg:static lg:translate-x-0 lg:text-sm lg:text-ink/60">
               Projects
@@ -154,6 +145,7 @@ export default function ProjectStories({
                   }}
                   transition={{ duration: 0.5, ease: "easeInOut" }}
                   onClick={() => setActive(position)}
+                  aria-label={`Show ${p.word}`}
                   tabIndex={Math.abs(offset) > 1 ? -1 : 0}
                   className="absolute top-1/2 flex flex-col items-center gap-1 text-center"
                   style={{ left: "50%", width: CAROUSEL_ITEM_WIDTH, marginLeft: -CAROUSEL_ITEM_WIDTH / 2, translateY: "-50%" }}
@@ -178,47 +170,62 @@ export default function ProjectStories({
           </div>
 
           {/* desktop: vertical list in the My Journey style */}
-          <nav className="hidden flex-col gap-10 pt-5 lg:flex">
+          <nav className="hidden flex-col gap-12 pt-5 lg:flex">
             {projects.map((p, index) => {
               const isActive = index === activeIndex;
               return (
-                <button
-                  key={p.id}
-                  onClick={() => selectProject(index)}
-                  className="group flex flex-col items-start gap-2 text-left"
-                >
-                  <span
-                    className={`text-xs font-semibold uppercase tracking-wide transition-colors duration-300 ${
-                      isActive ? "text-brand" : "text-ink/40 group-hover:text-ink/60"
-                    }`}
+                <div key={p.id} className="flex items-end gap-3">
+                  <button
+                    onClick={() => selectProject(index)}
+                    className="group flex flex-col items-start gap-3 text-left"
                   >
-                    {p.eyebrow}
-                  </span>
-                  <span className="flex items-center gap-3">
+                    <span
+                      className={`text-lg font-semibold uppercase tracking-wide transition-colors duration-300 ${
+                        isActive ? "text-brand" : "text-ink/40 group-hover:text-ink/60"
+                      }`}
+                    >
+                      {p.eyebrow}
+                    </span>
                     <span
                       className={`font-semibold leading-none transition-all duration-300 ${
                         isActive
-                          ? "text-[clamp(28px,3vw,40px)] text-ink"
-                          : "text-[clamp(20px,2.2vw,28px)] text-ink/50 group-hover:text-ink"
+                          ? "text-[clamp(42px,4.5vw,60px)] text-ink"
+                          : "text-[clamp(30px,3.3vw,42px)] text-ink/50 group-hover:text-ink"
                       }`}
                     >
                       {p.word}
                     </span>
+                  </button>
+                  {/* touchpoint to open the selected project */}
+                  <AnimatePresence>
                     {isActive && (
-                      <span className="block size-2.5 shrink-0 rounded-full bg-brand" />
+                      <motion.button
+                        key="open"
+                        initial={{ opacity: 0, scale: 0.6 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.6 }}
+                        transition={{ duration: 0.25 }}
+                        onClick={() => navigate(`/project/${p.id}`)}
+                        aria-label={`Open ${p.title}`}
+                        title="Open project"
+                        className="mb-1.5 flex size-8 shrink-0 items-center justify-center rounded-full bg-brand text-white shadow-md shadow-brand/30 transition-colors hover:bg-brand-600"
+                      >
+                        <Chevron className="size-4" />
+                      </motion.button>
                     )}
-                  </span>
-                </button>
+                  </AnimatePresence>
+                </div>
               );
             })}
           </nav>
-        </div>
+        </motion.div>
 
         {/* ---- content panel: mobile, full-bleed section filling the rest of the screen ---- */}
-        <div className={`relative flex overflow-hidden lg:hidden ${project.panel}`}>
-          {/* ambient glow */}
-          <div className="pointer-events-none absolute -right-16 -top-16 size-64 rounded-full bg-white/15 blur-3xl" />
-          <div className="pointer-events-none absolute -bottom-20 -left-10 size-64 rounded-full bg-black/25 blur-3xl" />
+        <motion.div variants={split.right} className={`relative flex overflow-hidden lg:hidden ${project.panel}`}
+          style={{ backgroundImage: projectBackgrounds[project.id] }}
+        >
+          {/* soft glow behind the graphic */}
+          <div className="pointer-events-none absolute -right-16 bottom-24 size-64 rounded-full bg-white/10 blur-3xl" />
 
           <AnimatePresence mode="wait">
             <motion.div
@@ -227,17 +234,17 @@ export default function ProjectStories({
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -24 }}
               transition={{ duration: 0.35, ease: "easeOut" }}
-              className="relative flex w-full flex-col gap-4 px-5 pt-8 pb-8"
+              className="relative flex w-full flex-col gap-3 px-5 pt-6 pb-6"
             >
               {/* title + outcomes at the top */}
-              <h2 className="text-[clamp(26px,7.5vw,36px)] font-semibold leading-tight text-white">
+              <h2 className="text-[clamp(25px,7.2vw,34px)] font-semibold leading-tight text-white">
                 {project.title}
               </h2>
               <div className="flex flex-wrap gap-2">
                 {project.pills.map((pill) => (
                   <span
                     key={pill}
-                    className="flex items-center gap-1.5 rounded-full bg-white/15 px-2.5 py-1.5 text-xs font-medium text-white backdrop-blur-sm"
+                    className="flex items-center gap-1.5 rounded-full bg-white/15 px-2.5 py-1 text-[11px] font-medium text-white backdrop-blur-sm"
                   >
                     <svg viewBox="0 0 28 28" className="size-3 shrink-0" fill="none" aria-hidden="true">
                       <path d="M13 2 5 15h6l-2 11 10-14h-7l3-10z" fill="currentColor" />
@@ -248,24 +255,24 @@ export default function ProjectStories({
               </div>
 
               {/* graphics fill the space towards the bottom */}
-              <div className="flex flex-1 items-end justify-center py-6">
-                <ProjectMockup visual={project.visual} />
-              </div>
+              <FitGraphic maxScale={1.25} className="min-h-[50%] flex-1 my-3">
+                <ProjectMockup visual={project.visual} detailed />
+              </FitGraphic>
 
               {/* button pinned to the bottom */}
               <button
                 onClick={() => navigate(`/project/${project.id}`)}
-                className="group flex h-12 w-full shrink-0 items-center justify-center gap-3 rounded-full bg-white text-brand transition-colors hover:bg-lilac-100"
+                className="group flex h-11 w-full shrink-0 items-center justify-center gap-3 rounded-full bg-white text-brand transition-colors hover:bg-lilac-100"
               >
-                <span className="text-base font-semibold leading-none">View Project</span>
+                <span className="text-[15px] font-semibold leading-none">View Project</span>
                 <ArrowForward className="size-4 shrink-0 transition-transform duration-300 group-hover:-rotate-45" />
               </button>
             </motion.div>
           </AnimatePresence>
-        </div>
+        </motion.div>
 
         {/* ---- content panel: desktop ---- */}
-        <div className="relative hidden overflow-hidden lg:block lg:min-h-screen">
+        <motion.div variants={split.right} className="relative hidden overflow-hidden lg:block lg:min-h-screen">
           <AnimatePresence mode="wait">
             <motion.div
               key={active}
@@ -276,27 +283,31 @@ export default function ProjectStories({
               className="absolute inset-0 overflow-hidden"
             >
               {/* project background (motion graphics to come) */}
-              <div className={`pointer-events-none absolute inset-0 ${project.panel}`} />
+              <div
+                className={`pointer-events-none absolute inset-0 ${project.panel}`}
+                style={{ backgroundImage: projectBackgrounds[project.id] }}
+              />
 
-              {/* ambient blobs */}
-              <div className="pointer-events-none absolute -right-40 top-24 size-[520px] rounded-full bg-white/10 blur-[120px]" />
-              <div className="pointer-events-none absolute -left-40 bottom-0 size-[520px] rounded-full bg-black/25 blur-[160px]" />
+              {/* soft glow behind the graphic */}
+              <div className="pointer-events-none absolute left-1/2 bottom-[10%] size-[560px] -translate-x-1/2 rounded-full bg-white/10 blur-[120px]" />
 
-
-
+              <div className="relative z-10 flex h-full flex-col">
               {/* copy */}
-              <div 
-                className="relative z-10 flex w-full flex-col gap-10 px-8 pt-24 lg:px-16 lg:pt-28 lg:max-w-none"
-                style={{
-                  background: 'linear-gradient(180deg, rgba(61, 0, 121, 0.8) 0%, rgba(61, 0, 121, 0.4) 50%, rgba(61, 0, 121, 0) 100%)'
-                }}
-              >
-                <h2 className="text-[clamp(44px,5.2vw,76px)] font-semibold leading-[1.3] text-white pr-20">
+              <div className="flex w-full shrink-0 flex-col gap-6 px-14 pt-24 xl:px-16 [@media(max-height:780px)]:gap-4 [@media(max-height:780px)]:pt-20">
+                <h2 className="max-w-[24ch] text-[clamp(48px,5.2vw,84px)] font-semibold leading-[1.1] text-white [@media(max-height:780px)]:text-[clamp(42px,4.3vw,62px)]">
                   {project.title}
                 </h2>
-                <div className="flex flex-wrap items-center gap-3">
+                <div className="flex flex-wrap items-center gap-2">
                   {project.pills.map((pill) => (
-                    <LightningPill key={pill} text={pill} />
+                    <span
+                      key={pill}
+                      className="flex items-center gap-2 rounded-full bg-white/15 px-4 py-2 text-base font-medium text-white backdrop-blur-sm"
+                    >
+                      <svg viewBox="0 0 28 28" className="size-4 shrink-0" fill="none" aria-hidden="true">
+                        <path d="M13 2 5 15h6l-2 11 10-14h-7l3-10z" fill="currentColor" />
+                      </svg>
+                      {pill}
+                    </span>
                   ))}
                 </div>
 
@@ -304,17 +315,25 @@ export default function ProjectStories({
                 <button
                   onClick={() => navigate(`/project/${project.id}`)}
                   aria-label="View Project"
-                  className="group relative flex h-[64px] w-[240px] items-center justify-center gap-4 rounded-full border-2 border-brand bg-white text-brand transition-all duration-300 hover:bg-brand hover:text-white"
+                  className="group relative mt-1 flex h-14 w-[220px] items-center justify-center gap-3 rounded-full bg-white text-brand transition-all duration-300 hover:bg-lilac-100"
                 >
-                  <span className="text-[18px] font-semibold leading-none tracking-tight">
+                  <span className="text-lg font-semibold leading-none tracking-tight">
                     View Project
                   </span>
                   <ArrowForward className="size-5 transition-transform duration-300 group-hover:-rotate-45 flex-shrink-0" />
                 </button>
               </div>
+
+              {/* project graphic fills the space below the copy */}
+              <div className="flex min-h-0 flex-1 px-14 pb-10 pt-8 xl:px-16">
+                <FitGraphic maxScale={2.2} className="h-full">
+                  <ProjectMockup visual={project.visual} />
+                </FitGraphic>
+              </div>
+              </div>
             </motion.div>
           </AnimatePresence>
-        </div>
+        </motion.div>
       </div>
       <ConnectButton
         hotspot={false}

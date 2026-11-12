@@ -1,10 +1,12 @@
 import { motion, AnimatePresence } from "motion/react";
-import { useState, useEffect, type ReactElement } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBriefcase, faBolt, faBrain } from "@fortawesome/free-solid-svg-icons";
 import heroImage from "../imports/Main/4c74906ffa4be2217b2d960958c0d49e73b948cc.png";
 import ConnectButton from "./ConnectButton";
+import { LightSideAmbient, PurplePanelAmbient } from "./HeroAmbient";
+import { useSplitVariants } from "../utils/transitions";
 
 function ArrowForward({ className = "" }: { className?: string }) {
   return (
@@ -38,100 +40,44 @@ function AnimatedTitle() {
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [displayedText, setDisplayedText] = useState("");
-  const [isTypingActive, setIsTypingActive] = useState(true);
-
   const currentTitle = titles[currentIndex];
-  const fullText = currentTitle.text;
-  const isTextComplete = displayedText.length === fullText.length;
 
+  // Show each line for a few seconds, then zoom/fade to the next one
   useEffect(() => {
-    let timer: NodeJS.Timeout;
-
-    if (isTypingActive && !isTextComplete) {
-      // Currently typing
-      timer = setTimeout(() => {
-        setDisplayedText(fullText.slice(0, displayedText.length + 1));
-      }, 50);
-    } else if (isTextComplete && isTypingActive) {
-      // Text is complete, wait before switching
-      setIsTypingActive(false);
-    } else if (!isTypingActive && isTextComplete) {
-      // Wait period, then switch to next title
-      timer = setTimeout(() => {
-        setCurrentIndex((prev) => (prev + 1) % titles.length);
-        setDisplayedText("");
-        setIsTypingActive(true);
-      }, 5000);
-    }
-
+    const timer = setTimeout(() => {
+      setCurrentIndex((prev) => (prev + 1) % titles.length);
+    }, 4500);
     return () => clearTimeout(timer);
-  }, [displayedText, isTypingActive, isTextComplete, fullText, titles.length]);
+  }, [currentIndex, titles.length]);
 
+  // Split the line so the highlighted phrase renders in the brand colour
   const renderText = () => {
-    const fullText = currentTitle.text;
-    const highlightWords = currentTitle.highlight.split(/[\s–-]+/);
-    
-    // Create character-level highlighting map
-    const isHighlightedChar = Array(fullText.length).fill(false);
-    
-    highlightWords.forEach(word => {
-      const regex = new RegExp(`\\b${word}\\b`, "gi");
-      let match;
-      while ((match = regex.exec(fullText)) !== null) {
-        for (let i = match.index; i < match.index + match[0].length; i++) {
-          isHighlightedChar[i] = true;
-        }
-      }
-    });
-
-    // Build JSX with character-level highlighting
-    const result: ReactElement[] = [];
-    let currentSpanHighlighted: boolean | null = null;
-    let currentSpanText = "";
-
-    for (let i = 0; i < displayedText.length; i++) {
-      const char = displayedText[i];
-      const charHighlighted = isHighlightedChar[i];
-
-      if (charHighlighted !== currentSpanHighlighted) {
-        // Highlight state changed, render previous span
-        if (currentSpanText) {
-          result.push(
-            <span
-              key={result.length}
-              className={currentSpanHighlighted ? "text-brand font-semibold" : ""}
-            >
-              {currentSpanText}
-            </span>
-          );
-        }
-        currentSpanText = char;
-        currentSpanHighlighted = charHighlighted;
-      } else {
-        currentSpanText += char;
-      }
-    }
-
-    // Don't forget the last span
-    if (currentSpanText) {
-      result.push(
-        <span
-          key={result.length}
-          className={currentSpanHighlighted ? "text-brand font-semibold" : ""}
-        >
-          {currentSpanText}
-        </span>
-      );
-    }
-
-    return result;
+    const { text, highlight } = currentTitle;
+    const start = text.indexOf(highlight);
+    if (start === -1) return text;
+    return (
+      <>
+        {text.slice(0, start)}
+        <span className="text-brand font-semibold">{highlight}</span>
+        {text.slice(start + highlight.length)}
+      </>
+    );
   };
 
   return (
-    <h1 className="mt-2 text-[clamp(24px,4vw,70px)] font-semibold leading-tight text-ink-soft lg:max-w-[900px] min-h-[100px] sm:min-h-[180px]">
-      {renderText()}
-      {isTypingActive && <span className="animate-zoom-in">|</span>}
+    <h1 className="relative mt-2 text-[clamp(24px,4vw,70px)] font-semibold leading-tight text-ink-soft lg:max-w-[900px] min-h-[2.5em]">
+      <AnimatePresence mode="wait">
+        <motion.span
+          key={currentIndex}
+          className="block origin-left"
+          initial={{ opacity: 0, scale: 0.92, filter: "blur(6px)" }}
+          animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+          exit={{ opacity: 0, scale: 1.06, filter: "blur(6px)" }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        >
+          {renderText()}
+        </motion.span>
+      </AnimatePresence>
     </h1>
   );
 }
@@ -171,15 +117,10 @@ function CtaButton({
 
 export default function Hero() {
   const navigate = useNavigate();
-  const [isExiting, setIsExiting] = useState(false);
+  const split = useSplitVariants();
 
-  const handleNavigation = (path: string) => {
-    setIsExiting(true);
-    setTimeout(() => {
-      navigate(path);
-      console.log("Would navigate to:", path);
-    }, 500);
-  };
+  // The route transition (see utils/transitions) slides the halves apart on exit.
+  const handleNavigation = (path: string) => navigate(path);
 
   return (
     <section className="relative w-full h-screen flex flex-col overflow-hidden bg-white">
@@ -203,17 +144,15 @@ export default function Hero() {
         className="pointer-events-none absolute top-1/3 left-1/4 size-[200px] rounded-full bg-[#fdfbd4] opacity-30 blur-[40px]"
       />
 
+      {/* floating dots on the light side (desktop) */}
+      <div className="pointer-events-none absolute inset-y-0 left-0 hidden w-[60%] lg:block">
+        <LightSideAmbient />
+      </div>
+
       {/* DESKTOP: Grid layout */}
       <div className="hidden lg:grid relative z-10 w-full h-full grid-cols-[1.5fr_1fr]">
         {/* left copy */}
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ 
-            opacity: isExiting ? 0 : 1, 
-            y: isExiting ? 24 : 0,
-            x: isExiting ? 100 : 0
-          }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
+        <motion.div variants={split.left}
           className="flex flex-col justify-center max-w-full px-4 py-20 lg:px-8 lg:pl-[74px] lg:pr-16"
         >
           <p className="text-[26px] md:text-[32px] font-semibold text-muted">
@@ -234,28 +173,20 @@ export default function Hero() {
 
           <AnimatedTitle />
 
-          <div className="mt-10 flex flex-row items-center gap-4 w-full">
+          <div className="mt-6 flex flex-row items-center gap-4 w-full">
             <CtaButton label="Project Stories" splitAt={4} onClick={() => handleNavigation("/projects")} variant="primary" />
             <CtaButton label="My Journey" splitAt={2} onClick={() => handleNavigation("/about")} variant="secondary" />
           </div>
         </motion.div>
 
         {/* right image panel */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.96 }}
-          animate={{ 
-            opacity: isExiting ? 0 : 1, 
-            scale: isExiting ? 0.96 : 1,
-            x: isExiting ? 100 : 0
-          }}
-          transition={{ duration: 0.5, ease: "easeOut", delay: isExiting ? 0 : 0.15 }}
+        <motion.div variants={split.right}
           className="relative h-full w-full bg-brand"
         >
           <div className="absolute right-0 top-0 h-full w-full bg-brand" />
+          <PurplePanelAmbient />
           <div className="absolute right-[21%] top-[7%] h-[86%] w-[80%] border-4 border-white" />
-          <motion.img
-            animate={{ opacity: isExiting ? 0 : 1 }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
+          <img
             src={heroImage}
             alt="Suman S., product designer, seated in a lilac armchair beside a potted plant"
             className="absolute bottom-0 right-[24%] h-[100%] w-auto object-contain drop-shadow-2xl"
@@ -269,13 +200,7 @@ export default function Hero() {
       <div className="flex lg:hidden relative z-10 flex-col h-full w-full">
 
         {/* Top White Section - Title */}
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ 
-            opacity: isExiting ? 0 : 1, 
-            y: isExiting ? 24 : 0
-          }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
+        <motion.div variants={split.left}
           className="flex-shrink-0 flex flex-col justify-start px-4 pt-[24px] lg:pt-10 pb-4 lg:pb-8 lg:h-[35%] relative"
         >
           <p className="text-[20px] lg:text-base font-semibold text-muted">
@@ -385,19 +310,12 @@ export default function Hero() {
         </motion.div>
 
         {/* Bottom Section - Image Container - Normal Flow (not absolute) */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.96 }}
-          animate={{ 
-            opacity: isExiting ? 0 : 1, 
-            scale: isExiting ? 0.96 : 1
-          }}
-          transition={{ duration: 0.5, ease: "easeOut", delay: isExiting ? 0 : 0.15 }}
+        <motion.div variants={split.right}
           className="flex-1 relative flex items-center justify-center w-full"
           style={{ backgroundImage: 'linear-gradient(to bottom, transparent 0%, transparent 30%, rgb(115, 34, 255) 100%)' }}
         >
-          <motion.img
-            animate={{ opacity: isExiting ? 0 : 1 }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
+          <PurplePanelAmbient compact />
+          <img
             src={heroImage}
             alt="Suman S., product designer, seated in a lilac armchair beside a potted plant"
             className="w-full h-auto object-contain drop-shadow-2xl"

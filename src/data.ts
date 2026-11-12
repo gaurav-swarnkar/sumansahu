@@ -345,6 +345,7 @@ export const projects: Project[] = [
     panel: "bg-gradient-to-br from-brand-700 via-[#3d0079] to-[#1c0140]",
     visual: "truck",
     contents: [
+      { id: "project-summary", label: "Project Summary" },
       { id: "business-problem", label: "Business Usecase" },
       { id: "user-problem", label: "User Problems" },
       { id: "research", label: "Research" },

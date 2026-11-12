@@ -10,6 +10,7 @@ import AdminLogin from "./admin/AdminLogin";
 import AdminDashboard from "./admin/AdminDashboard";
 import ProtectedRoute from "./admin/ProtectedRoute";
 import { initializeAnalytics, trackVisitor } from "./utils/analytics";
+import { pageVariants } from "./utils/transitions";
 
 function PortfolioWrapper() {
   const [isIntroductionOpen, setIsIntroductionOpen] = useState(true);
@@ -35,12 +36,7 @@ function AnimatedRoutes() {
         <Route
           path="/"
           element={
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.5 }}
-            >
+            <motion.div initial="hidden" animate="visible" exit="exit" variants={pageVariants}>
               <Hero />
             </motion.div>
           }
@@ -48,12 +44,7 @@ function AnimatedRoutes() {
         <Route
           path="/portfolio"
           element={
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.5 }}
-            >
+            <motion.div initial="hidden" animate="visible" exit="exit" variants={pageVariants}>
               <PortfolioWrapper />
             </motion.div>
           }
@@ -61,12 +52,7 @@ function AnimatedRoutes() {
         <Route
           path="/projects"
           element={
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.5 }}
-            >
+            <motion.div initial="hidden" animate="visible" exit="exit" variants={pageVariants}>
               <ProjectStories
                 active={active}
                 setActive={setActive}
@@ -78,12 +64,7 @@ function AnimatedRoutes() {
         <Route
           path="/project/:projectId"
           element={
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.5 }}
-            >
+            <motion.div initial="hidden" animate="visible" exit="exit" variants={pageVariants}>
               <ProjectDetail />
             </motion.div>
           }
@@ -91,12 +72,7 @@ function AnimatedRoutes() {
         <Route
           path="/about"
           element={
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.5 }}
-            >
+            <motion.div initial="hidden" animate="visible" exit="exit" variants={pageVariants}>
               <About />
             </motion.div>
           }

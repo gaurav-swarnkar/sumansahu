@@ -11,6 +11,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { workExperience, education } from "../data";
 import JourneyCarousel from "./JourneyCarousel";
+import { useSplitVariants } from "../utils/transitions";
 
 function ArrowForward({ className = "" }: { className?: string }) {
   return (
@@ -190,6 +191,7 @@ function DownloadResumeButton() {
 
 export default function About() {
   const [activeSection, setActiveSection] = useState<SectionId>("summary");
+  const split = useSplitVariants();
 
   return (
     <section className="relative min-h-screen w-full overflow-hidden bg-canvas">
@@ -199,7 +201,7 @@ export default function About() {
 
       <div className="relative z-10 mx-auto grid min-h-screen w-full max-w-[1920px] grid-cols-1 lg:grid-cols-[minmax(360px,32%)_1fr]">
         {/* ---- sidebar nav ---- */}
-        <div className="flex flex-col gap-10 px-0 py-12 -mt-10 lg:max-h-screen lg:px-16 lg:py-20 lg:-mt-10 relative">
+        <motion.div variants={split.left} className="flex flex-col gap-10 px-0 py-12 -mt-10 lg:max-h-screen lg:px-16 lg:py-20 lg:-mt-10 relative">
           <div className="flex items-center justify-between px-4 lg:px-0 gap-3">
             <div className="flex items-center gap-3">
               <button
@@ -211,17 +213,6 @@ export default function About() {
               </button>
               <span className="text-sm font-medium text-ink/60">My Journey</span>
             </div>
-            
-            {/* Chat Bubble with Hamburger */}
-            <button
-              className="group hidden sm:flex flex-col items-center justify-center size-12 shrink-0 rounded-full bg-brand text-white transition-all hover:bg-brand-600 shadow-lg hover:shadow-xl"
-              aria-label="Open contact menu"
-              title="Let's chat!"
-            >
-              <svg className="size-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-              </svg>
-            </button>
           </div>
 
           <nav className="flex flex-col gap-8 pt-4 px-4 lg:px-0 lg:gap-10 lg:pt-5">
@@ -253,10 +244,10 @@ export default function About() {
           <div className="mt-auto pt-10">
             <DownloadResumeButton />
           </div>
-        </div>
+        </motion.div>
 
         {/* ---- content panel ---- */}
-        <div className="relative min-h-[70vh] overflow-hidden lg:max-h-screen lg:min-h-screen">
+        <motion.div variants={split.right} className="relative min-h-[70vh] overflow-hidden lg:max-h-screen lg:min-h-screen">
           <AnimatePresence mode="wait">
             {activeSection === "summary" ? (
               <motion.div
@@ -282,7 +273,7 @@ export default function About() {
               </motion.div>
             )}
           </AnimatePresence>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

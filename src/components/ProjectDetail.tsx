@@ -1,23 +1,10 @@
+import { motion } from "motion/react";
 import { projects } from "../data";
 import { useState, useRef } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import ProjectDetailFullContent from "./ProjectDetailFullContent";
-import video1 from "../imports/Main/1.mp4";
-import video2 from "../imports/Main/2.mp4";
-import video3 from "../imports/Main/3.mp4";
-import video4 from "../imports/Main/4.mp4";
+import { useSplitVariants } from "../utils/transitions";
 
-// Map content indices to section IDs
-const sectionIds = [
-  "project-summary",
-  "business-problem",
-  "user-problem",
-  "research",
-  "design-strategy",
-  "solution",
-  "validation",
-  "impact",
-];
 
 function ArrowForward({ className = "" }: { className?: string }) {
   return (
@@ -41,26 +28,35 @@ function HomeIcon({ className = "" }: { className?: string }) {
   );
 }
 
-function VideoBackground({ projectIndex }: { projectIndex: number }) {
-  const videos = [video1, video2, video3, video4];
-  const videoSrc = videos[projectIndex % videos.length];
-
+function GridIcon({ className = "" }: { className?: string }) {
   return (
-    <video
-      autoPlay
-      loop
-      muted
-      playsInline
-      preload="auto"
-      className="pointer-events-none absolute inset-0 h-full w-full object-cover"
-    >
-      <source src={videoSrc} type="video/mp4" />
-    </video>
+    <svg viewBox="0 0 24 24" className={className} fill="currentColor" aria-hidden="true">
+      <rect x="3" y="3" width="8" height="8" rx="2" />
+      <rect x="13" y="3" width="8" height="8" rx="2" />
+      <rect x="3" y="13" width="8" height="8" rx="2" />
+      <rect x="13" y="13" width="8" height="8" rx="2" />
+    </svg>
+  );
+}
+
+function ChevronSmall({ className = "" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 16 16" className={className} fill="none" aria-hidden="true">
+      <path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
   );
 }
 
 export default function ProjectDetail() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const split = useSplitVariants();
+
+  // Go back within the site when possible; otherwise fall back to the projects list
+  const goBack = () => {
+    if (location.key !== "default") navigate(-1);
+    else navigate("/projects");
+  };
   const { projectId } = useParams();
   const [activeContent, setActiveContent] = useState(0);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
@@ -69,8 +65,15 @@ export default function ProjectDetail() {
   const project = projects.find((p) => p.id === projectId);
 
   // Scroll to section when menu item is clicked
+  // Section ids come from the project's own menu (data.ts), so every case study can differ
+  const sectionIds = project?.contents.map((c) => c.id) ?? [];
+
+  // While a menu click is smooth-scrolling, keep the clicked item highlighted
+  const clickLockUntil = useRef(0);
+
   const scrollToSection = (index: number) => {
     setActiveContent(index);
+    clickLockUntil.current = Date.now() + 1000;
     const sectionId = sectionIds[index];
     const element = contentPanelRef.current?.querySelector(`#${sectionId}`);
     if (element) {
@@ -78,23 +81,30 @@ export default function ProjectDetail() {
     }
   };
 
-  // Handle scroll to update active section indicator
+  // Highlight the section whose heading has scrolled to near the top of the panel
   const handleScroll = () => {
-    if (!contentPanelRef.current) return;
-
-    const scrollPosition = contentPanelRef.current.scrollTop + 200; // Add offset for header
+    const panel = contentPanelRef.current;
+    if (!panel) return;
+    if (Date.now() < clickLockUntil.current) {
+      // still animating towards the clicked section: extend the lock until scrolling stops
+      clickLockUntil.current = Date.now() + 200;
+      return;
+    }
+    const panelTop = panel.getBoundingClientRect().top;
+    const atBottom = panel.scrollTop + panel.clientHeight >= panel.scrollHeight - 4;
+    if (atBottom) {
+      setActiveContent(sectionIds.length - 1);
+      return;
+    }
 
     for (let i = sectionIds.length - 1; i >= 0; i--) {
-      const sectionId = sectionIds[i];
-      const element = contentPanelRef.current.querySelector(`#${sectionId}`);
-      if (element) {
-        const elementPosition = (element as HTMLElement).offsetTop;
-        if (scrollPosition >= elementPosition) {
-          setActiveContent(i);
-          break;
-        }
+      const element = panel.querySelector(`#${sectionIds[i]}`);
+      if (element && element.getBoundingClientRect().top - panelTop <= 160) {
+        setActiveContent(i);
+        return;
       }
     }
+    setActiveContent(0);
   };
 
   if (!project) {
@@ -113,7 +123,6 @@ export default function ProjectDetail() {
     );
   }
 
-  const projectIndex = projects.findIndex((p) => p.id === projectId);
 
   return (
     <section className="relative min-h-screen w-full overflow-hidden bg-canvas">
@@ -126,7 +135,7 @@ export default function ProjectDetail() {
         transition: 'grid-template-columns 500ms ease-in-out'
       }}>
         {/* ---- sidebar nav ---- */}
-        <div 
+        <motion.div variants={split.left} 
           className="relative flex flex-col gap-10 overflow-hidden lg:max-h-screen overflow-y-auto"
           style={{
             boxShadow: "12px 0 24px rgba(0, 0, 0, 0.08)",
@@ -140,35 +149,39 @@ export default function ProjectDetail() {
           {/* Expanded State */}
           {!isSidebarCollapsed && (
             <div className="px-4 py-12 lg:px-16 lg:py-20 flex flex-col gap-10">
-              <div className="flex items-center gap-3">
+              {/* Breadcrumb: back + quick links to home and projects */}
+              <nav aria-label="Breadcrumb" className="flex items-center gap-2">
+                <button
+                  onClick={goBack}
+                  aria-label="Go back"
+                  title="Back"
+                  className="group flex size-9 shrink-0 items-center justify-center rounded-full bg-lilac-100 text-brand transition-colors hover:bg-brand-600 hover:text-white"
+                >
+                  <ArrowForward className="size-4 rotate-180 transition-transform duration-300 group-hover:-translate-x-0.5" />
+                </button>
+                <span className="mx-1 h-5 w-px bg-ink/15" aria-hidden="true" />
                 <button
                   onClick={() => navigate("/")}
-                  aria-label="Back to home"
-                  className="group flex size-12 shrink-0 items-center justify-center rounded-full bg-lilac-100 text-brand transition-colors hover:bg-brand-600 hover:text-white"
+                  aria-label="Home"
+                  title="Home"
+                  className="flex size-8 shrink-0 items-center justify-center rounded-full text-ink/50 transition-colors hover:bg-lilac-100 hover:text-brand"
                 >
-                  <HomeIcon className="size-5 transition-transform duration-300 group-hover:scale-110" />
+                  <HomeIcon className="size-4" />
                 </button>
-                <div className="flex flex-col">
-                  <span className="text-lg font-medium text-ink/60 flex items-center gap-2">
-                    <button
-                      onClick={() => console.log('Navigate to /')}
-                      className="inline-block size-2 rounded-full bg-ink/30 hover:bg-brand transition-colors flex-shrink-0 cursor-pointer"
-                      aria-label="Go to Home"
-                    />
-                    <button
-                      onClick={() => navigate("/projects")}
-                      className="inline-block size-2 rounded-full bg-ink/30 hover:bg-brand transition-colors flex-shrink-0 cursor-pointer"
-                      aria-label="Go to Projects"
-                    />
-                    <span className="text-brand">{project.word}</span>
-                  </span>
-                </div>
-              </div>
-
-              {/* Project Title */}
-              <h2 className="text-[clamp(18px,2vw,24px)] font-semibold leading-tight text-ink">
-                {project.title}
-              </h2>
+                <ChevronSmall className="size-3 text-ink/30" />
+                <button
+                  onClick={() => navigate("/projects")}
+                  aria-label="Projects"
+                  title="Projects"
+                  className="flex size-8 shrink-0 items-center justify-center rounded-full text-ink/50 transition-colors hover:bg-lilac-100 hover:text-brand"
+                >
+                  <GridIcon className="size-4" />
+                </button>
+                <ChevronSmall className="size-3 text-ink/30" />
+                <span className="truncate text-sm font-semibold text-brand" aria-current="page">
+                  {project.word}
+                </span>
+              </nav>
 
               {/* Content Menu */}
               <nav className="flex flex-col gap-5 pt-4 lg:gap-8 lg:pt-5">
@@ -178,20 +191,19 @@ export default function ProjectDetail() {
                     onClick={() => scrollToSection(index)}
                     className="group flex flex-col items-start text-left"
                   >
-                    <div className="flex items-end gap-3">
-                      <span
-                        className={`font-semibold leading-none transition-all duration-300 ${
-                          index === activeContent
-                            ? "text-[clamp(22px,2.5vw,32px)] text-ink"
-                            : "text-[clamp(18px,2vw,24px)] text-ink/50 group-hover:text-ink"
-                        }`}
-                      >
-                        {content.label}
-                      </span>
+                    <span
+                      className={`font-semibold leading-tight transition-all duration-300 ${
+                        index === activeContent
+                          ? "text-[clamp(22px,2.5vw,32px)] text-ink"
+                          : "text-[clamp(18px,2vw,24px)] text-ink/50 group-hover:text-ink"
+                      }`}
+                    >
+                      {content.label}
+                      {/* dot sits right after the last word, even when the label wraps */}
                       {index === activeContent && (
-                        <span className="mb-2 block rounded-full transition-all duration-300 size-2.5 bg-brand" />
+                        <span className="ml-3 inline-block size-2.5 rounded-full bg-brand align-middle" />
                       )}
-                    </div>
+                    </span>
                   </button>
                 ))}
               </nav>
@@ -254,16 +266,16 @@ export default function ProjectDetail() {
               <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
             </svg>
           </button>
-        </div>
+        </motion.div>
 
         {/* ---- content panel ---- */}
-        <div 
+        <motion.div variants={split.right} 
           ref={contentPanelRef}
           onScroll={handleScroll}
           className="relative min-h-[70vh] overflow-y-auto lg:max-h-screen lg:min-h-screen bg-gray-100/50"
         >
           <ProjectDetailFullContent projectId={projectId} project={project} />
-        </div>
+        </motion.div>
       </div>
     </section>
   );
