@@ -199,19 +199,32 @@ export default function About() {
 
       <div className="relative z-10 mx-auto grid min-h-screen w-full max-w-[1920px] grid-cols-1 lg:grid-cols-[minmax(360px,32%)_1fr]">
         {/* ---- sidebar nav ---- */}
-        <div className="flex flex-col gap-10 px-8 py-12 -mt-10 lg:max-h-screen lg:px-16 lg:py-20 lg:-mt-10">
-          <div className="flex items-center gap-3">
+        <div className="flex flex-col gap-10 px-0 py-12 -mt-10 lg:max-h-screen lg:px-16 lg:py-20 lg:-mt-10 relative">
+          <div className="flex items-center justify-between px-4 lg:px-0 gap-3">
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => window.history.back()}
+                aria-label="Go back"
+                className="group flex size-12 shrink-0 items-center justify-center rounded-full bg-lilac-100 text-brand transition-colors hover:bg-brand-600 hover:text-white"
+              >
+                <ArrowForward className="size-5 rotate-180 transition-transform duration-300 group-hover:rotate-135" />
+              </button>
+              <span className="text-sm font-medium text-ink/60">My Journey</span>
+            </div>
+            
+            {/* Chat Bubble with Hamburger */}
             <button
-              onClick={() => window.history.back()}
-              aria-label="Go back"
-              className="group flex size-12 shrink-0 items-center justify-center rounded-full bg-lilac-100 text-brand transition-colors hover:bg-brand-600 hover:text-white"
+              className="group hidden sm:flex flex-col items-center justify-center size-12 shrink-0 rounded-full bg-brand text-white transition-all hover:bg-brand-600 shadow-lg hover:shadow-xl"
+              aria-label="Open contact menu"
+              title="Let's chat!"
             >
-              <ArrowForward className="size-5 rotate-180 transition-transform duration-300 group-hover:rotate-135" />
+              <svg className="size-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+              </svg>
             </button>
-            <span className="text-sm font-medium text-ink/60">My Journey</span>
           </div>
 
-          <nav className="flex flex-col gap-8 pt-4 lg:gap-10 lg:pt-5">
+          <nav className="flex flex-col gap-8 pt-4 px-4 lg:px-0 lg:gap-10 lg:pt-5">
             {sections.map((section) => {
               const isActive = section.id === activeSection;
               return (
@@ -263,7 +276,7 @@ export default function About() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -40 }}
                 transition={{ duration: 0.4, ease: "easeOut" }}
-                className="absolute inset-0 flex flex-col overflow-y-auto bg-gray-100/50 px-8 py-12 lg:px-16 lg:py-20"
+                className="absolute inset-0 flex flex-col overflow-y-auto bg-gray-100/50 px-4 py-12 lg:px-16 lg:py-20"
               >
                 <SectionContent sectionId={activeSection} />
               </motion.div>

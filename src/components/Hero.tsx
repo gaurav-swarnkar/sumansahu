@@ -132,7 +132,7 @@ function AnimatedTitle() {
   return (
     <h1 className="mt-2 text-[clamp(24px,4vw,70px)] font-semibold leading-tight text-ink-soft lg:max-w-[900px] min-h-[100px] sm:min-h-[180px]">
       {renderText()}
-      {isTypingActive && <span className="animate-pulse">|</span>}
+      {isTypingActive && <span className="animate-zoom-in">|</span>}
     </h1>
   );
 }
@@ -243,7 +243,7 @@ export default function Hero() {
             x: isExiting ? 100 : 0
           }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          className="flex flex-col justify-center max-w-full px-8 py-20 lg:pl-[74px] lg:pr-16"
+          className="flex flex-col justify-center max-w-full px-4 py-20 lg:px-8 lg:pl-[74px] lg:pr-16"
         >
           <p className="text-[26px] md:text-[32px] font-semibold text-muted">
             I am Suman S.
@@ -343,7 +343,7 @@ export default function Hero() {
         <button
           onClick={() => setIsDrawerOpen(true)}
           className="fixed right-4 lg:hidden z-50 flex items-center justify-center size-14 rounded-full bg-white/40 backdrop-blur-sm hover:bg-white/60 transition-all"
-          style={{ bottom: '92px' }}
+          style={{ top: '16px' }}
           title="Contact"
         >
           <FontAwesomeIcon icon={faComment} className="text-brand text-lg" />
@@ -357,25 +357,25 @@ export default function Hero() {
             y: isExiting ? 24 : 0
           }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          className="h-[35%] flex flex-col justify-start px-4 pt-10 pb-8 relative z-30"
+          className="flex-shrink-0 flex flex-col justify-start px-4 pt-[24px] lg:pt-10 pb-4 lg:pb-8 lg:h-[35%] relative"
         >
-          <p className="text-base font-semibold text-muted">
+          <p className="text-[20px] lg:text-base font-semibold text-muted">
             I am Suman S.
           </p>
 
-          {/* Badges for mobile */}
-          <div className="mt-3 flex flex-nowrap items-center gap-1.5 z-30">
-            <div className="inline-flex items-center gap-1 rounded-full bg-brand/15 px-2 py-1.5 backdrop-blur-sm text-xs">
-              <FontAwesomeIcon icon={faBrain} className="text-ink-soft text-xs flex-shrink-0" />
-              <span className="font-medium text-ink-soft whitespace-nowrap">AI Enabled Product Designer</span>
+          {/* Badges for mobile - single line */}
+          <div className="mt-2 lg:mt-3 hidden lg:flex flex-row lg:flex-nowrap items-center gap-2 lg:gap-1.5 z-30">
+            <div className="inline-flex items-center gap-1 rounded-full bg-brand/15 px-3 py-2 lg:px-2 lg:py-1.5 backdrop-blur-sm text-xs lg:text-xs">
+              <FontAwesomeIcon icon={faBrain} className="text-ink-soft text-[20px] lg:text-xs flex-shrink-0" />
+              <span className="font-medium text-ink-soft">AI Enabled Product Designer</span>
             </div>
-            <div className="inline-flex items-center gap-1 rounded-full bg-brand/15 px-2 py-1.5 backdrop-blur-sm text-xs">
-              <FontAwesomeIcon icon={faBriefcase} className="text-ink-soft text-xs flex-shrink-0" />
-              <span className="font-medium text-ink-soft whitespace-nowrap">6 yrs. Experience</span>
+            <div className="inline-flex items-center gap-1 rounded-full bg-brand/15 px-3 py-2 lg:px-2 lg:py-1.5 backdrop-blur-sm text-xs lg:text-xs">
+              <FontAwesomeIcon icon={faBriefcase} className="text-ink-soft text-[20px] lg:text-xs flex-shrink-0" />
+              <span className="font-medium text-ink-soft">6 yrs. Experience</span>
             </div>
           </div>
 
-          <div className="mt-2 text-[2.4rem] font-semibold leading-tight text-ink-soft min-h-[200px]">
+          <div className="mt-[32px] lg:mt-2 text-center text-[36px] lg:text-[2.4rem] font-semibold leading-snug lg:leading-tight text-ink-soft lg:min-h-[200px] h-[180px]">
             {(() => {
               const titles = [
                 { text: "Designing Intelligent Product Experiences", highlight: "Product Experiences" },
@@ -384,53 +384,36 @@ export default function Hero() {
                 { text: "Building Trust, Control & Autonomy", highlight: "Trust" },
               ];
               const [currentIndex, setCurrentIndex] = useState(0);
-              const [displayedText, setDisplayedText] = useState("");
-              const [isTypingActive, setIsTypingActive] = useState(true);
+
+              useEffect(() => {
+                const timer = setInterval(() => {
+                  setCurrentIndex((prev) => (prev + 1) % titles.length);
+                }, 5000);
+                return () => clearInterval(timer);
+              }, []);
 
               const currentTitle = titles[currentIndex];
               const fullText = currentTitle.text;
-              const isTextComplete = displayedText.length === fullText.length;
-
-              useEffect(() => {
-                let timer: NodeJS.Timeout;
-
-                if (isTypingActive && !isTextComplete) {
-                  timer = setTimeout(() => {
-                    setDisplayedText(fullText.slice(0, displayedText.length + 1));
-                  }, 50);
-                } else if (isTextComplete && isTypingActive) {
-                  setIsTypingActive(false);
-                } else if (!isTypingActive && isTextComplete) {
-                  timer = setTimeout(() => {
-                    setCurrentIndex((prev) => (prev + 1) % titles.length);
-                    setDisplayedText("");
-                    setIsTypingActive(true);
-                  }, 5000);
+              const highlightWords = currentTitle.highlight.split(/[\s–-]+/);
+              const isHighlightedChar = Array(fullText.length).fill(false);
+              
+              highlightWords.forEach(word => {
+                const regex = new RegExp(`\\b${word}\\b`, "gi");
+                let match;
+                while ((match = regex.exec(fullText)) !== null) {
+                  for (let i = match.index; i < match.index + match[0].length; i++) {
+                    isHighlightedChar[i] = true;
+                  }
                 }
-
-                return () => clearTimeout(timer);
-              }, [displayedText, isTypingActive, isTextComplete, fullText, titles.length]);
+              });
 
               const renderText = () => {
-                const highlightWords = currentTitle.highlight.split(/[\s–-]+/);
-                const isHighlightedChar = Array(fullText.length).fill(false);
-                
-                highlightWords.forEach(word => {
-                  const regex = new RegExp(`\\b${word}\\b`, "gi");
-                  let match;
-                  while ((match = regex.exec(fullText)) !== null) {
-                    for (let i = match.index; i < match.index + match[0].length; i++) {
-                      isHighlightedChar[i] = true;
-                    }
-                  }
-                });
-
                 const result: JSX.Element[] = [];
                 let currentSpanHighlighted: boolean | null = null;
                 let currentSpanText = "";
 
-                for (let i = 0; i < displayedText.length; i++) {
-                  const char = displayedText[i];
+                for (let i = 0; i < fullText.length; i++) {
+                  const char = fullText[i];
                   const charHighlighted = isHighlightedChar[i];
 
                   if (charHighlighted !== currentSpanHighlighted) {
@@ -466,16 +449,23 @@ export default function Hero() {
               };
 
               return (
-                <>
-                  {renderText()}
-                  {isTypingActive && <span className="animate-pulse">|</span>}
-                </>
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={currentIndex}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                    transition={{ duration: 0.5, ease: "easeInOut" }}
+                  >
+                    {renderText()}
+                  </motion.div>
+                </AnimatePresence>
               );
             })()}
           </div>
         </motion.div>
 
-        {/* Bottom Section - Sharp Gradient & Image */}
+        {/* Bottom Section - Image Container - Normal Flow (not absolute) */}
         <motion.div
           initial={{ opacity: 0, scale: 0.96 }}
           animate={{ 
@@ -483,7 +473,7 @@ export default function Hero() {
             scale: isExiting ? 0.96 : 1
           }}
           transition={{ duration: 0.5, ease: "easeOut", delay: isExiting ? 0 : 0.15 }}
-          className="h-[65%] relative flex items-center justify-center overflow-hidden"
+          className="flex-1 relative flex items-center justify-center w-full"
           style={{ backgroundImage: 'linear-gradient(to bottom, transparent 0%, transparent 30%, rgb(115, 34, 255) 100%)' }}
         >
           <motion.img
@@ -491,7 +481,7 @@ export default function Hero() {
             transition={{ duration: 0.5, ease: "easeOut" }}
             src={heroImage}
             alt="Suman S., product designer, seated in a lilac armchair beside a potted plant"
-            className="w-full h-full object-cover drop-shadow-2xl"
+            className="w-full h-auto object-contain drop-shadow-2xl"
           />
         </motion.div>
       </div>
@@ -512,7 +502,7 @@ export default function Hero() {
             My Journey
           </button>
         </div>
-        <div className="flex gap-3">
+        <div className="hidden flex gap-3">
           <button
             onClick={() => handleNavigation("/about")}
             className="flex-1 h-[52px] bg-white text-lilac font-semibold text-sm border-2 border-lilac rounded-full transition-all hover:bg-lilac hover:text-white active:scale-95"

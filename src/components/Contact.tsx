@@ -44,20 +44,33 @@ export default function Contact() {
 
       <div className="relative z-10 flex min-h-screen w-full">
         {/* ---- Left Sidebar Navigation ---- */}
-        <div className="w-full px-8 py-12 lg:max-w-[32%] lg:px-16 lg:py-20">
-          <div className="flex items-center gap-3">
+        <div className="w-full px-0 py-12 lg:max-w-[32%] lg:px-16 lg:py-20 relative">
+          <div className="flex items-center justify-between px-4 lg:px-0 gap-3">
+            <div className="flex items-center gap-3">
+              <button
+                onClick={handleBack}
+                aria-label="Go back"
+                className="group flex size-12 shrink-0 items-center justify-center rounded-full bg-lilac-100 text-brand transition-colors hover:bg-brand-600 hover:text-white"
+              >
+                <ArrowForward className="size-5 rotate-180 transition-transform duration-300 group-hover:rotate-135" />
+              </button>
+              <span className="text-sm font-medium text-ink/60">Let's Connect</span>
+            </div>
+            
+            {/* Chat Bubble with Hamburger */}
             <button
-              onClick={handleBack}
-              aria-label="Go back"
-              className="group flex size-12 shrink-0 items-center justify-center rounded-full bg-lilac-100 text-brand transition-colors hover:bg-brand-600 hover:text-white"
+              className="group hidden sm:flex flex-col items-center justify-center size-12 shrink-0 rounded-full bg-brand text-white transition-all hover:bg-brand-600 shadow-lg hover:shadow-xl"
+              aria-label="Open contact menu"
+              title="Let's chat!"
             >
-              <ArrowForward className="size-5 rotate-180 transition-transform duration-300 group-hover:rotate-135" />
+              <svg className="size-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+              </svg>
             </button>
-            <span className="text-sm font-medium text-ink/60">Let's Connect</span>
           </div>
 
           {/* Sidebar Content */}
-          <div className="mt-20 flex flex-col gap-12">
+          <div className="mt-20 px-4 lg:px-0 flex flex-col gap-12">
             <div>
               <span className="text-[22px] font-semibold leading-none text-ink/50">
                 Reach out
@@ -115,7 +128,7 @@ export default function Contact() {
                 </button>
 
                 {/* Drawer Content */}
-                <div className="px-8 py-12 lg:min-h-screen lg:flex lg:flex-col lg:justify-center lg:px-12">
+                <div className="px-4 py-12 lg:min-h-screen lg:flex lg:flex-col lg:justify-center lg:px-12">
                   {/* Profile Card */}
                   <div className="mb-12 pt-4 lg:pt-0">
                     <motion.div

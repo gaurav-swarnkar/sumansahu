@@ -30,6 +30,17 @@ function ArrowForward({ className = "" }: { className?: string }) {
   );
 }
 
+function HomeIcon({ className = "" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 32 32" className={className} fill="none">
+      <path
+        d="M16 4L4 14v12c0 1.1.9 2 2 2h8v-8h4v8h8c1.1 0 2-.9 2-2V14l-12-10z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+
 function VideoBackground({ projectIndex }: { projectIndex: number }) {
   const videos = [video1, video2, video3, video4];
   const videoSrc = videos[projectIndex % videos.length];
@@ -128,14 +139,14 @@ export default function ProjectDetail() {
         >
           {/* Expanded State */}
           {!isSidebarCollapsed && (
-            <div className="px-8 py-12 lg:px-16 lg:py-20 flex flex-col gap-10">
+            <div className="px-4 py-12 lg:px-16 lg:py-20 flex flex-col gap-10">
               <div className="flex items-center gap-3">
                 <button
-                  onClick={() => navigate("/projects")}
-                  aria-label="Back to projects"
+                  onClick={() => navigate("/")}
+                  aria-label="Back to home"
                   className="group flex size-12 shrink-0 items-center justify-center rounded-full bg-lilac-100 text-brand transition-colors hover:bg-brand-600 hover:text-white"
                 >
-                  <ArrowForward className="size-5 rotate-180 transition-transform duration-300 group-hover:rotate-135" />
+                  <HomeIcon className="size-5 transition-transform duration-300 group-hover:scale-110" />
                 </button>
                 <div className="flex flex-col">
                   <span className="text-lg font-medium text-ink/60 flex items-center gap-2">
@@ -192,11 +203,11 @@ export default function ProjectDetail() {
             <div className="flex flex-col items-center gap-6 py-12 w-full">
               {/* Collapsed Back Button */}
               <button
-                onClick={() => navigate("/projects")}
-                aria-label="Back to projects"
+                onClick={() => navigate("/")}
+                aria-label="Back to home"
                 className="group flex size-12 shrink-0 items-center justify-center rounded-full bg-lilac-100 text-brand transition-colors hover:bg-brand-600 hover:text-white"
               >
-                <ArrowForward className="size-5 rotate-180 transition-transform duration-300 group-hover:rotate-135" />
+                <HomeIcon className="size-5 transition-transform duration-300 group-hover:scale-110" />
               </button>
 
               {/* Section Dots Navigation */}

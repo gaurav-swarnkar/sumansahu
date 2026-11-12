@@ -5,10 +5,25 @@ import Hero from "./components/Hero";
 import ProjectStories from "./components/ProjectStories";
 import ProjectDetail from "./components/ProjectDetail";
 import About from "./components/About";
+import IntroductionModal from "./components/IntroductionModal";
 import AdminLogin from "./admin/AdminLogin";
 import AdminDashboard from "./admin/AdminDashboard";
 import ProtectedRoute from "./admin/ProtectedRoute";
 import { initializeAnalytics, trackVisitor } from "./utils/analytics";
+
+function PortfolioWrapper() {
+  const [isIntroductionOpen, setIsIntroductionOpen] = useState(true);
+
+  return (
+    <>
+      <Hero />
+      <IntroductionModal
+        isOpen={isIntroductionOpen}
+        onClose={() => setIsIntroductionOpen(false)}
+      />
+    </>
+  );
+}
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -27,6 +42,19 @@ function AnimatedRoutes() {
               transition={{ duration: 0.5 }}
             >
               <Hero />
+            </motion.div>
+          }
+        />
+        <Route
+          path="/portfolio"
+          element={
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <PortfolioWrapper />
             </motion.div>
           }
         />

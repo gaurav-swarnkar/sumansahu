@@ -1,6 +1,12 @@
 import { AnimatePresence, motion } from "motion/react";
 import { projects } from "../data";
-import { useEffect, type Dispatch, type SetStateAction } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type Dispatch,
+  type SetStateAction,
+} from "react";
 import { useNavigate } from "react-router-dom";
 
 function Chevron({ className = "" }: { className?: string }) {
@@ -86,22 +92,138 @@ export default function ProjectStories({
   onBack: () => void;
 }) {
   const navigate = useNavigate();
-  const project = projects[active];
+  const project = projects[active % projects.length];
+  const navRef = useRef<HTMLElement | null>(null);
+  const itemRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const touchStartX = useRef(0);
+  const isFirstRender = useRef(true);
+  const [isMobileNav, setIsMobileNav] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return window.matchMedia("(max-width: 1023px)").matches;
+  });
 
   const prev = () => {
     if (active === 0) onBack();
     else setActive(active - 1);
   };
-  const next = () => setActive((active + 1) % projects.length);
+  const next = () => setActive((active + 1));
 
   // Auto-advance to next project every 12 seconds
   useEffect(() => {
     const timer = setInterval(() => {
-      setActive((current) => (current + 1) % projects.length);
+      setActive((current) => current + 1);
     }, 12000);
 
     return () => clearInterval(timer);
   }, []);
+
+  // Initial scroll to center the first item on mount
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const navElement = navRef.current;
+      const activeItem = itemRefs.current[0];
+      if (!navElement || !activeItem) return;
+
+      const navRect = navElement.getBoundingClientRect();
+      const itemRect = activeItem.getBoundingClientRect();
+      const targetScrollLeft =
+        navElement.scrollLeft +
+        (itemRect.left - navRect.left) -
+        (navRect.width / 2 - itemRect.width / 2);
+
+      navElement.scrollTo({
+        left: Math.max(0, targetScrollLeft),
+        behavior: "auto",
+      });
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const mediaQuery = window.matchMedia("(max-width: 1023px)");
+    const updateViewport = () => setIsMobileNav(mediaQuery.matches);
+    updateViewport();
+
+    mediaQuery.addEventListener("change", updateViewport);
+    return () => mediaQuery.removeEventListener("change", updateViewport);
+  }, []);
+
+  useEffect(() => {
+    const navElement = navRef.current;
+    const activeItem = itemRefs.current[active];
+    if (!navElement || !activeItem) return;
+
+    const navRect = navElement.getBoundingClientRect();
+    const itemRect = activeItem.getBoundingClientRect();
+    const targetScrollLeft =
+      navElement.scrollLeft +
+      (itemRect.left - navRect.left) -
+      (navRect.width / 2 - itemRect.width / 2);
+
+    navElement.scrollTo({
+      left: Math.max(0, targetScrollLeft),
+      behavior: "smooth",
+    });
+  }, [active]);
+
+  // Add swipe gesture support for mobile
+  useEffect(() => {
+    if (!isMobileNav) return;
+
+    const navElement = navRef.current;
+    if (!navElement) return;
+
+    const handleTouchStart = (e: TouchEvent) => {
+      touchStartX.current = e.touches[0].clientX;
+    };
+
+    const handleTouchEnd = (e: TouchEvent) => {
+      const touchEndX = e.changedTouches[0].clientX;
+      const diff = touchStartX.current - touchEndX;
+      const threshold = 30; // Minimum swipe distance
+
+      if (Math.abs(diff) > threshold) {
+        if (diff > 0) {
+          // Swiped left, move to next
+          next();
+        } else {
+          // Swiped right, move to previous
+          prev();
+        }
+      }
+    };
+
+    navElement.addEventListener("touchstart", handleTouchStart, false);
+    navElement.addEventListener("touchend", handleTouchEnd, false);
+
+    return () => {
+      navElement.removeEventListener("touchstart", handleTouchStart);
+      navElement.removeEventListener("touchend", handleTouchEnd);
+    };
+  }, [isMobileNav, active, projects.length]);
+
+  const getRelativePosition = (
+    itemIndex: number,
+    activeIndex: number,
+    total: number,
+  ) => {
+    const direct = itemIndex - activeIndex;
+    const wrappedLeft = direct - total;
+    const wrappedRight = direct + total;
+
+    return [direct, wrappedLeft, wrappedRight].reduce((closest, candidate) =>
+      Math.abs(candidate) < Math.abs(closest) ? candidate : closest,
+    direct);
+  };
+
+  const getRotation3D = (distance: number) => {
+    // Helper function - no longer used but kept for reference
+    const angle = distance * 120;
+    return angle;
+  };
 
   return (
     <section className="relative min-h-screen w-full overflow-hidden bg-canvas">
@@ -111,65 +233,83 @@ export default function ProjectStories({
 
       <div className="relative z-10 mx-auto grid min-h-screen w-full max-w-[1920px] grid-cols-1 lg:grid-cols-[minmax(360px,32%)_1fr]">
         {/* ---- sidebar nav ---- */}
-        <div className="flex flex-col gap-10 overflow-y-auto px-8 py-12 -mt-10 lg:max-h-screen lg:px-16 lg:py-20 lg:-mt-10" style={{maskImage: 'linear-gradient(to right, black 85%, transparent 100%)', WebkitMaskImage: 'linear-gradient(to right, black 85%, transparent 100%)'}}>
-          <div className="flex items-center gap-3">
+        <div className="flex flex-col gap-3 overflow-y-auto px-0 pt-4 lg:max-h-screen lg:px-16 lg:py-20 lg:-mt-10 relative" style={{maskImage: 'linear-gradient(to right, black 85%, transparent 100%)', WebkitMaskImage: 'linear-gradient(to right, black 85%, transparent 100%)'}}>
+          <div className="flex items-center justify-between px-4 lg:px-0 gap-3">
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => navigate("/")}
+                aria-label="Back to home"
+                className="group flex size-12 shrink-0 items-center justify-center rounded-full bg-lilac-100 text-brand transition-colors hover:bg-brand-600 hover:text-white"
+              >
+                <ArrowForward className="size-5 rotate-180 transition-transform duration-300 group-hover:rotate-135" />
+              </button>
+              <span className="text-lg font-medium text-ink/60">Projects</span>
+            </div>
+            
+            {/* Chat Bubble with Hamburger */}
             <button
-              onClick={() => navigate("/")}
-              aria-label="Back to home"
-              className="group flex size-12 shrink-0 items-center justify-center rounded-full bg-lilac-100 text-brand transition-colors hover:bg-brand-600 hover:text-white"
+              className="group hidden sm:flex flex-col items-center justify-center size-12 shrink-0 rounded-full bg-brand text-white transition-all hover:bg-brand-600 shadow-lg hover:shadow-xl"
+              aria-label="Open contact menu"
+              title="Let's chat!"
             >
-              <ArrowForward className="size-5 rotate-180 transition-transform duration-300 group-hover:rotate-135" />
+              <svg className="size-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+              </svg>
             </button>
-            <span className="text-lg font-medium text-ink/60">Projects</span>
           </div>
 
-          <nav className="flex flex-col gap-8 pt-4 lg:gap-14 lg:pt-5">
-            {projects.map((p, i) => {
-              const isActive = i === active;
-              return (
-                <button
-                  key={p.word}
-                  onClick={() => setActive(i)}
-                  className="group flex flex-col items-start text-left"
-                >
-                  <span
-                    className={`font-semibold leading-none transition-all duration-300 ${
-                      isActive
-                        ? "text-[clamp(22px,2.5vw,32px)] text-ink"
-                        : "text-[clamp(18px,2vw,24px)] text-ink/50 group-hover:text-ink"
-                    }`}
+          <nav
+            ref={navRef}
+            className="flex flex-row gap-4 py-4 px-4 lg:px-0 lg:flex-col lg:gap-14 lg:pt-5 overflow-x-auto overflow-y-hidden hide-scrollbar"
+            style={{ paddingLeft: 'calc(50% - 70px)', paddingRight: 'calc(50% - 70px)' }}
+          >
+            <AnimatePresence mode="sync">
+              {/* Dynamically render items around the active index */}
+              {Array.from({ length: 5 }).map((_, offset) => {
+                const itemIndex = active - 2 + offset;
+                const actualIndex = ((itemIndex % projects.length) + projects.length) % projects.length;
+                const p = projects[actualIndex];
+                const isActive = itemIndex === active;
+                const key = `carousel-item-${actualIndex}-${itemIndex}`;
+                const skipAnimation = isFirstRender.current;
+
+                return (
+                  <motion.button
+                    key={key}
+                    initial={skipAnimation ? { opacity: 1, x: 0, scale: isActive ? 1.2 : 0.8 } : { opacity: 0, x: 50, scale: 0.8 }}
+                    animate={{ opacity: 1, x: 0, scale: isActive ? 1.2 : 0.8 }}
+                    exit={{ opacity: 0, x: -50, scale: 0.8 }}
+                    transition={{ duration: 0.6, ease: "easeInOut" }}
+                    ref={(element) => {
+                      itemRefs.current[itemIndex] = element;
+                      if (isActive && offset === 2) {
+                        isFirstRender.current = false;
+                      }
+                    }}
+                    onClick={() => setActive(itemIndex)}
+                    className={`flex flex-col items-center justify-center flex-shrink-0 transition-all duration-500 rounded-3xl px-3 py-2 lg:items-start lg:text-left lg:px-0 lg:py-0 lg:bg-transparent lg:rounded-none`}
+                    style={{
+                      minWidth: '140px',
+                    }}
                   >
-                    {p.eyebrow}
-                  </span>
-                  <span className="mt-3 flex items-end gap-3">
                     <span
-                      className={`font-semibold leading-none transition-all duration-300 ${
-                        isActive
-                          ? "text-[clamp(44px,5.2vw,72px)] text-ink"
-                          : "text-[clamp(32px,3.8vw,48px)] text-ink/50 group-hover:text-ink"
+                      className={`text-sm font-semibold transition-colors duration-300 ${
+                        isActive ? 'text-brand' : 'text-ink/50'
+                      }`}
+                    >
+                      {p.eyebrow}
+                    </span>
+                    <span
+                      className={`text-2xl font-bold transition-colors duration-300 mt-1 ${
+                        isActive ? 'text-brand' : 'text-ink/40'
                       }`}
                     >
                       {p.word}
                     </span>
-                    <span
-                      className={`mb-2 flex items-center justify-center transition-all duration-300 ${
-                        isActive
-                          ? "size-6 bg-brand rounded-full cursor-pointer hover:bg-brand-600"
-                          : "size-3.5 bg-muted rounded-full"
-                      }`}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        if (isActive) navigate(`/project/${p.id}`);
-                      }}
-                    >
-                      {isActive && (
-                        <Chevron className="size-3.5 text-white" />
-                      )}
-                    </span>
-                  </span>
-                </button>
-              );
-            })}
+                  </motion.button>
+                );
+              })}
+            </AnimatePresence>
           </nav>
         </div>
 

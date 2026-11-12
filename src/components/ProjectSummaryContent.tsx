@@ -1,6 +1,6 @@
 export default function ProjectSummaryContent() {
   return (
-    <div className="flex h-full flex-col px-8 py-12 lg:px-16 lg:py-20">
+    <div className="flex h-full flex-col px-4 py-12 lg:px-16 lg:py-20">
       {/* Top spacing */}
       <div className="space-y-16">
         {/* Intro text */}

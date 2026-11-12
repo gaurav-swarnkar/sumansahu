@@ -810,7 +810,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
       )}
       </div>
 
-      <div className="flex h-full flex-col px-8 py-12 lg:px-7 lg:py-20">
+      <div className="flex h-full flex-col px-4 py-12 lg:px-7 lg:py-20">
         <div className="space-y-24 max-w-4xl mx-auto w-full">
         
         {/* ===== SECTION 1: PROJECT SUMMARY ===== */}

@@ -17,9 +17,21 @@ export default defineConfig(({ mode }) => {
       minify: !emitSourcemaps,
       rollupOptions: {
         output: {
-          entryFileNames: '[name].js',
-          chunkFileNames: '[name].js',
-          assetFileNames: '[name].[ext]',
+          entryFileNames: 'assets/js/[name].js',
+          chunkFileNames: 'assets/js/[name].[hash].js',
+          assetFileNames: (assetInfo) => {
+            const info = assetInfo.name.split('.')
+            const ext = info[info.length - 1]
+            if (/png|jpe?g|gif|tiff|bmp|ico/i.test(ext)) {
+              return `assets/images/[name].[ext]`
+            } else if (/woff|woff2|ttf|otf|eot/i.test(ext)) {
+              return `assets/fonts/[name].[ext]`
+            } else if (ext === 'css') {
+              return `assets/css/[name].[ext]`
+            } else {
+              return `assets/misc/[name].[ext]`
+            }
+          },
         },
       },
     },
