@@ -1,3 +1,4 @@
+import { useLayoutEffect, useRef, useState } from "react";
 import type { Project } from "../data";
 
 /**
@@ -22,15 +23,22 @@ function Sparkle({ className = "" }: { className?: string }) {
 }
 
 /* ---------- Study planner: today's AI-built schedule ---------- */
-function StudyPlannerMockup() {
+function StudyPlannerMockup({ detailed = false }: { detailed?: boolean }) {
   const sessions = [
     { time: "09:00", label: "Maths · Calculus", tone: "bg-brand", width: "w-full" },
     { time: "11:30", label: "Physics revision", tone: "bg-lilac", width: "w-4/5" },
     { time: "14:00", label: "Break", tone: "bg-lime", width: "w-2/5" },
     { time: "16:00", label: "Chemistry quiz prep", tone: "bg-brand-800", width: "w-3/4" },
+    ...(detailed
+      ? [
+          { time: "18:00", label: "Flashcards · Biology", tone: "bg-lilac", width: "w-3/5" },
+          { time: "20:00", label: "Mock test", tone: "bg-brand", width: "w-4/5" },
+        ]
+      : []),
   ];
   return (
-    <div className="flex w-full max-w-[340px] items-end gap-3">
+    <div className="flex w-full max-w-[340px] flex-col gap-3">
+    <div className="flex w-full items-end gap-3">
       <Card className="flex-1">
         <div className="flex items-center justify-between">
           <div>
@@ -63,11 +71,24 @@ function StudyPlannerMockup() {
         <p className="mt-1 text-[9px] font-medium leading-tight text-muted">Weekly goal</p>
       </Card>
     </div>
+    {detailed && (
+      <Card className="flex items-center gap-3">
+        <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-lime text-sm">🔥</span>
+        <div className="min-w-0 flex-1">
+          <p className="text-[11px] font-semibold leading-tight">6-day study streak</p>
+          <p className="text-[9px] text-muted">Physics exam in 5 days · on track</p>
+          <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-lilac-100">
+            <div className="h-full w-[68%] rounded-full bg-brand" />
+          </div>
+        </div>
+      </Card>
+    )}
+    </div>
   );
 }
 
 /* ---------- Truck fill: AI load plan ---------- */
-function TruckFillMockup() {
+function TruckFillMockup({ detailed = false }: { detailed?: boolean }) {
   // 5 columns x 4 rows of pallets; last two slots left empty
   const pallets = Array.from({ length: 20 }, (_, i) => i);
   const tones = ["bg-brand", "bg-lilac", "bg-brand-800", "bg-lilac-100"];
@@ -97,6 +118,21 @@ function TruckFillMockup() {
         </div>
       </div>
 
+      {detailed && (
+        <div className="mt-3 grid grid-cols-3 gap-2">
+          {[
+            { label: "Fill rate", value: "92%" },
+            { label: "Weight", value: "17.8 t" },
+            { label: "Trips saved", value: "1" },
+          ].map((stat) => (
+            <div key={stat.label} className="rounded-lg bg-canvas px-2 py-1.5">
+              <p className="text-[9px] text-muted">{stat.label}</p>
+              <p className="text-xs font-semibold">{stat.value}</p>
+            </div>
+          ))}
+        </div>
+      )}
+
       <div className="mt-3 flex items-start gap-2 rounded-xl bg-lilac-100/60 p-2">
         <Sparkle className="mt-0.5 size-3 shrink-0 text-brand" />
         <p className="text-[10px] leading-snug text-ink-soft">
@@ -108,11 +144,17 @@ function TruckFillMockup() {
 }
 
 /* ---------- Recipe to stock: ingredient matching ---------- */
-function RecipeStockMockup() {
+function RecipeStockMockup({ detailed = false }: { detailed?: boolean }) {
   const rows = [
     { ingredient: "Paneer, 400 g", stock: "Paneer block 1 kg", match: 98 },
     { ingredient: "Yoghurt, 1 cup", stock: "Greek yoghurt 500 g", match: 94 },
     { ingredient: "Bell pepper, 2", stock: "Capsicum mix 1 kg", match: 88 },
+    ...(detailed
+      ? [
+          { ingredient: "Garam masala, 2 tsp", stock: "Spice mix 200 g", match: 91 },
+          { ingredient: "Lemon, 1", stock: "Lemons 1 kg", match: 96 },
+        ]
+      : []),
   ];
   return (
     <Card className="w-full max-w-[340px]">
@@ -137,6 +179,9 @@ function RecipeStockMockup() {
           </li>
         ))}
       </ul>
+      {detailed && (
+        <p className="mt-2 text-center text-[9px] text-muted">5 of 5 ingredients matched · 1 item low on stock</p>
+      )}
       <button
         type="button"
         tabIndex={-1}
@@ -148,15 +193,71 @@ function RecipeStockMockup() {
   );
 }
 
-export default function ProjectMockup({ visual }: { visual: Project["visual"] }) {
+export default function ProjectMockup({
+  visual,
+  detailed = false,
+}: {
+  visual: Project["visual"];
+  /** Show extra rows; useful where there is more height than width (mobile). */
+  detailed?: boolean;
+}) {
   switch (visual) {
     case "truck":
-      return <TruckFillMockup />;
+      return <TruckFillMockup detailed={detailed} />;
     case "receipt":
-      return <RecipeStockMockup />;
+      return <RecipeStockMockup detailed={detailed} />;
     case "tablets":
     case "monitor":
     default:
-      return <StudyPlannerMockup />;
+      return <StudyPlannerMockup detailed={detailed} />;
   }
+}
+
+/**
+ * Scales its child to fill the available box (keeping proportions), so the
+ * graphic uses the space it is given on any screen size.
+ */
+export function FitGraphic({
+  children,
+  maxScale = 2.4,
+  className = "",
+}: {
+  children: React.ReactNode;
+  maxScale?: number;
+  className?: string;
+}) {
+  const boxRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState(1);
+
+  useLayoutEffect(() => {
+    const box = boxRef.current;
+    const content = contentRef.current;
+    if (!box || !content) return;
+
+    const update = () => {
+      const { clientWidth: bw, clientHeight: bh } = box;
+      const { offsetWidth: cw, offsetHeight: ch } = content; // unaffected by transform
+      if (!cw || !ch || !bw || !bh) return;
+      setScale(Math.max(0.5, Math.min(bw / cw, bh / ch, maxScale)));
+    };
+
+    update();
+    const observer = new ResizeObserver(update);
+    observer.observe(box);
+    observer.observe(content);
+    return () => observer.disconnect();
+  }, [maxScale]);
+
+  return (
+    <div ref={boxRef} className={`relative min-h-0 w-full ${className}`}>
+      <div
+        ref={contentRef}
+        className="absolute left-1/2 top-1/2 w-[340px]"
+        style={{ transform: `translate(-50%, -50%) scale(${scale})` }}
+      >
+        {children}
+      </div>
+    </div>
+  );
 }

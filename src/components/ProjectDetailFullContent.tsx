@@ -32,6 +32,9 @@ import video3 from "../imports/Main/3.mp4";
 import video4 from "../imports/Main/4.mp4";
 import { useState, useRef, useEffect } from "react";
 import { Project } from "../data";
+import ProjectMockup, { FitGraphic } from "./ProjectMockups";
+import { projectBackgrounds } from "../utils/projectTheme";
+import TruckFillCaseStudy from "./case-studies/TruckFillCaseStudy";
 
 interface ProjectDetailFullContentProps {
   projectId?: string;
@@ -464,39 +467,64 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
     <>
       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=pan_tool_alt" />
       {/* ===== TOP BANNER ===== */}
-      <div className="relative h-[calc(45vh+100px)] w-full overflow-hidden">
-        {/* Background Video */}
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
-          className="absolute inset-0 h-full w-full object-cover"
-        >
-          <source src={videoSrc} type="video/mp4" />
-        </video>
-        
-        {/* Overlay for better button visibility */}
-        <div className="absolute inset-0 bg-black/20" />
-        
-        {/* Centered Container for Buttons - Matches Content Below */}
-        <div className="absolute bottom-0 left-0 right-0 w-full flex justify-center pointer-events-none">
-          <div className="max-w-4xl w-full pt-32 lg:pt-40 pb-4 flex pointer-events-auto">
-            {/* Buttons - Bottom Left within Centered Container */}
-            <div className="flex flex-row gap-4 z-20">
-              <button onClick={() => setShowVideoModal(true)} className="px-6 py-3 bg-white text-lilac border-2 border-lilac font-semibold rounded-full transition-all duration-300 hover:bg-lilac hover:text-white flex items-center justify-center gap-2 whitespace-nowrap text-sm" aria-label="Play">
+      <div
+        className={`relative min-h-[calc(45vh+100px)] w-full overflow-hidden ${project?.panel ?? "bg-brand"}`}
+        style={{ backgroundImage: project ? projectBackgrounds[project.id] : undefined }}
+      >
+        {/* soft glow behind the graphic */}
+        <div className="pointer-events-none absolute -right-20 bottom-0 size-[420px] rounded-full bg-white/10 blur-[110px]" />
+
+        {/* Same centred column as the content below (outer padding + max-w-4xl) */}
+        <div className="relative px-4 lg:px-7">
+        <div className="mx-auto flex min-h-[calc(45vh+100px)] w-full max-w-4xl flex-col gap-8 pb-8 pt-16 xl:flex-row xl:items-center xl:gap-10 xl:py-14">
+          {/* Title block */}
+          <div className="flex min-w-0 flex-1 flex-col gap-5">
+            {project && (
+              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-white/70">
+                {project.eyebrow} {project.word}
+              </p>
+            )}
+            <h1 className="max-w-[22ch] text-[clamp(30px,3.6vw,52px)] font-semibold leading-[1.1] text-white">
+              {project?.title}
+            </h1>
+            {project && project.pills.length > 0 && (
+              <div className="flex flex-wrap gap-2">
+                {project.pills.map((pill) => (
+                  <span
+                    key={pill}
+                    className="flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1.5 text-xs font-medium text-white backdrop-blur-sm lg:text-sm"
+                  >
+                    <svg viewBox="0 0 28 28" className="size-3.5 shrink-0" fill="none" aria-hidden="true">
+                      <path d="M13 2 5 15h6l-2 11 10-14h-7l3-10z" fill="currentColor" />
+                    </svg>
+                    {pill}
+                  </span>
+                ))}
+              </div>
+            )}
+
+            {/* Actions */}
+            <div className="mt-2 flex flex-row gap-3">
+              <button onClick={() => setShowVideoModal(true)} className="px-5 py-2.5 bg-white text-brand font-semibold rounded-full transition-all duration-300 hover:bg-lilac-100 flex items-center justify-center gap-2 whitespace-nowrap text-sm" aria-label="Play">
                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M8 5v14l11-7z" />
                 </svg>
                 Watch
               </button>
-              <button onClick={() => setShowExperienceModal(true)} className="px-6 py-3 bg-white text-lilac border-2 border-lilac font-semibold rounded-full transition-all duration-300 hover:bg-lilac hover:text-white flex items-center justify-center gap-2 whitespace-nowrap text-sm" aria-label="Experience">
+              <button onClick={() => setShowExperienceModal(true)} className="px-5 py-2.5 bg-white/10 text-white border border-white/60 font-semibold rounded-full transition-all duration-300 hover:bg-white hover:text-brand flex items-center justify-center gap-2 whitespace-nowrap text-sm" aria-label="Experience">
                 <span className="material-symbols-outlined text-sm">pan_tool_alt</span>
                 Experience
               </button>
             </div>
           </div>
+
+          {/* Project graphic */}
+          {project && (
+            <FitGraphic maxScale={1.6} className="h-[230px] shrink-0 sm:h-[280px] xl:h-[300px] xl:w-[44%]">
+              <ProjectMockup visual={project.visual} />
+            </FitGraphic>
+          )}
+        </div>
         </div>
 
       {/* Video Modal */}
@@ -810,6 +838,9 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
       )}
       </div>
 
+      {project?.id === "truck-fill" ? (
+        <TruckFillCaseStudy />
+      ) : (
       <div className="flex h-full flex-col px-4 py-12 lg:px-7 lg:py-20">
         <div className="space-y-24 max-w-4xl mx-auto w-full">
         
@@ -3015,6 +3046,7 @@ export default function ProjectDetailFullContent({ projectId, project }: Project
 
         </div>
       </div>
+      )}
     </>
   );
 }
