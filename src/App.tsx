@@ -107,18 +107,20 @@ function AnimatedRoutes() {
 }
 
 export default function App() {
+  const { pathname } = useLocation();
+
   useEffect(() => {
     // Initialize analytics system
     initializeAnalytics();
     
     // Track this visitor (only for portfolio pages, not admin panel)
-    if (!window.location.pathname.startsWith('/workshop')) {
+    if (!pathname.startsWith('/workshop')) {
       trackVisitor();
     }
   }, []);
 
   // Admin routes - no animation
-  if (window.location.pathname.startsWith('/workshop')) {
+  if (pathname.startsWith('/workshop')) {
     return (
       <div className="min-h-screen w-full bg-canvas">
         <Routes>

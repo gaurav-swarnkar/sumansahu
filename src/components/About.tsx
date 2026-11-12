@@ -140,7 +140,7 @@ function EducationSection() {
 function AchievementsSection() {
   return (
     <div className="absolute inset-0 -m-0 h-full w-full overflow-hidden">
-      <video src="/imports/about_page/award_video.mp4" className="h-full w-full object-cover" autoPlay loop muted style={{ objectPosition: "left center" }} />
+      <video src={`${import.meta.env.BASE_URL}imports/about_page/award_video.mp4`} className="h-full w-full object-cover" autoPlay loop muted style={{ objectPosition: "left center" }} />
       
       {/* Award Description Card */}
       <div className="absolute inset-0 flex items-end justify-start p-8 sm:p-12">
@@ -173,7 +173,7 @@ function SectionContent({ sectionId }: { sectionId: SectionId }) {
 function DownloadResumeButton() {
   return (
     <a
-      href="/resume.pdf"
+      href={`${import.meta.env.BASE_URL}resume.pdf`}
       download
       className="group relative flex h-[56px] w-full items-center justify-center gap-3 overflow-hidden rounded-full bg-brand text-white transition-colors hover:bg-brand-600"
     >

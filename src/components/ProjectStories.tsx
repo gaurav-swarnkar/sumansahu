@@ -59,10 +59,10 @@ function LightningPill({ text }: { text: string }) {
 
 // Video paths
 const videoPaths = [
-  "/imports/Main/1.mp4",
-  "/imports/Main/2.mp4",
-  "/imports/Main/3.mp4",
-  "/imports/Main/4.mp4",
+  `${import.meta.env.BASE_URL}imports/Main/1.mp4`,
+  `${import.meta.env.BASE_URL}imports/Main/2.mp4`,
+  `${import.meta.env.BASE_URL}imports/Main/3.mp4`,
+  `${import.meta.env.BASE_URL}imports/Main/4.mp4`,
 ];
 
 function VideoBackground({ index }: { index: number }) {
