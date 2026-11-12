@@ -1,13 +1,14 @@
 import { AnimatePresence, motion } from "motion/react";
 import { projects } from "../data";
-import {
-  useEffect,
-  useRef,
-  useState,
-  type Dispatch,
-  type SetStateAction,
-} from "react";
+import { useEffect, useRef, useState, type Dispatch, type SetStateAction } from "react";
 import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faComment } from "@fortawesome/free-solid-svg-icons";
+import ConnectButton from "./ConnectButton";
+import ProjectMockup from "./ProjectMockups";
+
+const CAROUSEL_ITEM_WIDTH = 120;
+const CAROUSEL_STEP = 128;
 
 function Chevron({ className = "" }: { className?: string }) {
   return (
@@ -57,172 +58,44 @@ function LightningPill({ text }: { text: string }) {
   );
 }
 
-// Video paths
-const videoPaths = [
-  `${import.meta.env.BASE_URL}imports/Main/1.mp4`,
-  `${import.meta.env.BASE_URL}imports/Main/2.mp4`,
-  `${import.meta.env.BASE_URL}imports/Main/3.mp4`,
-  `${import.meta.env.BASE_URL}imports/Main/4.mp4`,
-];
-
-function VideoBackground({ index }: { index: number }) {
-  const videoSrc = videoPaths[index % videoPaths.length];
-
-  return (
-    <video
-      autoPlay
-      loop
-      muted
-      playsInline
-      preload="auto"
-      className="pointer-events-none absolute inset-0 h-full w-full object-cover"
-    >
-      <source src={videoSrc} type="video/mp4" />
-    </video>
-  );
-}
-
 export default function ProjectStories({
   active,
   setActive,
-  onBack,
 }: {
   active: number;
   setActive: Dispatch<SetStateAction<number>>;
   onBack: () => void;
 }) {
   const navigate = useNavigate();
-  const project = projects[active % projects.length];
-  const navRef = useRef<HTMLElement | null>(null);
-  const itemRefs = useRef<Array<HTMLButtonElement | null>>([]);
-  const touchStartX = useRef(0);
-  const isFirstRender = useRef(true);
-  const [isMobileNav, setIsMobileNav] = useState(() => {
-    if (typeof window === "undefined") return false;
-    return window.matchMedia("(max-width: 1023px)").matches;
-  });
+  // `active` is an unbounded position so the mobile carousel can loop forever;
+  // the project shown is that position wrapped into the projects list.
+  const total = projects.length;
+  const activeIndex = ((active % total) + total) % total;
+  const project = projects[activeIndex];
+  const [isContactOpen, setIsContactOpen] = useState(false);
+  const touchStartX = useRef<number | null>(null);
 
-  const prev = () => {
-    if (active === 0) onBack();
-    else setActive(active - 1);
-  };
-  const next = () => setActive((active + 1));
-
-  // Auto-advance to next project every 12 seconds
+  // Auto-advance to the next project after 12 seconds (restarts on manual selection)
   useEffect(() => {
-    const timer = setInterval(() => {
+    const timer = setTimeout(() => {
       setActive((current) => current + 1);
     }, 12000);
 
-    return () => clearInterval(timer);
-  }, []);
-
-  // Initial scroll to center the first item on mount
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      const navElement = navRef.current;
-      const activeItem = itemRefs.current[0];
-      if (!navElement || !activeItem) return;
-
-      const navRect = navElement.getBoundingClientRect();
-      const itemRect = activeItem.getBoundingClientRect();
-      const targetScrollLeft =
-        navElement.scrollLeft +
-        (itemRect.left - navRect.left) -
-        (navRect.width / 2 - itemRect.width / 2);
-
-      navElement.scrollTo({
-        left: Math.max(0, targetScrollLeft),
-        behavior: "auto",
-      });
-    }, 100);
-
     return () => clearTimeout(timer);
-  }, []);
+  }, [active, setActive]);
 
-  useEffect(() => {
-    if (typeof window === "undefined") return;
+  // Jump to a project from the desktop list without breaking the loop position
+  const selectProject = (index: number) => setActive(active - activeIndex + index);
 
-    const mediaQuery = window.matchMedia("(max-width: 1023px)");
-    const updateViewport = () => setIsMobileNav(mediaQuery.matches);
-    updateViewport();
-
-    mediaQuery.addEventListener("change", updateViewport);
-    return () => mediaQuery.removeEventListener("change", updateViewport);
-  }, []);
-
-  useEffect(() => {
-    const navElement = navRef.current;
-    const activeItem = itemRefs.current[active];
-    if (!navElement || !activeItem) return;
-
-    const navRect = navElement.getBoundingClientRect();
-    const itemRect = activeItem.getBoundingClientRect();
-    const targetScrollLeft =
-      navElement.scrollLeft +
-      (itemRect.left - navRect.left) -
-      (navRect.width / 2 - itemRect.width / 2);
-
-    navElement.scrollTo({
-      left: Math.max(0, targetScrollLeft),
-      behavior: "smooth",
-    });
-  }, [active]);
-
-  // Add swipe gesture support for mobile
-  useEffect(() => {
-    if (!isMobileNav) return;
-
-    const navElement = navRef.current;
-    if (!navElement) return;
-
-    const handleTouchStart = (e: TouchEvent) => {
-      touchStartX.current = e.touches[0].clientX;
-    };
-
-    const handleTouchEnd = (e: TouchEvent) => {
-      const touchEndX = e.changedTouches[0].clientX;
-      const diff = touchStartX.current - touchEndX;
-      const threshold = 30; // Minimum swipe distance
-
-      if (Math.abs(diff) > threshold) {
-        if (diff > 0) {
-          // Swiped left, move to next
-          next();
-        } else {
-          // Swiped right, move to previous
-          prev();
-        }
-      }
-    };
-
-    navElement.addEventListener("touchstart", handleTouchStart, false);
-    navElement.addEventListener("touchend", handleTouchEnd, false);
-
-    return () => {
-      navElement.removeEventListener("touchstart", handleTouchStart);
-      navElement.removeEventListener("touchend", handleTouchEnd);
-    };
-  }, [isMobileNav, active, projects.length]);
-
-  const getRelativePosition = (
-    itemIndex: number,
-    activeIndex: number,
-    total: number,
-  ) => {
-    const direct = itemIndex - activeIndex;
-    const wrappedLeft = direct - total;
-    const wrappedRight = direct + total;
-
-    return [direct, wrappedLeft, wrappedRight].reduce((closest, candidate) =>
-      Math.abs(candidate) < Math.abs(closest) ? candidate : closest,
-    direct);
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
   };
-
-  const getRotation3D = (distance: number) => {
-    // Helper function - no longer used but kept for reference
-    const angle = distance * 120;
-    return angle;
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+    const diff = touchStartX.current - e.changedTouches[0].clientX;
+    touchStartX.current = null;
+    if (Math.abs(diff) < 30) return;
+    setActive((current) => current + (diff > 0 ? 1 : -1));
   };
 
   return (
@@ -231,90 +104,168 @@ export default function ProjectStories({
       <div className="pointer-events-none absolute -left-32 top-4 size-[620px] rounded-full bg-[#fffcf4] blur-[110px]" />
       <div className="pointer-events-none absolute -left-24 -top-28 size-[440px] rounded-full bg-lime opacity-20 blur-[70px]" />
 
-      <div className="relative z-10 mx-auto grid min-h-screen w-full max-w-[1920px] grid-cols-1 lg:grid-cols-[minmax(360px,32%)_1fr]">
+      <div className="relative z-10 mx-auto grid min-h-[100dvh] w-full max-w-[1920px] grid-cols-1 grid-rows-[auto_1fr] lg:min-h-screen lg:grid-rows-1 lg:grid-cols-[minmax(360px,32%)_1fr]">
         {/* ---- sidebar nav ---- */}
-        <div className="flex flex-col gap-3 overflow-y-auto px-0 pt-4 lg:max-h-screen lg:px-16 lg:py-20 lg:-mt-10 relative" style={{maskImage: 'linear-gradient(to right, black 85%, transparent 100%)', WebkitMaskImage: 'linear-gradient(to right, black 85%, transparent 100%)'}}>
-          <div className="flex items-center justify-between px-4 lg:px-0 gap-3">
-            <div className="flex items-center gap-3">
-              <button
-                onClick={() => navigate("/")}
-                aria-label="Back to home"
-                className="group flex size-12 shrink-0 items-center justify-center rounded-full bg-lilac-100 text-brand transition-colors hover:bg-brand-600 hover:text-white"
-              >
-                <ArrowForward className="size-5 rotate-180 transition-transform duration-300 group-hover:rotate-135" />
-              </button>
-              <span className="text-lg font-medium text-ink/60">Projects</span>
-            </div>
-            
-            {/* Chat Bubble with Hamburger */}
+        <div className="relative flex flex-col gap-4 px-0 pt-4 pb-6 lg:max-h-screen lg:gap-10 lg:px-16 lg:py-20 lg:-mt-10">
+          {/* header: back | title | contact on mobile; back + title on desktop */}
+          <div className="relative flex items-center justify-between px-4 lg:justify-start lg:gap-3 lg:px-0">
             <button
-              className="group hidden sm:flex flex-col items-center justify-center size-12 shrink-0 rounded-full bg-brand text-white transition-all hover:bg-brand-600 shadow-lg hover:shadow-xl"
-              aria-label="Open contact menu"
-              title="Let's chat!"
+              onClick={() => navigate("/")}
+              aria-label="Back to home"
+              className="group flex size-10 shrink-0 items-center justify-center rounded-full bg-lilac-100 text-brand transition-colors hover:bg-brand-600 hover:text-white lg:size-12"
             >
-              <svg className="size-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-              </svg>
+              <ArrowForward className="size-4 rotate-180 transition-transform duration-300 group-hover:rotate-135 lg:size-5" />
+            </button>
+            <span className="absolute left-1/2 -translate-x-1/2 text-base font-medium text-ink/70 lg:static lg:translate-x-0 lg:text-sm lg:text-ink/60">
+              Projects
+            </span>
+            <button
+              onClick={() => setIsContactOpen(true)}
+              aria-label="Contact"
+              title="Contact"
+              className="flex size-10 shrink-0 items-center justify-center rounded-full bg-white text-brand shadow-sm transition-colors hover:bg-lilac-100 lg:hidden"
+            >
+              <FontAwesomeIcon icon={faComment} className="text-base" />
             </button>
           </div>
 
-          <nav
-            ref={navRef}
-            className="flex flex-row gap-4 py-4 px-4 lg:px-0 lg:flex-col lg:gap-14 lg:pt-5 overflow-x-auto overflow-y-hidden hide-scrollbar"
-            style={{ paddingLeft: 'calc(50% - 70px)', paddingRight: 'calc(50% - 70px)' }}
+          {/* mobile: looping carousel, active item centred and scaled up */}
+          <div
+            className="relative h-[72px] overflow-hidden lg:hidden"
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
+            style={{
+              maskImage: "linear-gradient(to right, transparent 0%, black 20%, black 80%, transparent 100%)",
+              WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 20%, black 80%, transparent 100%)",
+            }}
           >
-            <AnimatePresence mode="sync">
-              {/* Dynamically render items around the active index */}
-              {Array.from({ length: 5 }).map((_, offset) => {
-                const itemIndex = active - 2 + offset;
-                const actualIndex = ((itemIndex % projects.length) + projects.length) % projects.length;
-                const p = projects[actualIndex];
-                const isActive = itemIndex === active;
-                const key = `carousel-item-${actualIndex}-${itemIndex}`;
-                const skipAnimation = isFirstRender.current;
-
-                return (
-                  <motion.button
-                    key={key}
-                    initial={skipAnimation ? { opacity: 1, x: 0, scale: isActive ? 1.2 : 0.8 } : { opacity: 0, x: 50, scale: 0.8 }}
-                    animate={{ opacity: 1, x: 0, scale: isActive ? 1.2 : 0.8 }}
-                    exit={{ opacity: 0, x: -50, scale: 0.8 }}
-                    transition={{ duration: 0.6, ease: "easeInOut" }}
-                    ref={(element) => {
-                      itemRefs.current[itemIndex] = element;
-                      if (isActive && offset === 2) {
-                        isFirstRender.current = false;
-                      }
-                    }}
-                    onClick={() => setActive(itemIndex)}
-                    className={`flex flex-col items-center justify-center flex-shrink-0 transition-all duration-500 rounded-3xl px-3 py-2 lg:items-start lg:text-left lg:px-0 lg:py-0 lg:bg-transparent lg:rounded-none`}
-                    style={{
-                      minWidth: '140px',
-                    }}
+            {[-3, -2, -1, 0, 1, 2, 3].map((offset) => {
+              const position = active + offset;
+              const p = projects[((position % total) + total) % total];
+              const isActive = offset === 0;
+              return (
+                <motion.button
+                  key={position}
+                  initial={false}
+                  animate={{
+                    x: offset * CAROUSEL_STEP,
+                    scale: isActive ? 1.15 : 0.9,
+                    opacity: Math.abs(offset) > 2 ? 0 : 1,
+                  }}
+                  transition={{ duration: 0.5, ease: "easeInOut" }}
+                  onClick={() => setActive(position)}
+                  tabIndex={Math.abs(offset) > 1 ? -1 : 0}
+                  className="absolute top-1/2 flex flex-col items-center gap-1 text-center"
+                  style={{ left: "50%", width: CAROUSEL_ITEM_WIDTH, marginLeft: -CAROUSEL_ITEM_WIDTH / 2, translateY: "-50%" }}
+                >
+                  <span
+                    className={`text-[10px] font-semibold uppercase tracking-wide transition-colors duration-300 ${
+                      isActive ? "text-brand" : "text-ink/40"
+                    }`}
                   >
+                    {p.eyebrow}
+                  </span>
+                  <span
+                    className={`text-xl font-semibold leading-none transition-colors duration-300 ${
+                      isActive ? "text-ink" : "text-ink/40"
+                    }`}
+                  >
+                    {p.word}
+                  </span>
+                </motion.button>
+              );
+            })}
+          </div>
+
+          {/* desktop: vertical list in the My Journey style */}
+          <nav className="hidden flex-col gap-10 pt-5 lg:flex">
+            {projects.map((p, index) => {
+              const isActive = index === activeIndex;
+              return (
+                <button
+                  key={p.id}
+                  onClick={() => selectProject(index)}
+                  className="group flex flex-col items-start gap-2 text-left"
+                >
+                  <span
+                    className={`text-xs font-semibold uppercase tracking-wide transition-colors duration-300 ${
+                      isActive ? "text-brand" : "text-ink/40 group-hover:text-ink/60"
+                    }`}
+                  >
+                    {p.eyebrow}
+                  </span>
+                  <span className="flex items-center gap-3">
                     <span
-                      className={`text-sm font-semibold transition-colors duration-300 ${
-                        isActive ? 'text-brand' : 'text-ink/50'
-                      }`}
-                    >
-                      {p.eyebrow}
-                    </span>
-                    <span
-                      className={`text-2xl font-bold transition-colors duration-300 mt-1 ${
-                        isActive ? 'text-brand' : 'text-ink/40'
+                      className={`font-semibold leading-none transition-all duration-300 ${
+                        isActive
+                          ? "text-[clamp(28px,3vw,40px)] text-ink"
+                          : "text-[clamp(20px,2.2vw,28px)] text-ink/50 group-hover:text-ink"
                       }`}
                     >
                       {p.word}
                     </span>
-                  </motion.button>
-                );
-              })}
-            </AnimatePresence>
+                    {isActive && (
+                      <span className="block size-2.5 shrink-0 rounded-full bg-brand" />
+                    )}
+                  </span>
+                </button>
+              );
+            })}
           </nav>
         </div>
 
-        {/* ---- content panel ---- */}
-        <div className="relative min-h-[70vh] overflow-hidden lg:min-h-screen">
+        {/* ---- content panel: mobile, full-bleed section filling the rest of the screen ---- */}
+        <div className={`relative flex overflow-hidden lg:hidden ${project.panel}`}>
+          {/* ambient glow */}
+          <div className="pointer-events-none absolute -right-16 -top-16 size-64 rounded-full bg-white/15 blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-20 -left-10 size-64 rounded-full bg-black/25 blur-3xl" />
+
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={active}
+              initial={{ opacity: 0, x: 24 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -24 }}
+              transition={{ duration: 0.35, ease: "easeOut" }}
+              className="relative flex w-full flex-col gap-4 px-5 pt-8 pb-8"
+            >
+              {/* title + outcomes at the top */}
+              <h2 className="text-[clamp(26px,7.5vw,36px)] font-semibold leading-tight text-white">
+                {project.title}
+              </h2>
+              <div className="flex flex-wrap gap-2">
+                {project.pills.map((pill) => (
+                  <span
+                    key={pill}
+                    className="flex items-center gap-1.5 rounded-full bg-white/15 px-2.5 py-1.5 text-xs font-medium text-white backdrop-blur-sm"
+                  >
+                    <svg viewBox="0 0 28 28" className="size-3 shrink-0" fill="none" aria-hidden="true">
+                      <path d="M13 2 5 15h6l-2 11 10-14h-7l3-10z" fill="currentColor" />
+                    </svg>
+                    {pill}
+                  </span>
+                ))}
+              </div>
+
+              {/* graphics fill the space towards the bottom */}
+              <div className="flex flex-1 items-end justify-center py-6">
+                <ProjectMockup visual={project.visual} />
+              </div>
+
+              {/* button pinned to the bottom */}
+              <button
+                onClick={() => navigate(`/project/${project.id}`)}
+                className="group flex h-12 w-full shrink-0 items-center justify-center gap-3 rounded-full bg-white text-brand transition-colors hover:bg-lilac-100"
+              >
+                <span className="text-base font-semibold leading-none">View Project</span>
+                <ArrowForward className="size-4 shrink-0 transition-transform duration-300 group-hover:-rotate-45" />
+              </button>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
+        {/* ---- content panel: desktop ---- */}
+        <div className="relative hidden overflow-hidden lg:block lg:min-h-screen">
           <AnimatePresence mode="wait">
             <motion.div
               key={active}
@@ -324,8 +275,8 @@ export default function ProjectStories({
               transition={{ duration: 0.5, ease: "easeOut" }}
               className="absolute inset-0 overflow-hidden"
             >
-              {/* video background */}
-              <VideoBackground index={active} />
+              {/* project background (motion graphics to come) */}
+              <div className={`pointer-events-none absolute inset-0 ${project.panel}`} />
 
               {/* ambient blobs */}
               <div className="pointer-events-none absolute -right-40 top-24 size-[520px] rounded-full bg-white/10 blur-[120px]" />
@@ -365,6 +316,12 @@ export default function ProjectStories({
           </AnimatePresence>
         </div>
       </div>
+      <ConnectButton
+        hotspot={false}
+        mobileButton={false}
+        open={isContactOpen}
+        onOpenChange={setIsContactOpen}
+      />
     </section>
   );
 }
