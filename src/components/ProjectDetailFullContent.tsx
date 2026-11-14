@@ -515,9 +515,13 @@ export default function ProjectDetailFullContent({ projectId, project, mobileNav
 
           {/* Project graphic */}
           {project && (
-            <FitGraphic maxScale={1.3} className="hidden h-[200px] shrink-0 sm:block sm:w-[44%] lg:h-[230px]">
-              <ProjectMockup visual={project.visual} />
-            </FitGraphic>
+            project.cover ? (
+              <img src={project.cover} alt={project.title} className="hidden h-[200px] shrink-0 rounded-2xl object-contain sm:block sm:w-[44%] lg:h-[230px]" />
+            ) : (
+              <FitGraphic maxScale={1.3} className="hidden h-[200px] shrink-0 sm:block sm:w-[44%] lg:h-[230px]">
+                <ProjectMockup visual={project.visual} />
+              </FitGraphic>
+            )
           )}
         </div>
         </div>

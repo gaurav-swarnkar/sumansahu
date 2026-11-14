@@ -34,6 +34,12 @@ export type Project = {
   pills: string[];
   panel: string; // background style for right panel
   visual: "tablets" | "monitor" | "truck" | "receipt" | "brand" | "system";
+  /**
+   * Optional photo shown on the Projects page below "View Project" (and in the
+   * project banner). Import an image from src/imports/project_covers/ and set it
+   * here; when empty, the built-in mockup (`visual`) is shown instead.
+   */
+  cover?: string;
   contents: ProjectContent[];
   experienceJourneys?: {
     before: ExperienceJourney[];
