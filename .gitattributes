@@ -148,3 +148,6 @@
 # Small case-study photos are stored as regular files (not LFS)
 src/imports/truck_fill/*.jpg !filter !diff !merge binary
 src/imports/recipe_stock/*.jpg !filter !diff !merge binary
+src/imports/project_covers/*.jpg !filter !diff !merge binary
+src/imports/project_covers/*.png !filter !diff !merge binary
+src/imports/project_covers/*.webp !filter !diff !merge binary

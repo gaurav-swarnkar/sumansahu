@@ -256,9 +256,15 @@ export default function ProjectStories({
               </div>
 
               {/* graphics fill the space towards the bottom */}
-              <FitGraphic maxScale={1.25} className="min-h-[50%] flex-1 my-3">
-                <ProjectMockup visual={project.visual} detailed />
-              </FitGraphic>
+              {project.cover ? (
+                <div className="my-3 flex min-h-[50%] flex-1 items-center justify-center">
+                  <img src={project.cover} alt={project.title} className="max-h-full w-full rounded-2xl object-contain" />
+                </div>
+              ) : (
+                <FitGraphic maxScale={1.25} className="min-h-[50%] flex-1 my-3">
+                  <ProjectMockup visual={project.visual} detailed />
+                </FitGraphic>
+              )}
 
               {/* button pinned to the bottom */}
               <button
@@ -327,9 +333,13 @@ export default function ProjectStories({
 
               {/* project graphic fills the space below the copy */}
               <div className="flex min-h-0 flex-1 px-14 pb-10 pt-8 xl:px-16">
-                <FitGraphic maxScale={2.2} className="h-full">
-                  <ProjectMockup visual={project.visual} />
-                </FitGraphic>
+                {project.cover ? (
+                  <img src={project.cover} alt={project.title} className="h-full w-full rounded-2xl object-contain" />
+                ) : (
+                  <FitGraphic maxScale={2.2} className="h-full">
+                    <ProjectMockup visual={project.visual} />
+                  </FitGraphic>
+                )}
               </div>
               </div>
             </motion.div>
