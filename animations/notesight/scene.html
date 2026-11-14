@@ -42,8 +42,8 @@
   #emptyPanel h3 { font-weight: 500; font-size: 25px; color: var(--old); }
   #createBtn { background: #2f80ed; color: #fff; font-size: 16px; font-weight: 500; padding: 14px 26px; border-radius: 999px; white-space: nowrap; }
 
-  #oldCal { left: 250px; top: 96px; width: 780px; height: 366px; z-index: 1; }
-  #oldCal > img { width: 780px; height: 366px; }
+  #oldCal { left: 130px; top: 84px; width: 760px; height: 357px; z-index: 1; }
+  #oldCal > img { width: 760px; height: 357px; }
   .entry { position: absolute; transform-origin: left center; }
 
   .fld { z-index: 5; padding: 12px 14px 14px; border-radius: 14px; }
@@ -61,9 +61,34 @@
   .piece img { border-radius: 8px; }
   #creating { z-index: 6; padding: 16px 22px; border-radius: 16px; display: flex; gap: 12px; align-items: center; font-size: 17px; font-weight: 500; color: var(--old); }
   #creating .spin { width: 22px; height: 22px; border-radius: 50%; border: 3px solid #dbe4fb; border-top-color: #2f80ed; }
-  #counter { z-index: 20; left: 540px; top: 4px; width: 200px; height: 38px; border-radius: 999px; background: rgba(255,255,255,.12);
-    border: 1px solid rgba(255,255,255,.28); color: #fff; font-size: 15px; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 6px; backdrop-filter: blur(6px); }
-  #counter b { font-weight: 700; color: var(--moon); }
+  #counter { z-index: 30; left: 790px; top: 128px; width: 360px; padding: 10px 14px 12px; border-radius: 14px; background: #101d4d;
+    border: 1px solid rgba(255,255,255,.18); color: #fff; box-shadow: 0 18px 36px rgba(0,4,24,.5); }
+  #counter .ct { font-size: 15px; font-weight: 500; margin-bottom: 8px; }
+  #counter .ct b { font-weight: 700; color: var(--moon); }
+  #counter .ct span { color: rgba(255,255,255,.6); font-weight: 400; }
+  #counter .segs { display: flex; gap: 4px; }
+  #counter .segs span { flex: 1; height: 5px; border-radius: 3px; background: rgba(255,255,255,.2); overflow: hidden; }
+  #counter .segs i { display: block; height: 100%; width: 0; background: var(--moon); }
+  .fcard { width: 360px; height: 168px; border-radius: 16px; padding: 14px 16px; }
+  .fcard .fh { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .fcard .num { font-size: 12px; font-weight: 700; color: #2f80ed; background: #e8f0fe; border-radius: 7px; padding: 3px 7px; }
+  .fcard .lb { font-size: 15px; font-weight: 600; color: var(--old); }
+  .fcard .req { margin-left: auto; font-size: 11px; color: #e5484d; font-weight: 500; }
+  .fcard .fb { height: 104px; display: flex; flex-direction: column; justify-content: center; }
+  .fcard .in { height: 44px; border: 1px solid #dfe3ea; border-radius: 10px; display: flex; align-items: center; justify-content: space-between; padding: 0 14px; font-size: 16px; color: var(--old); }
+  .fcard.focus .in { border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59,130,246,.18); }
+  .fcard .in .ms { font-size: 22px; color: #8a92a6; }
+  .fcard .picw { height: 104px; display: flex; align-items: center; justify-content: center; }
+  .fcard .picw img { max-height: 104px; max-width: 328px; }
+  .fcard .tg { display: flex; gap: 10px; }
+  .fcard .tg span { flex: 1; height: 44px; border: 1px solid #dfe3ea; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 15px; color: #8a92a6; }
+  .fcard .tg span.on { background: #2f80ed; border-color: #2f80ed; color: #fff; }
+  .fcard .bar { height: 6px; border-radius: 3px; background: #e7ebf3; margin: 0 6px; position: relative; }
+  .fcard .bar i { position: absolute; left: 0; top: 0; bottom: 0; width: 62%; background: #3b82f6; border-radius: 3px; }
+  .fcard .bar b { position: absolute; left: 62%; top: 50%; width: 18px; height: 18px; margin: -9px 0 0 -9px; border-radius: 50%; background: #fff; border: 3px solid #3b82f6; }
+  .fcard .mk { display: flex; gap: 12px; align-items: center; justify-content: center; font-size: 17px; font-weight: 500; color: var(--old); height: 52px; border-radius: 12px; background: #f3f6fd; }
+  .fcard .spin { width: 22px; height: 22px; border-radius: 50%; border: 3px solid #dbe4fb; border-top-color: #2f80ed; }
+  .fcard .shade { position: absolute; inset: 0; background: rgba(16, 29, 77, .16); pointer-events: none; }
 
   #dot { width: 18px; height: 18px; border-radius: 50%; background: var(--moon); left: 631px; top: 261px; z-index: 30; box-shadow: 0 0 34px 12px rgba(255,236,200,.35); }
   #ripple { width: 20px; height: 20px; border-radius: 50%; border: 3px solid #fff; z-index: 40; left: 0; top: 0; }
@@ -155,8 +180,7 @@
       <img class="entry" id="e4" src="assets/entry_4.png" alt="">
     </div>
     <div id="fieldsLayer"></div>
-    <div id="creating" class="abs tab"><div class="spin"></div>Creating your plan&hellip;</div>
-    <div id="counter" class="abs">Field <b id="cnt">1</b> of 12</div>
+        <div id="counter" class="abs"><div class="ct">Step <b id="cnt">1</b> of 12 <span>to get a plan</span></div><div class="segs"></div></div>
   </div>
 
   <!-- ======== Scene 2 ======== -->
@@ -248,76 +272,81 @@ function collapse(t, start, dur, cx, cy) {
 }
 
 /* =================== Scene 1 setup =================== */
-const OLD_K = 780 / 2560;
+const OLD_K = 760 / 2560;
 const ENTRIES = [[193, 261, 523, 415], [527, 597, 857, 751], [863, 594, 1192, 754], [1192, 343, 1532, 501]];
 ENTRIES.forEach(([l, t, r, b], i) => Object.assign($("e" + (i + 1)).style,
   { left: l * OLD_K + "px", top: t * OLD_K + "px", width: (r - l) * OLD_K + "px", height: (b - t) * OLD_K + "px" }));
 
-const input = (label, value, icon = "") => `<label>${label}</label><div class="in"><span class="v" data-v="${value}"></span>${icon ? `<span class="ms">${icon}</span>` : ""}</div>`;
-// 11 fields + "Creating your plan" = the 12 steps of the old flow. [html, left, top, width, rotation]
-const FIELDS = [
-  [input("Exam name", "SAT"), 110, 34, 230, -4],
-  [`<img src="assets/piece_test.png" style="width:270px">`, 905, 20, 0, 3, "piece"],
-  [`<img src="assets/piece_date.png" style="width:170px">`, 70, 210, 0, -3, "piece"],
-  [input("Previous score", "1180"), 370, 66, 210, 2],
-  [`<img src="assets/piece_before.png" style="width:270px">`, 935, 300, 0, 4, "piece"],
-  [input("Insights", "Weak in algebra", "expand_more"), 690, 62, 230, -2],
-  [input("Study preference", "Evenings", "expand_more"), 300, 400, 220, 3],
-  [`<label>Practice test</label><div class="tg"><span class="on">Yes</span><span>No</span></div>`, 990, 176, 200, -3],
-  [`<label>Confidence level</label><div class="bar"><i></i><b></b></div>`, 175, 150, 220, 2],
-  [input("Study cycle", "Weekly", "expand_more"), 580, 418, 200, -3],
-  [input("Exam goals", "1400+", "flag"), 820, 430, 220, 3],
+// The 12 steps of the old flow, shown as one tidy deck of cards: newest in front, older ones step back.
+const inp = (value, icon = "") => `<div class="in"><span class="v" data-v="${value}"></span>${icon ? `<span class="ms">${icon}</span>` : ""}</div>`;
+const pic = (src) => `<div class="picw"><img src="assets/${src}"></div>`;
+const STEPS = [
+  ["Exam name", inp("SAT")],
+  ["Test type", pic("piece_test.png")],
+  ["Exam date", pic("piece_date.png")],
+  ["Previous score", inp("1180")],
+  ["Taken this test before?", pic("piece_before.png")],
+  ["Insights", inp("Weak in algebra", "expand_more")],
+  ["Study preference", inp("Evenings", "expand_more")],
+  ["Practice test", `<div class="tg"><span class="on">Yes</span><span>No</span></div>`],
+  ["Confidence level", `<div class="bar"><i></i><b></b></div>`],
+  ["Study cycle", inp("Weekly", "expand_more")],
+  ["Exam goals", inp("1400+", "flag")],
+  ["Creating plans", `<div class="mk"><div class="spin"></div>Creating your plan&hellip;</div>`],
 ];
-const FIELD_T0 = 1.95, FIELD_DT = .21;
-const fieldEls = FIELDS.map(([html, l, tp, w, rz, cls]) => {
-  const el = h(`<div class="abs tab ${cls || "fld"}" style="left:${l}px;top:${tp}px;${w ? `width:${w}px` : ""}">${html}</div>`);
-  el.dataset.rz = rz;
+const FIELD_T0 = 2.0, FIELD_DT = .22, DECK = { x: 790, y: 236, cx: 970, cy: 320 };
+const segWrap = document.querySelector("#counter .segs");
+STEPS.forEach(() => segWrap.appendChild(h(`<span><i></i></span>`)));
+const stepEls = STEPS.map(([label, body], i) => {
+  const el = h(`<div class="abs tab fcard" style="left:${DECK.x}px;top:${DECK.y}px;z-index:${10 + i}">
+    <div class="fh"><span class="num">${String(i + 1).padStart(2, "0")}</span><span class="lb">${label}</span><span class="req">Required</span></div>
+    <div class="fb">${body}</div><div class="shade"></div></div>`);
   $("fieldsLayer").appendChild(el);
   return el;
 });
-Object.assign($("creating").style, { left: "520px", top: "238px" });
 
 function scene1(t) {
   $("s2").style.display = "none"; $("s1").style.display = "block";
   // Phase A: logo + empty state, cursor clicks Create
   const out = easeIn(p(t, 1.5, .35));
   const lp = back(p(t, .15, .55));
-  set($("logoCard"), { s: .6 + .4 * lp, o: clamp(p(t, .15, .3)) * (1 - out), y: 40 * out, rz: -4 * (1 - lp) });
+  set($("logoCard"), { s: .6 + .4 * lp, o: clamp(p(t, .15, .3)) * (1 - out), y: 40 * out });
   const pp = easeOut(p(t, .35, .6));
-  set($("emptyPanel"), { y: 70 * (1 - pp) + 60 * out, o: pp * (1 - out), s: 1 - .1 * out, rx: 16 * (1 - pp) });
+  set($("emptyPanel"), { y: 70 * (1 - pp) + 60 * out, o: pp * (1 - out), s: 1 - .1 * out });
   $("createBtn").style.transform = `scale(${1 - .06 * Math.sin(Math.PI * p(t, 1.28, .2))})`;
   const create = at($("createBtn"));
   cursorAt(t, [[.75, 1150, 520], [1.25, ...create], [1.75, 900, 560]], [1.3]);
   ripple(t, [[1.3, ...create]]);
 
-  // Phase B: old timeline behind, 12 form fields pile up on top like overlapping tabs
+  // Phase B: old timeline as the back layer, the 12-step form deck overlapping its right edge
   const calIn = easeOut(p(t, 1.6, .55));
-  const CC = collapse(t, 4.75, .7, 640, 279);
-  set($("oldCal"), { x: CC.x, y: CC.y + 50 * (1 - calIn), s: CC.s * (.94 + .06 * calIn), o: calIn * CC.o, rx: 10 * (1 - calIn) });
+  const CC = collapse(t, 4.75, .7, 510, 262);
+  set($("oldCal"), { x: CC.x - 60 * (1 - calIn), y: CC.y, s: CC.s, o: calIn * CC.o });
   [2.55, 3.15, 3.75, 4.3].forEach((a, i) => set($("e" + (i + 1)), { s: Math.max(0, back(p(t, a, .4), 2)), o: clamp(p(t, a, .12)) }));
 
-  const newest = Math.floor((t - FIELD_T0) / FIELD_DT);
-  fieldEls.forEach((el, i) => {
+  const CD = collapse(t, 4.75, .7, DECK.cx, DECK.cy);
+  const arrive = (i) => easeOut(p(t, FIELD_T0 + i * FIELD_DT, .32));
+  let newest = -1;
+  stepEls.forEach((el, i) => {
     const a = FIELD_T0 + i * FIELD_DT;
-    const q = back(p(t, a, .35), 1.8);
-    const r = el.getBoundingClientRect();
-    const cx = parseFloat(el.style.left) + el.offsetWidth / 2, cy = parseFloat(el.style.top) + el.offsetHeight / 2;
-    const C = collapse(t, 4.75 - (i % 4) * .03, .7, cx, cy);
-    const rz = Number(el.dataset.rz);
-    set(el, { x: C.x, y: C.y + 26 * (1 - easeOut(p(t, a, .35))), s: C.s * (.7 + .3 * q), o: clamp(p(t, a, .12)) * C.o, rz: rz * (1.6 - .6 * easeOut(p(t, a, .35))) });
-    el.classList.toggle("focus", i === newest && t < 4.6);
+    if (t >= a) newest = i;
+    const e = arrive(i);
+    let depth = 0; for (let j = i + 1; j < stepEls.length; j++) depth += arrive(j);
+    const vis = depth < 3 ? 1 : Math.max(0, 1 - (depth - 3));
+    set(el, { x: CD.x, y: CD.y - 15 * depth + 70 * (1 - e), s: CD.s * (1 - .05 * depth) * (.97 + .03 * e), o: clamp(p(t, a, .1)) * vis * CD.o });
+    el.querySelector(".shade").style.opacity = Math.min(1, depth / 2.5);
     const v = el.querySelector(".v");
-    if (v) { const s = v.dataset.v; v.textContent = s.slice(0, Math.ceil(s.length * p(t, a + .05, .25))); }
+    if (v) { const s = v.dataset.v; v.textContent = s.slice(0, Math.ceil(s.length * p(t, a + .08, .2))); }
+    const sp = el.querySelector(".spin"); if (sp) sp.style.transform = `rotate(${t * 520}deg)`;
   });
-  const cr = back(p(t, FIELD_T0 + 11 * FIELD_DT + .05, .35), 1.8);
-  const CCr = collapse(t, 4.75, .7, 640, 270);
-  set($("creating"), { x: CCr.x, y: CCr.y, s: CCr.s * Math.max(.001, cr), o: clamp(p(t, FIELD_T0 + 11 * FIELD_DT + .05, .12)) * CCr.o });
-  $("creating").querySelector(".spin").style.transform = `rotate(${t * 520}deg)`;
+  stepEls.forEach((el, i) => el.classList.toggle("focus", i === newest && i < 11));
 
-  const n = Math.max(1, Math.min(12, newest + 1 + (t >= FIELD_T0 + 11 * FIELD_DT + .05 ? 1 : 0)));
+  const n = Math.max(1, newest + 1);
   $("cnt").textContent = n;
-  const cin = easeOut(p(t, 1.9, .35)), cout = p(t, 4.7, .3);
-  set($("counter"), { y: -10 * (1 - cin), o: cin * (1 - cout) });
+  [...segWrap.children].forEach((sg, i) => { sg.firstChild.style.width = arrive(i) * 100 + "%"; });
+  const cin = easeOut(p(t, 1.9, .35));
+  const CK = collapse(t, 4.75, .7, DECK.cx, 150);
+  set($("counter"), { x: CK.x, y: CK.y - 10 * (1 - cin), s: CK.s, o: cin * CK.o });
 
   const d = p(t, 5.3, .3);
   set($("dot"), { s: back(d, 2), o: clamp(d * 3) });
