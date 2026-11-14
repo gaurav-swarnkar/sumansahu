@@ -28,3 +28,19 @@ for name, src, box in [("piece_test", "q1.png", (300, 180, 960, 500)),
                        ("piece_date", "q2.png", (462, 280, 790, 590)),
                        ("piece_before", "q3.png", (290, 150, 960, 465))]:
     Image.open(os.path.join(A, src)).crop(box).save(os.path.join(A, name + ".png"))
+
+# Rescheduling banner: pieces cropped from the designed Recovery panels (3x exports)
+def T(v, k): return tuple(round(a * k) for a in v)
+panel = Image.open(os.path.join(A, "resched_panel.png"))
+cal = Image.open(os.path.join(A, "resched_cal_after.png"))
+kp, kc = 1380 / 500, 2760 / 900          # thumbnail coords -> 3x px
+for name, img, k, box in [
+    ("rs_head", panel, kp, (60, 15, 480, 80)),
+    ("rs_msg", panel, kp, (60, 85, 445, 150)),
+    ("rs_slots", panel, kp, (63, 245, 480, 582)),
+    ("rs_btn", panel, kp, (63, 662, 480, 718)),
+    ("rs_cal_head", cal, kc, (70, 0, 662, 84)),
+    ("rs_cal_rows", cal, kc, (70, 182, 662, 492)),
+    ("rs_toast", cal, kc, (349, 644, 611, 691)),
+]:
+    img.crop(T(box, k)).save(os.path.join(A, name + ".png"))

@@ -2,133 +2,70 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Planner banner</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,400,0..1,0&display=block" rel="stylesheet">
+<title>Reschedule banner</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body { width: 1300px; height: 360px; background: transparent; font-family: "Poppins", sans-serif; overflow: hidden; }
+  html, body { width: 1300px; height: 360px; background: transparent; font-family: "Outfit", sans-serif; overflow: hidden; }
   body.preview { background: linear-gradient(100deg, #3a0ca3 0%, #5b21d6 45%, #7c3aed 80%, #a855f7 100%); }
-  :root { --ink: #1c1336; --muted: #8a84a3; --violet: #7c3aed; --line: #f0edf6; }
-  .ms { font-family: "Material Symbols Rounded"; font-weight: normal; font-style: normal; line-height: 1; white-space: nowrap; font-feature-settings: "liga"; }
   .abs { position: absolute; }
-  .card { background: #fff; border-radius: 16px; box-shadow: 0 12px 26px rgba(30, 6, 80, .26), 0 2px 6px rgba(30, 6, 80, .12); }
-  .tag { font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: #fff; display: flex; align-items: center; gap: 6px; }
-  .tag i { width: 6px; height: 6px; border-radius: 50%; display: block; }
+  img { display: block; }
+  .shadow { box-shadow: 0 8px 18px rgba(30, 6, 80, .26), 0 2px 5px rgba(30, 6, 80, .12); }
 
-  /* ---------- Before: the old 12-step form ---------- */
-  #beforeTag { left: 628px; top: 22px; color: rgba(255,255,255,.7); }
-  #beforeTag i { background: rgba(255,255,255,.5); }
-  .old { width: 196px; height: 112px; padding: 12px 14px; border-radius: 14px; background: #fff; }
-  .old small { display: block; font-size: 8px; font-weight: 600; letter-spacing: .8px; color: #9aa1b5; }
-  .old b { display: block; font-size: 11.5px; font-weight: 600; color: #2a3350; margin: 3px 0 7px; }
-  .old .in { height: 26px; border: 1px solid #dfe3ea; border-radius: 6px; font-size: 10px; color: #2a3350; display: flex; align-items: center; justify-content: space-between; padding: 0 8px; }
-  .old .in .ms { font-size: 13px; color: #9aa1b5; }
-  .old .pg { height: 4px; border-radius: 2px; background: #e9edf4; margin-top: 10px; overflow: hidden; }
-  .old .pg i { display: block; height: 100%; background: #9db7e8; }
-  #stack { left: 628px; top: 44px; width: 230px; height: 140px; filter: saturate(.35); opacity: .78; }
+  /* Notsi panel, rebuilt from the designed panel's own pieces (Recovery 2) */
+  #panel { left: 626px; top: 10px; width: 220px; padding: 12px; background: #fff; border-radius: 18px; z-index: 3; }
+  #panel img { width: 196px; }
+  #msg { margin: 5px 0 7px; width: 180px; background: #f1ecfe; color: #1b2440; font-size: 9.2px; line-height: 1.38; padding: 6px 9px; border-radius: 10px; }
 
-  /* ---------- After: the new week plan ---------- */
-  #afterTag { left: 802px; top: 22px; }
-  #afterTag i { background: #a7f3d0; box-shadow: 0 0 0 3px rgba(167,243,208,.25); }
-  #app { left: 800px; top: 44px; width: 456px; height: 270px; border-radius: 18px; overflow: hidden; }
-  #nav { height: 40px; display: flex; align-items: center; padding: 0 14px; gap: 16px; border-bottom: 1px solid var(--line); }
-  #nav img { height: 12px; }
-  #nav .tabs { display: flex; gap: 4px; margin-left: 6px; }
-  #nav .tabs span { font-size: 10px; color: var(--muted); padding: 4px 9px; border-radius: 999px; }
-  #nav .tabs span.on { background: var(--ink); color: #fff; }
-  #nav .av { margin-left: auto; width: 20px; height: 20px; border-radius: 50%; background: linear-gradient(135deg, #fbcfe8, #c4b5fd); }
-  #hdr { display: flex; align-items: baseline; justify-content: space-between; padding: 10px 14px 0; }
-  #hdr b { font-size: 14px; color: var(--ink); font-weight: 600; }
-  #hdr span { font-size: 9px; color: var(--muted); margin-left: 6px; }
-  .seg { display: flex; background: #f4f2f8; border-radius: 999px; padding: 2px; }
-  .seg em { font-style: normal; font-size: 9px; color: var(--muted); padding: 3px 9px; border-radius: 999px; }
-  .seg em.on { background: #fff; color: var(--ink); font-weight: 600; box-shadow: 0 1px 3px rgba(30,6,80,.12); }
-  #grid { position: absolute; left: 14px; right: 14px; top: 78px; bottom: 10px; }
-  .dh { position: absolute; top: 0; font-size: 8.5px; color: var(--muted); }
-  .dh b { display: block; font-size: 13px; color: var(--ink); font-weight: 600; line-height: 1.15; }
-  .dh.today, .dh.today b { color: var(--violet); }
-  .todaycol { position: absolute; top: -4px; bottom: 0; border-radius: 10px; background: #f6f1ff; }
-  .hl { position: absolute; right: 0; height: 1px; background: var(--line); }
-  .tl { position: absolute; left: 0; font-size: 8px; color: var(--muted); }
-  .blk { position: absolute; border-radius: 7px; padding: 4px 6px; font-size: 9px; font-weight: 600; color: var(--ink); overflow: hidden; white-space: nowrap; }
-  .blk small { display: block; font-size: 7.5px; font-weight: 500; color: #7a7490; }
-  .blk.one small { display: none; }
-  .life { background: #f6f4f0; color: #5a5470; }
-  .s1 { background: #ece4ff; box-shadow: inset 3px 0 0 #8b5cf6; }
-  .s2 { background: #dcf5e8; box-shadow: inset 3px 0 0 #22a06b; }
-  .s3 { background: #fde6d8; box-shadow: inset 3px 0 0 #ea7a3f; }
-  .now { outline: 1.5px solid var(--violet); outline-offset: 1px; }
+  /* Rearranged week (Recovery 3), cropped to Mon–Fri */
+  #cal { left: 838px; top: 40px; width: 420px; background: #fff; border-radius: 18px; overflow: hidden; z-index: 1; }
+  #cal img { width: 420px; }
 
-  /* ---------- The bridge: one conversation ---------- */
-  #chat { left: 650px; top: 146px; width: 252px; padding: 12px; z-index: 3; border-radius: 16px; }
-  #chat .hd { display: flex; align-items: center; gap: 8px; margin-bottom: 9px; }
-  #chat .orb { width: 24px; height: 24px; border-radius: 50%; background: linear-gradient(135deg, #a78bfa, #6d28d9); display: flex; align-items: center; justify-content: center; }
-  #chat .orb img { width: 60%; }
-  #chat .hd b { font-size: 11.5px; color: var(--ink); }
-  #chat .hd span { font-size: 9px; color: var(--muted); margin-left: auto; }
-  .bub { font-size: 9.5px; line-height: 1.45; padding: 6px 9px; border-radius: 11px; margin-bottom: 6px; width: fit-content; max-width: 92%; }
-  .me { background: var(--violet); color: #fff; margin-left: auto; border-bottom-right-radius: 3px; }
-  .bot { background: #f3eeff; color: var(--ink); border-bottom-left-radius: 3px; }
-  .bot strong { font-weight: 600; }
-  .acts { display: flex; gap: 6px; margin-top: 2px; }
-  .acts span { flex: 1; text-align: center; font-size: 9.5px; font-weight: 600; padding: 5px 0; border-radius: 999px; }
-  .apply { background: var(--ink); color: #fff; }
-  .tweak { background: #f4f2f8; color: var(--ink); }
+  #toast { left: 986px; top: 300px; width: 178px; height: 30px; background: #1d1b2e; border-radius: 999px; overflow: hidden; z-index: 4; box-shadow: 0 8px 18px rgba(10, 6, 30, .35); }
+  #toast img { width: 186px; margin: -2px 0 0 -4px; }
+
+  #links { left: 0; top: 0; width: 1300px; height: 360px; z-index: 5; overflow: visible; pointer-events: none; }
 </style>
 </head>
 <body>
-  <!-- Before -->
-  <div id="beforeTag" class="abs tag"><i></i>Before · 12-step form</div>
-  <div id="stack" class="abs">
-    <div class="abs old card" style="left:28px;top:0"><small>STEP 02 OF 12</small><b>What test are you preparing for?</b><div class="in">SAT<span class="ms">expand_more</span></div><div class="pg"><i style="width:17%"></i></div></div>
-    <div class="abs old card" style="left:14px;top:12px"><small>STEP 03 OF 12</small><b>When is your test date?</b><div class="in">Oct 4, 2026<span class="ms">calendar_month</span></div><div class="pg"><i style="width:25%"></i></div></div>
-    <div class="abs old card" style="left:0;top:24px"><small>STEP 04 OF 12</small><b>Previous score</b><div class="in">1180<span class="ms">edit</span></div><div class="pg"><i style="width:33%"></i></div></div>
+  <div id="cal" class="abs shadow">
+    <img src="assets/rs_cal_head.png" alt="">
+    <img id="rows" src="assets/rs_cal_rows.png" alt="">
   </div>
 
-  <!-- After -->
-  <div id="afterTag" class="abs tag"><i></i>After · one conversation</div>
-  <div id="app" class="abs card">
-    <div id="nav"><img src="assets/logo.svg" alt=""><div class="tabs"><span>Home</span><span class="on">Plan</span><span>Learn</span><span>Progress</span></div><div class="av"></div></div>
-    <div id="hdr"><div><b>Your week</b><span>Sep 21 – 25</span></div><div class="seg"><em>Day</em><em class="on">Week</em><em>Month</em></div></div>
-    <div id="grid"></div>
+  <div id="panel" class="abs shadow">
+    <img src="assets/rs_head.png" alt="">
+    <div id="msg">Hey John 👋 Monday and Tuesday got busy, and 2 sessions slipped. Totally normal.</div>
+    <img id="slots" src="assets/rs_slots.png" alt="">
+    <img src="assets/rs_btn.png" alt="" style="margin-top:7px">
   </div>
 
-  <!-- One conversation -->
-  <div id="chat" class="abs card">
-    <div class="hd"><div class="orb"><img src="assets/notsi_icon.svg" alt=""></div><b>Notsi</b><span>Study agent</span></div>
-    <div class="bub me">SAT on Oct 4. I study best in the evenings, after soccer.</div>
-    <div class="bub bot"><strong>Planned 6 sessions</strong> around soccer and orchestra. 45 min a day, no overlaps.</div>
-    <div class="acts"><span class="apply">Apply plan</span><span class="tweak">Tweak</span></div>
-  </div>
+  <div id="toast" class="abs"><img src="assets/rs_toast.png" alt=""></div>
+
+  <svg id="links" class="abs">
+    <defs><marker id="dot" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="6" markerHeight="6"><circle cx="4" cy="4" r="3.2" fill="#a855f7"/></marker></defs>
+    <path id="l1" fill="none" stroke="#a855f7" stroke-width="1.6" stroke-dasharray="4 4" stroke-linecap="round" marker-end="url(#dot)"/>
+    <path id="l2" fill="none" stroke="#a855f7" stroke-width="1.6" stroke-dasharray="4 4" stroke-linecap="round" marker-end="url(#dot)"/>
+  </svg>
 
 <script>
-const h = (s) => { const d = document.createElement("div"); d.innerHTML = s.trim(); return d.firstChild; };
-const grid = document.getElementById("grid");
-const G = { x0: 30, colW: 78.4, top: 30, hourH: 25, start: 15 };   // 5 days; 3 PM – 9 PM
-const cx = (d) => G.x0 + d * G.colW, ry = (hr) => G.top + (hr - G.start) * G.hourH;
-grid.appendChild(h(`<div class="todaycol" style="left:${cx(3)}px;width:${G.colW - 2}px"></div>`));
-[["Mon", 21], ["Tue", 22], ["Wed", 23], ["Thu", 24], ["Fri", 25]].forEach(([d, n], i) =>
-  grid.appendChild(h(`<div class="dh ${i === 3 ? "today" : ""}" style="left:${cx(i) + 6}px">${d}<b>${n}</b></div>`)));
-for (let hr = 15; hr <= 21; hr += 1) {
-  grid.appendChild(h(`<div class="hl" style="top:${ry(hr)}px;left:${G.x0}px"></div>`));
-  if (hr % 2 === 1) grid.appendChild(h(`<div class="tl" style="top:${ry(hr) - 5}px">${hr - 12}pm</div>`));
+// Connect each suggested slot in the panel to the session it moved to on the calendar.
+// Anchor points are measured on the 3x source crops (rs_slots.png / rs_cal_rows.png).
+function pt(img, sx, sy, srcW) {
+  const r = img.getBoundingClientRect(), k = r.width / srcW;
+  return [r.left + sx * k, r.top + sy * k];
 }
-const blk = (d, s, e, cls, html) => grid.appendChild(h(`<div class="blk ${cls} ${(e - s) * G.hourH < 30 ? "one" : ""}" style="left:${cx(d) + 3}px;top:${ry(s) + 2}px;width:${G.colW - 6}px;height:${(e - s) * G.hourH - 3}px">${html}</div>`));
-// Real life first...
-blk(0, 16, 18, "life", "Soccer<small>Practice</small>");
-blk(2, 16, 18, "life", "Soccer<small>Practice</small>");
-blk(3, 18, 19.5, "life", "Orchestra<small>6 – 7:30</small>");
-blk(4, 18, 21, "life", "Rest evening<small>Protected</small>");
-blk(1, 15, 16.2, "life", "Tutoring");
-// ...then study fits around it
-blk(0, 18.5, 19.4, "s1", "Math");
-blk(1, 17, 18, "s2", "English<small>Reading</small>");
-blk(2, 19, 20, "s3", "Chemistry");
-blk(3, 16.2, 17.6, "s1 now", "Math<small>Up next · 30m</small>");
-blk(4, 16, 17, "s3", "Chem review");
-blk(3, 20, 20.8, "s2", "Flashcards");
-document.body.dataset.ready = "1";
+function link(id, a, b) {
+  const [sx, sy] = a, [tx, ty] = b;
+  const mx = (sx + tx) / 2, my = Math.min(sy, ty) - 26;
+  document.getElementById(id).setAttribute("d", `M${sx},${sy} Q${mx},${my} ${tx},${ty}`);
+}
+window.addEventListener("load", () => {
+  const slots = document.getElementById("slots"), rows = document.getElementById("rows");
+  link("l1", pt(slots, 615, 308, 1151), pt(rows, 1098, 325, 1815));   // Thu 4:45 PM -> Math, Moved
+  link("l2", pt(slots, 595, 629, 1151), pt(rows, 1466, 160, 1815));   // Fri 4:00 PM -> English, Moved
+  document.body.dataset.ready = "1";
+});
 </script>
 </body>
 </html>

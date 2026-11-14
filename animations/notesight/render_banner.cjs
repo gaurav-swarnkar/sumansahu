@@ -12,8 +12,8 @@ const fs = require("fs");
     await page.goto("file://" + path.join(__dirname, "banner.html"));
     await page.waitForLoadState("networkidle");
     await page.evaluate(async () => {
-      await document.fonts.load('24px "Material Symbols Rounded"', "auto_awesome");
-      await document.fonts.load('600 14px "Poppins"');
+      
+      await document.fonts.load('400 10px "Outfit"');
       await document.fonts.ready;
     });
     await page.waitForFunction(() => document.body.dataset.ready === "1");
