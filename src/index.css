@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap');
 @import 'tailwindcss';
 
 @theme {
@@ -18,6 +18,23 @@
   --color-lime: #f0ff64;
 
   --breakpoint-xs: 375px;
+
+  /* Notesight "Attempt 2 · Playful minimal" tokens (Learn journey prototype) */
+  --font-outfit: 'Outfit', ui-sans-serif, system-ui, sans-serif;
+  --color-nb-bg: #faf8f5;
+  --color-nb-surface: #ffffff;
+  --color-nb-ink: #1a1a2e;
+  --color-nb-ink-2: #5b5b6e;
+  --color-nb-muted: #9a9aab;
+  --color-nb-line: #eeebe6;
+  --color-nb-math: #6e56cf;
+  --color-nb-math-soft: #ede9ff;
+  --color-nb-eng: #1f9d6b;
+  --color-nb-eng-soft: #dff6ec;
+  --color-nb-sun: #f5b014;
+  --color-nb-sun-soft: #fff4d6;
+  --color-nb-coral: #e5662e;
+  --color-nb-coral-soft: #ffeadd;
 }
 
 html,

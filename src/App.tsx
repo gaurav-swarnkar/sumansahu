@@ -5,6 +5,7 @@ import Hero from "./components/Hero";
 import ProjectStories from "./components/ProjectStories";
 import ProjectDetail from "./components/ProjectDetail";
 import About from "./components/About";
+import LearnJourney from "./components/learn/LearnJourney";
 import IntroductionModal from "./components/IntroductionModal";
 import AdminLogin from "./admin/AdminLogin";
 import AdminDashboard from "./admin/AdminDashboard";
@@ -66,6 +67,14 @@ function AnimatedRoutes() {
           element={
             <motion.div initial="hidden" animate="visible" exit="exit" variants={pageVariants}>
               <ProjectDetail />
+            </motion.div>
+          }
+        />
+        <Route
+          path="/learn"
+          element={
+            <motion.div initial="hidden" animate="visible" exit="exit" variants={pageVariants}>
+              <LearnJourney />
             </motion.div>
           }
         />
