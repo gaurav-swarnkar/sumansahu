@@ -208,6 +208,7 @@ function SwotDiagram() {
 
 export default function ProjectDetailFullContent({ projectId, project, mobileNav, stickyTabs }: ProjectDetailFullContentProps) {
   const [showVideoModal, setShowVideoModal] = useState(false);
+  const [bannerLoaded, setBannerLoaded] = useState(false);
   const [showExperienceModal, setShowExperienceModal] = useState(false);
   const [activeTab, setActiveTab] = useState<"before" | "after">("before");
   const [selectedJourney, setSelectedJourney] = useState<string>("0");
@@ -484,6 +485,28 @@ export default function ProjectDetailFullContent({ projectId, project, mobileNav
         {/* Same centred column as the content below (outer padding + max-w-4xl) */}
         <div className="relative px-4 lg:px-7">
         {mobileNav && <div className="mx-auto max-w-4xl pt-4 lg:hidden">{mobileNav}</div>}
+        {project?.bannerImage ? (
+          /* Minimal banner: title on the left, product image on the right */
+          <div className="mx-auto grid w-full max-w-6xl items-center gap-4 pb-6 pt-4 sm:grid-cols-[minmax(0,0.7fr)_minmax(0,1.3fr)] sm:gap-6 lg:py-8">
+            <h1 className="max-w-[14ch] text-[clamp(26px,2.8vw,42px)] font-semibold leading-[1.1] text-white">
+              {project.title}
+            </h1>
+            {/* fixed aspect box so the layout never jumps; shimmer shows until the image loads */}
+            <div className="relative w-full" style={{ aspectRatio: "1222 / 695" }}>
+              {!bannerLoaded && <div className="skeleton-shimmer absolute inset-[4%] rounded-3xl" aria-hidden="true" />}
+              <img
+                src={project.bannerImage}
+                alt=""
+                aria-hidden="true"
+                onLoad={() => setBannerLoaded(true)}
+                ref={(el) => {
+                  if (el?.complete && el.naturalWidth > 0 && !bannerLoaded) setBannerLoaded(true);
+                }}
+                className={`absolute inset-0 h-full w-full object-contain transition-opacity duration-500 drop-shadow-[0_20px_40px_rgba(24,3,59,0.35)] ${bannerLoaded ? "opacity-100" : "opacity-0"}`}
+              />
+            </div>
+          </div>
+        ) : (
         <div className="mx-auto flex w-full max-w-4xl flex-col gap-5 pb-6 pt-6 sm:flex-row sm:items-center sm:gap-8 lg:pt-12 lg:pb-10">
           {/* Title block */}
           <div className="flex min-w-0 flex-1 flex-col gap-4">
@@ -524,6 +547,7 @@ export default function ProjectDetailFullContent({ projectId, project, mobileNav
             )
           )}
         </div>
+        )}
         </div>
 
       {/* Video Modal */}

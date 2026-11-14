@@ -1,5 +1,6 @@
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import studyPlannerVideo from "./imports/project_covers/study-planner-banner.mp4";
+import studyPlannerBanner from "./imports/project_covers/study-planner-banner-ui.webp";
 import {
   faLayerGroup,
   faGraduationCap,
@@ -46,6 +47,11 @@ export type Project = {
    * on the Projects page. Replaces the gradient and the mockup when set.
    */
   backgroundVideo?: string;
+  /**
+   * Optional transparent image for the project page banner. When set, the
+   * banner becomes minimal: just the title on the left and this image on the right.
+   */
+  bannerImage?: string;
   contents: ProjectContent[];
   experienceJourneys?: {
     before: ExperienceJourney[];
@@ -262,6 +268,7 @@ export const projects: Project[] = [
     panel: "bg-brand",
     visual: "tablets",
     backgroundVideo: studyPlannerVideo,
+    bannerImage: studyPlannerBanner,
     contents: [
       { id: "project-summary", label: "Project Summary" },
       { id: "business-problem", label: "Business Usecase" },
