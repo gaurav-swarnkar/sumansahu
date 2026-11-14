@@ -1,4 +1,5 @@
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+import studyPlannerVideo from "./imports/project_covers/study-planner-banner.mp4";
 import {
   faLayerGroup,
   faGraduationCap,
@@ -40,6 +41,11 @@ export type Project = {
    * here; when empty, the built-in mockup (`visual`) is shown instead.
    */
   cover?: string;
+  /**
+   * Optional looping video used as the full background of the project's panel
+   * on the Projects page. Replaces the gradient and the mockup when set.
+   */
+  backgroundVideo?: string;
   contents: ProjectContent[];
   experienceJourneys?: {
     before: ExperienceJourney[];
@@ -255,6 +261,7 @@ export const projects: Project[] = [
     pills: ["35%+ B2C Student Retention", "50%+ B2B Student Acquisition"],
     panel: "bg-brand",
     visual: "tablets",
+    backgroundVideo: studyPlannerVideo,
     contents: [
       { id: "project-summary", label: "Project Summary" },
       { id: "business-problem", label: "Business Usecase" },

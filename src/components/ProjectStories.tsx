@@ -227,6 +227,26 @@ export default function ProjectStories({
         >
           {/* soft glow behind the graphic */}
           <div className="pointer-events-none absolute -right-16 bottom-24 size-64 rounded-full bg-white/10 blur-3xl" />
+          {project.backgroundVideo && (
+            <>
+              {/* fill matches the video's own navy, so the whole frame fits on phones */}
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#03081a] to-[#1c2e65]" />
+              <video
+                key={project.id}
+                src={project.backgroundVideo}
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="auto"
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-x-0 bottom-16 w-full object-contain"
+                style={{ maskImage: "linear-gradient(to bottom, transparent 0%, black 25%)", WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 25%)" }}
+              />
+              {/* keeps the title readable over the video */}
+              <div className="pointer-events-none absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-black/45 to-transparent" />
+            </>
+          )}
 
           <AnimatePresence mode="wait">
             <motion.div
@@ -256,7 +276,9 @@ export default function ProjectStories({
               </div>
 
               {/* graphics fill the space towards the bottom */}
-              {project.cover ? (
+              {project.backgroundVideo ? (
+                <div className="min-h-[50%] flex-1" aria-hidden="true" />
+              ) : project.cover ? (
                 <div className="my-3 flex min-h-[50%] flex-1 items-center justify-center">
                   <img src={project.cover} alt={project.title} className="max-h-full w-full rounded-2xl object-contain" />
                 </div>
@@ -297,6 +319,23 @@ export default function ProjectStories({
 
               {/* soft glow behind the graphic */}
               <div className="pointer-events-none absolute left-1/2 bottom-[10%] size-[560px] -translate-x-1/2 rounded-full bg-white/10 blur-[120px]" />
+              {project.backgroundVideo && (
+            <>
+              <video
+                key={project.id}
+                src={project.backgroundVideo}
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="auto"
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-0 h-full w-full object-cover object-center"
+              />
+              {/* keeps the title readable over the video */}
+              <div className="pointer-events-none absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-black/45 to-transparent" />
+            </>
+          )}
 
               <div className="relative z-10 flex h-full flex-col">
               {/* copy */}
@@ -333,7 +372,7 @@ export default function ProjectStories({
 
               {/* project graphic fills the space below the copy */}
               <div className="flex min-h-0 flex-1 px-14 pb-10 pt-8 xl:px-16">
-                {project.cover ? (
+                {project.backgroundVideo ? null : project.cover ? (
                   <img src={project.cover} alt={project.title} className="h-full w-full rounded-2xl object-contain" />
                 ) : (
                   <FitGraphic maxScale={2.2} className="h-full">
