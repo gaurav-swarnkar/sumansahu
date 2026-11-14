@@ -5,115 +5,141 @@
 <title>NoteSight cover</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,400,0..1,0&display=block" rel="stylesheet">
 <style>
-  :root { --bg: #1f53df; --tint: #d2ddf9; --ink: #1b2440; --violet: #8b5cf6; }
+  :root { --ink: #1b2440; --old: #2a3350; --moon: #fff1d2; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body { width: 1280px; height: 1080px; overflow: hidden; background: var(--bg); font-family: "Outfit", sans-serif; }
+  html, body { width: 1280px; height: 1080px; overflow: hidden; background: #050b22; font-family: "Outfit", sans-serif; }
+  .ms { font-family: "Material Symbols Rounded"; font-weight: normal; font-style: normal; line-height: 1; letter-spacing: normal;
+    text-transform: none; white-space: nowrap; font-feature-settings: "liga"; -webkit-font-smoothing: antialiased; }
 
-  /* ---------- Background (whole canvas, continuous across both parts) ---------- */
+  /* ---------- Night sky (loops every 12s) ---------- */
   #bg { position: absolute; inset: 0; overflow: hidden;
-    background: radial-gradient(120% 80% at 50% 100%, #2c66f2 0%, #1f53df 45%, #1a45c4 100%); }
-  .blob { position: absolute; border-radius: 50%; filter: blur(90px); }
-  #blobA { width: 620px; height: 620px; background: rgba(139, 92, 246, .38); }
-  #blobB { width: 560px; height: 560px; background: rgba(56, 189, 248, .26); }
-  #blobC { width: 480px; height: 480px; background: rgba(255, 255, 255, .10); }
-  #grid { position: absolute; left: -40px; top: -40px; width: 1360px; height: 1160px;
-    background-image: radial-gradient(rgba(255,255,255,.22) 1.2px, transparent 1.4px); background-size: 32px 32px;
-    -webkit-mask-image: radial-gradient(90% 70% at 50% 60%, #000 0%, rgba(0,0,0,.35) 55%, transparent 85%); }
-  .ring { position: absolute; border-radius: 50%; border: 1px solid rgba(255,255,255,.09); left: 50%; }
-  #ring1 { width: 1100px; height: 1100px; margin-left: -550px; top: 470px; }
-  #ring2 { width: 1500px; height: 1500px; margin-left: -750px; top: 300px; border-color: rgba(255,255,255,.06); }
-  #ring3 { width: 1900px; height: 1900px; margin-left: -950px; top: 120px; border-color: rgba(255,255,255,.04); }
-  #grain { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,25,90,.18), rgba(10,25,90,0) 40%); }
+    background: linear-gradient(180deg, #030817 0%, #061030 38%, #0a1a48 72%, #10245f 100%); }
+  .glow { position: absolute; border-radius: 50%; }
+  #glowTR { width: 900px; height: 900px; left: 830px; top: -470px; background: radial-gradient(closest-side, rgba(255,238,205,.15), rgba(255,238,205,.045) 45%, transparent); }
+  #glowBL { width: 760px; height: 760px; left: -420px; top: 700px; background: radial-gradient(closest-side, rgba(214,224,255,.13), rgba(214,224,255,.04) 45%, transparent); }
+  .beam { position: absolute; height: 120px; filter: blur(18px); transform-origin: 0 50%; border-radius: 60px; }
+  .beam.tr { left: 1290px; top: -60px; width: 1300px; background: linear-gradient(90deg, rgba(255,240,210,.075), rgba(255,240,210,.025) 45%, transparent 80%); }
+  .beam.bl { left: -10px; top: 1090px; width: 1000px; background: linear-gradient(90deg, rgba(220,228,255,.06), rgba(220,228,255,.02) 45%, transparent 80%); }
 
-  /* Top 50% stays background only. Everything animates inside the bottom half (540px). */
-  #stage { position: absolute; left: 0; top: 540px; width: 1280px; height: 540px; perspective: 1700px; }
-  .abs { position: absolute; will-change: transform, opacity; transform-style: preserve-3d; }
-  .card { background: #fff; border-radius: 22px; overflow: hidden;
-    box-shadow: 0 0 0 8px rgba(255,255,255,.14), 0 0 0 9px rgba(255,255,255,.22), 0 34px 60px rgba(6, 18, 70, .38); }
+  /* Top 50% is sky only; everything animates in the bottom half (540px). */
+  #stage { position: absolute; left: 0; top: 540px; width: 1280px; height: 540px; perspective: 1800px; }
+  .abs { position: absolute; will-change: transform, opacity; }
   img { display: block; }
+  .tab { background: #fff; border-radius: 18px; overflow: hidden;
+    box-shadow: 0 0 0 1px rgba(255,255,255,.35), 0 0 0 7px rgba(255,255,255,.07), 0 26px 50px rgba(0, 4, 24, .55); }
 
-  /* ---------- Scene 1: old UI ---------- */
-  #logoCard { left: 385px; top: 128px; width: 236px; height: 94px; border-radius: 26px; background: #fff;
-    display: flex; align-items: center; justify-content: center; z-index: 3;
-    box-shadow: 0 0 0 7px rgba(255,255,255,.16), 0 22px 40px rgba(6,18,70,.32); }
+  /* ---------- Scene 1: old way ---------- */
+  #logoCard { left: 388px; top: 150px; width: 236px; height: 92px; border-radius: 24px; background: #fff; z-index: 3;
+    display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 7px rgba(255,255,255,.08), 0 22px 44px rgba(0,4,24,.5); }
   #logoCard img { width: 176px; }
-  #emptyPanel { left: 545px; top: 62px; width: 350px; height: 410px; border-radius: 46px; background: var(--tint);
-    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px; z-index: 2;
-    box-shadow: 0 0 0 9px rgba(255,255,255,.12), 0 34px 60px rgba(6,18,70,.3); }
-  #emptyPanel .icon { width: 116px; height: 116px; border: 2px dashed #a9bdf3; border-radius: 22px; display: flex; align-items: center; justify-content: center; }
-  #emptyPanel .icon img { width: 70px; }
-  #emptyPanel h3 { font-weight: 500; font-size: 26px; color: #2a3350; }
+  #emptyPanel { left: 545px; top: 70px; width: 340px; height: 400px; border-radius: 44px; background: #d2ddf9; z-index: 2;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px;
+    box-shadow: 0 0 0 8px rgba(255,255,255,.07), 0 30px 60px rgba(0,4,24,.5); }
+  #emptyPanel .icon { width: 112px; height: 112px; border: 2px dashed #a9bdf3; border-radius: 22px; display: flex; align-items: center; justify-content: center; }
+  #emptyPanel .icon img { width: 68px; }
+  #emptyPanel h3 { font-weight: 500; font-size: 25px; color: var(--old); }
   #createBtn { background: #2f80ed; color: #fff; font-size: 16px; font-weight: 500; padding: 14px 26px; border-radius: 999px; white-space: nowrap; }
-  #ripple { width: 20px; height: 20px; border-radius: 50%; border: 3px solid #fff; z-index: 40; }
 
-  #formWrap { left: 80px; top: 76px; width: 460px; height: 288px; z-index: 2; }
-  #formWrap .page { position: absolute; inset: 0; border-radius: 22px; background: rgba(255,255,255,.16); border: 1px solid rgba(255,255,255,.3); }
-  #formWrap .card { position: absolute; inset: 0; }
-  #formWrap .card img { width: 460px; height: 288px; }
-  #fields { left: 80px; top: 404px; width: 460px; z-index: 2; color: #fff; }
-  #fields .row { display: flex; justify-content: space-between; font-size: 17px; font-weight: 500; margin-bottom: 12px; }
-  #fields .row b { font-weight: 700; }
-  #fields .segs { display: flex; gap: 6px; }
-  #fields .seg { flex: 1; height: 9px; border-radius: 5px; background: rgba(255,255,255,.22); overflow: hidden; }
-  #fields .seg i { display: block; height: 100%; width: 0; background: #fff; }
-  #calWrap { left: 575px; top: 90px; width: 630px; height: 296px; z-index: 2; }
-  #calWrap .card { position: absolute; inset: 0; border-radius: 20px; }
-  #calWrap .card > img { width: 630px; height: 296px; }
+  #oldCal { left: 250px; top: 96px; width: 780px; height: 366px; z-index: 1; }
+  #oldCal > img { width: 780px; height: 366px; }
   .entry { position: absolute; transform-origin: left center; }
-  #dot { width: 18px; height: 18px; border-radius: 50%; background: #fff; left: 631px; top: 261px; z-index: 30; box-shadow: 0 0 30px 10px rgba(255,255,255,.35); }
+
+  .fld { z-index: 5; padding: 12px 14px 14px; border-radius: 14px; }
+  .fld label { display: block; font-size: 11px; font-weight: 600; letter-spacing: .6px; color: #5b6478; text-transform: uppercase; margin-bottom: 7px; }
+  .fld .in { height: 36px; border: 1px solid #dfe3ea; border-radius: 8px; display: flex; align-items: center; justify-content: space-between; padding: 0 12px; font-size: 15px; color: var(--old); }
+  .fld.focus .in { border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59,130,246,.18); }
+  .fld .in .ms { font-size: 20px; color: #8a92a6; }
+  .fld .bar { height: 6px; border-radius: 3px; background: #e7ebf3; margin: 14px 2px 4px; position: relative; }
+  .fld .bar i { position: absolute; left: 0; top: 0; bottom: 0; width: 62%; background: #3b82f6; border-radius: 3px; }
+  .fld .bar b { position: absolute; left: 62%; top: 50%; width: 16px; height: 16px; margin: -8px 0 0 -8px; border-radius: 50%; background: #fff; border: 3px solid #3b82f6; }
+  .fld .tg { display: flex; gap: 8px; }
+  .fld .tg span { flex: 1; height: 34px; border: 1px solid #dfe3ea; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; color: #8a92a6; }
+  .fld .tg span.on { background: #2f80ed; border-color: #2f80ed; color: #fff; }
+  .piece { z-index: 5; padding: 8px; border-radius: 14px; }
+  .piece img { border-radius: 8px; }
+  #creating { z-index: 6; padding: 16px 22px; border-radius: 16px; display: flex; gap: 12px; align-items: center; font-size: 17px; font-weight: 500; color: var(--old); }
+  #creating .spin { width: 22px; height: 22px; border-radius: 50%; border: 3px solid #dbe4fb; border-top-color: #2f80ed; }
+  #counter { z-index: 20; left: 540px; top: 4px; width: 200px; height: 38px; border-radius: 999px; background: rgba(255,255,255,.12);
+    border: 1px solid rgba(255,255,255,.28); color: #fff; font-size: 15px; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 6px; backdrop-filter: blur(6px); }
+  #counter b { font-weight: 700; color: var(--moon); }
+
+  #dot { width: 18px; height: 18px; border-radius: 50%; background: var(--moon); left: 631px; top: 261px; z-index: 30; box-shadow: 0 0 34px 12px rgba(255,236,200,.35); }
+  #ripple { width: 20px; height: 20px; border-radius: 50%; border: 3px solid #fff; z-index: 40; left: 0; top: 0; }
+  #cursor { width: 32px; height: 32px; z-index: 50; transform-origin: 4px 3px; left: 0; top: 0; }
 
   /* ---------- Scene 2: Notsi ---------- */
   .orb { border-radius: 50%; background: linear-gradient(135deg, #8b5cf6 0%, #3b6ef5 100%); display: flex; align-items: center; justify-content: center; }
   .orb img { width: 56%; }
-  #heroOrb { left: 575px; top: 70px; width: 130px; height: 130px; z-index: 6; box-shadow: 0 0 0 10px rgba(255,255,255,.12), 0 0 40px 6px rgba(167,139,250,.6); }
-  #hello { left: 0; width: 1280px; top: 232px; text-align: center; color: #fff; z-index: 5; }
+  #heroOrb { left: 575px; top: 66px; width: 130px; height: 130px; z-index: 12; box-shadow: 0 0 0 10px rgba(255,255,255,.08), 0 0 44px 8px rgba(167,139,250,.55); }
+  #hello { left: 0; width: 1280px; top: 226px; text-align: center; color: #fff; z-index: 11; }
   #hello h2 { font-size: 56px; font-weight: 700; letter-spacing: -.5px; }
-  #hello p { font-size: 20px; opacity: .85; margin-top: 4px; }
-  #startBtn { left: 500px; top: 384px; width: 280px; height: 62px; border-radius: 999px; background: #fff; color: #2b5ce6;
-    font-size: 19px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; z-index: 5;
-    box-shadow: 0 0 0 8px rgba(255,255,255,.16), 0 16px 30px rgba(6,18,70,.32); }
+  #hello p { font-size: 20px; color: rgba(255,255,255,.75); margin-top: 4px; }
+  #startBtn { left: 500px; top: 380px; width: 280px; height: 62px; border-radius: 999px; background: #fff; color: #3b5ce6; z-index: 11;
+    font-size: 19px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 0 0 8px rgba(255,255,255,.08), 0 16px 30px rgba(0,4,24,.5); }
 
-  #chat { left: 70px; top: 40px; width: 440px; height: 470px; z-index: 4; display: flex; flex-direction: column; }
-  #chatHead { display: flex; align-items: center; gap: 12px; padding: 18px 22px; border-bottom: 1px solid #eef0f6; }
-  #chatHead .orb { width: 44px; height: 44px; }
-  #chatHead b { display: block; font-size: 19px; color: var(--ink); }
-  #chatHead span { font-size: 13px; color: #7a8199; }
+  #week { left: 330px; top: 52px; width: 880px; height: 452px; z-index: 2; border-radius: 22px; }
+  #weekHead { position: absolute; left: 0; right: 0; top: 0; height: 74px; }
+  .dayH { position: absolute; top: 14px; height: 56px; padding: 0 8px; }
+  .dayH small { font-size: 12px; color: #8a8f9e; font-weight: 500; }
+  .dayH div { font-size: 22px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .dayH .pb { position: absolute; left: 8px; right: 8px; bottom: 2px; height: 4px; border-radius: 2px; background: #efece6; overflow: hidden; }
+  .dayH .pb i { display: block; height: 100%; width: 0; border-radius: 2px; background: #3b6ef5; }
+  .dayH.today small, .dayH.today div { color: #3b6ef5; }
+  #todayCol { position: absolute; top: 8px; bottom: 10px; border-radius: 16px; background: #eff4ff; }
+  .hr { position: absolute; left: 56px; right: 14px; height: 1px; background: #efede8; }
+  .hl { position: absolute; left: 12px; font-size: 11px; color: #9a9fae; width: 40px; }
+  .blk { position: absolute; border-radius: 12px; padding: 7px 9px; font-size: 13px; font-weight: 600; color: var(--ink); overflow: hidden; }
+  .blk .t { display: flex; gap: 5px; align-items: center; white-space: nowrap; }
+  .blk .t .ms { font-size: 15px; }
+  .blk.short small, .blk.notag .tag { display: none; }
+  .blk .t { overflow: hidden; text-overflow: ellipsis; }
+  .blk .spark { display: none; margin-left: auto; font-size: 13px; color: #8b5cf6; }
+  .blk.notag .spark { display: inline; }
+  .blk small { display: block; font-size: 11px; font-weight: 500; color: #7c8294; margin-top: 2px; white-space: nowrap; }
+  .life { background: #f7f5f0; border: 1px solid #ece8df; color: #4a5064; }
+  .life .ms { color: #7c8294; }
+  .fl { z-index: 9; box-shadow: 0 10px 24px rgba(0,4,24,.35); }
+  .fl.dash { outline: 2px dashed currentColor; outline-offset: -2px; }
+  .c-math { background: #eee9fd; } .c-math .ms { color: #7c5cf0; }
+  .c-eng { background: #e2f5ea; } .c-eng .ms { color: #1f9d63; }
+  .c-chem { background: #fde6d8; } .c-chem .ms { color: #e2703a; }
+  .c-flash { background: #f1e9fd; } .c-flash .ms { color: #a05cf0; }
+  .c-mock { background: #efe6fd; } .c-mock .ms { color: #8b5cf6; }
+  .c-check { background: #f1e9fd; } .c-check .ms { color: #a05cf0; }
+  .tag { position: absolute; right: 6px; bottom: 6px; font-size: 10px; font-weight: 600; color: #8b5cf6; background: rgba(255,255,255,.75); padding: 2px 6px; border-radius: 999px; display: flex; gap: 2px; align-items: center; }
+  .tag .ms { font-size: 11px; color: #8b5cf6; }
+  #trails { left: 0; top: 0; width: 1280px; height: 540px; z-index: 8; overflow: visible; }
+
+  #chat { left: 70px; top: 96px; width: 360px; height: 410px; z-index: 6; border-radius: 22px; display: flex; flex-direction: column; }
+  #chatHead { display: flex; align-items: center; gap: 12px; padding: 16px 18px; border-bottom: 1px solid #eef0f6; }
+  #chatHead .orb { width: 42px; height: 42px; }
+  #chatHead b { display: block; font-size: 18px; color: var(--ink); }
+  #chatHead span { font-size: 12px; color: #7a8199; }
   #msgs { position: relative; flex: 1; overflow: hidden; }
-  #msgsInner { position: absolute; left: 0; right: 0; bottom: 0; padding: 0 20px 14px; display: flex; flex-direction: column; gap: 12px; }
-  .msg { max-width: 86%; font-size: 17px; line-height: 1.35; padding: 11px 16px; border-radius: 18px; transform-origin: left bottom; }
-  .msg.bot { background: #f1ecfe; color: var(--ink); align-self: flex-start; border-bottom-left-radius: 6px; }
-  .msg.me { background: #3b6ef5; color: #fff; align-self: flex-end; border-bottom-right-radius: 6px; transform-origin: right bottom; }
-  .msg.typing { display: flex; gap: 5px; padding: 15px 18px; }
-  .msg.typing i { width: 8px; height: 8px; border-radius: 50%; background: #8b5cf6; display: block; }
-  .msg.build { background: linear-gradient(90deg, #f1ecfe, #e6eeff); font-weight: 500; display: flex; gap: 8px; align-items: center; }
-  .msg.build em { font-style: normal; color: #8b5cf6; }
-  #chatInput { margin: 0 20px 18px; height: 50px; border-radius: 16px; border: 1px solid #e6e8f0; display: flex; align-items: center; padding: 0 9px 0 16px; font-size: 15px; color: #9aa1b5; justify-content: space-between; }
-  #chatInput .send { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg,#8b5cf6,#3b6ef5); }
-
-  #plan { left: 570px; top: 40px; width: 650px; height: 470px; z-index: 4; background: #f7f6f3; }
-  #plan .head { position: absolute; left: 0; right: 0; top: 0; height: 62px; padding: 0 22px; display: flex; align-items: center; justify-content: space-between; background: #fff; border-bottom: 1px solid #eef0f6; z-index: 2; }
-  #plan .head b { font-size: 19px; color: var(--ink); }
-  #plan .head span { font-size: 13px; color: #8b5cf6; font-weight: 600; background: #f1ecfe; padding: 6px 12px; border-radius: 999px; }
-  #planImgWrap { position: absolute; left: 0; right: 0; top: 62px; bottom: 0; overflow: hidden; }
-  #planImgWrap img { width: 650px; position: absolute; left: 0; top: -82px; }
-  #scan { left: 0; right: 0; height: 70px; background: linear-gradient(180deg, rgba(139,92,246,0), rgba(139,92,246,.25), rgba(139,92,246,0)); z-index: 3; }
-  #badge { left: 930px; top: 14px; z-index: 8; background: #12b76a; color: #fff; font-size: 15px; font-weight: 600; padding: 9px 16px; border-radius: 999px; box-shadow: 0 0 0 6px rgba(18,183,106,.22), 0 10px 22px rgba(6,18,70,.3); }
-  .fly { z-index: 9; left: 0; top: 0; background: #fff; color: #3b6ef5; font-size: 14px; font-weight: 600; padding: 7px 13px; border-radius: 999px; white-space: nowrap;
-    box-shadow: 0 0 0 5px rgba(255,255,255,.2), 0 10px 20px rgba(6,18,70,.3); }
-
-  #cursor { width: 32px; height: 32px; z-index: 50; transform-origin: 4px 3px; left: 0; top: 0; }
+  #msgsInner { position: absolute; left: 0; right: 0; bottom: 0; padding: 0 16px 16px; display: flex; flex-direction: column; gap: 10px; }
+  .msg { max-width: 88%; font-size: 15px; line-height: 1.35; padding: 10px 14px; border-radius: 16px; transform-origin: left bottom; }
+  .msg.bot { background: #f1ecfe; color: var(--ink); align-self: flex-start; border-bottom-left-radius: 5px; }
+  .msg.me { background: #3b6ef5; color: #fff; align-self: flex-end; border-bottom-right-radius: 5px; transform-origin: right bottom; }
+  .msg.typing { display: flex; gap: 5px; padding: 14px 16px; }
+  .msg.typing i { width: 7px; height: 7px; border-radius: 50%; background: #8b5cf6; display: block; }
+  .msg.done { background: linear-gradient(90deg, #ede5ff, #e3ecff); font-weight: 600; display: flex; gap: 6px; align-items: center; }
+  .msg.done .ms { font-size: 18px; color: #8b5cf6; }
+  #badge { left: 1000px; top: 22px; z-index: 10; background: #12b76a; color: #fff; font-size: 14px; font-weight: 600; padding: 8px 14px; border-radius: 999px;
+    display: flex; gap: 5px; align-items: center; box-shadow: 0 0 0 6px rgba(18,183,106,.18), 0 10px 22px rgba(0,4,24,.45); }
+  #badge .ms { font-size: 17px; }
 </style>
 </head>
 <body>
 <div id="bg">
-  <div id="blobA" class="blob"></div><div id="blobB" class="blob"></div><div id="blobC" class="blob"></div>
-  <div id="grid"></div>
-  <div id="ring1" class="ring"></div><div id="ring2" class="ring"></div><div id="ring3" class="ring"></div>
-  <div id="grain"></div>
+  <div id="glowTR" class="glow"></div><div id="glowBL" class="glow"></div>
+  <div class="beam tr" id="b1"></div><div class="beam tr" id="b2"></div><div class="beam tr" id="b3"></div>
+  <div class="beam bl" id="b4"></div><div class="beam bl" id="b5"></div>
 </div>
+
 <div id="stage">
-  <!-- Scene 1 -->
+  <!-- ======== Scene 1 ======== -->
   <div id="s1">
     <div id="logoCard" class="abs"><img src="assets/logo.svg" alt=""></div>
     <div id="emptyPanel" class="abs">
@@ -121,56 +147,38 @@
       <h3>No Study Plans Yet</h3>
       <div id="createBtn">+&nbsp; Create Your First Study Plan</div>
     </div>
-
-    <div id="formWrap" class="abs">
-      <div class="page" id="pg2"></div>
-      <div class="page" id="pg1"></div>
-      <div class="card" id="q1"><img src="assets/q1.png" alt=""></div>
-      <div class="card" id="q2"><img src="assets/q2.png" alt=""></div>
-      <div class="card" id="q3"><img src="assets/q3.png" alt=""></div>
+    <div id="oldCal" class="abs tab">
+      <img src="assets/calendar_clean.png" alt="">
+      <img class="entry" id="e1" src="assets/entry_1.png" alt="">
+      <img class="entry" id="e2" src="assets/entry_2.png" alt="">
+      <img class="entry" id="e3" src="assets/entry_3.png" alt="">
+      <img class="entry" id="e4" src="assets/entry_4.png" alt="">
     </div>
-    <div id="fields" class="abs">
-      <div class="row"><span id="fieldName">Exam Name</span><span><b id="fieldNum">1</b> / 12 fields</span></div>
-      <div class="segs" id="segs"></div>
-    </div>
-    <div id="calWrap" class="abs">
-      <div class="card">
-        <img src="assets/calendar_clean.png" alt="">
-        <img class="entry" id="e1" src="assets/entry_1.png" alt="">
-        <img class="entry" id="e2" src="assets/entry_2.png" alt="">
-        <img class="entry" id="e3" src="assets/entry_3.png" alt="">
-        <img class="entry" id="e4" src="assets/entry_4.png" alt="">
-      </div>
-    </div>
+    <div id="fieldsLayer"></div>
+    <div id="creating" class="abs tab"><div class="spin"></div>Creating your plan&hellip;</div>
+    <div id="counter" class="abs">Field <b id="cnt">1</b> of 12</div>
   </div>
 
-  <!-- Scene 2 -->
+  <!-- ======== Scene 2 ======== -->
   <div id="s2">
-    <div id="heroOrb" class="abs orb"><img src="assets/notsi_icon.svg" alt=""></div>
-    <div id="hello" class="abs"><h2>Hi, I'm Notsi</h2><p>Your AI study buddy at Notesight</p></div>
-    <div id="startBtn" class="abs">Let's create a study plan <span>&rarr;</span></div>
-
-    <div id="chat" class="abs card">
+    <div id="week" class="abs tab"></div>
+    <svg id="trails" class="abs"></svg>
+    <div id="chat" class="abs tab">
       <div id="chatHead"><div class="orb"><img src="assets/notsi_icon.svg" alt=""></div><div><b>Notsi</b><span>Your study agent</span></div></div>
       <div id="msgs"><div id="msgsInner">
         <div class="msg bot" id="m1">Hi John! When is your exam?</div>
         <div class="msg me" id="m2">SAT on Saturday, Oct 4</div>
-        <div class="msg bot" id="m3">Got it. When do you like to study?</div>
-        <div class="msg me" id="m4">Evenings after soccer, 45 min a day</div>
+        <div class="msg bot" id="m3">Nice. When do you like to study?</div>
+        <div class="msg me" id="m4">Evenings after soccer, 45 min</div>
         <div class="msg bot typing" id="m5"><i></i><i></i><i></i></div>
-        <div class="msg bot build" id="m6"><em>&#10022;</em> Building your smart study plan&hellip;</div>
+        <div class="msg bot done" id="m6"><span class="ms">auto_awesome</span>Done! Here's your week.</div>
       </div></div>
-      <div id="chatInput"><span id="typed">Ask Notsi or type a change&hellip;</span><div class="send"></div></div>
     </div>
-
-    <div id="plan" class="abs card">
-      <div class="head"><b>Your smart study plan</b><span>&#10022; Made by Notsi</span></div>
-      <div id="planImgWrap"><img src="assets/new_day.png" alt=""></div>
-      <div id="scan" class="abs"></div>
-    </div>
-    <div id="fly1" class="abs fly">SAT &middot; Oct 4</div>
-    <div id="fly2" class="abs fly">Evenings &middot; 45 min</div>
-    <div id="badge" class="abs">&#10003; Plan ready</div>
+    <div id="flyLayer"></div>
+    <div id="heroOrb" class="abs orb"><img src="assets/notsi_icon.svg" alt=""></div>
+    <div id="hello" class="abs"><h2>Hi, I'm Notsi</h2><p>Your AI study buddy at Notesight</p></div>
+    <div id="startBtn" class="abs">Let's create a study plan <span>&rarr;</span></div>
+    <div id="badge" class="abs"><span class="ms">check_circle</span>Week planned by Notsi</div>
   </div>
 
   <div id="ripple" class="abs"></div>
@@ -187,30 +195,31 @@ const easeOut = (x) => 1 - Math.pow(1 - x, 3);
 const easeIn = (x) => x * x * x;
 const easeInOut = (x) => (x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
 const back = (x, s = 1.6) => { x = clamp(x) - 1; return x * x * ((s + 1) * x + s) + 1; };
+const h = (html) => { const d = document.createElement("div"); d.innerHTML = html.trim(); return d.firstChild; };
 
-function set(el, { x = 0, y = 0, s = 1, o = 1, rx = 0, ry = 0, rz = 0, blur = 0 } = {}) {
+function set(el, { x = 0, y = 0, s = 1, o = 1, rx = 0, ry = 0, rz = 0 } = {}) {
   el.style.transform = `translate3d(${x}px, ${y}px, 0) rotateX(${rx}deg) rotateY(${ry}deg) rotate(${rz}deg) scale(${s})`;
   el.style.opacity = o;
-  el.style.filter = blur ? `blur(${blur}px)` : "none";
   el.style.visibility = o <= 0.001 ? "hidden" : "visible";
 }
+const STAGE_TOP = 540;
+function at(el, fx = .5, fy = .5) { const r = el.getBoundingClientRect(); return [r.left + r.width * fx, r.top - STAGE_TOP + r.height * fy]; }
 
-// Live centre of an element in stage coordinates (fx, fy = fraction inside its box).
-const stageTop = 540;
-function at(el, fx = .5, fy = .5) {
-  const r = el.getBoundingClientRect();
-  return [r.left + r.width * fx, r.top - stageTop + r.height * fy];
-}
-
-// Background: driven by global time so it flows unbroken across the cut between parts.
-function background(T) {
-  const mv = (id, x, y) => { $(id).style.transform = `translate3d(${x}px, ${y}px, 0)`; };
-  mv("blobA", 760 + 120 * Math.sin(T * .35), 520 + 60 * Math.cos(T * .3));
-  mv("blobB", -80 + 110 * Math.cos(T * .28), 600 + 70 * Math.sin(T * .33));
-  mv("blobC", 400 + 160 * Math.sin(T * .22 + 1), 80 + 50 * Math.cos(T * .25));
-  const g = (T * 4) % 32;
-  set($("grid"), { x: g, y: -g * .5 });
-  [1, 2, 3].forEach((i) => set($("ring" + i), { s: 1 + .015 * Math.sin(T * .6 + i) }));
+// ---------- Night sky: soft moonlight beams sway in the corners, period 12s so the loop is seamless ----------
+function sky(T) {
+  const w = (ph, sp = 1) => Math.sin((2 * Math.PI * T * sp) / 12 + ph);
+  [["b1", 152, 0], ["b2", 166, 2], ["b3", 138, 4]].forEach(([id, a, ph], i) => {
+    const el = $(id);
+    el.style.transform = `rotate(${a + 4 * w(ph)}deg) scaleY(${1 + .25 * w(ph + 1, 2)})`;
+    el.style.opacity = .7 + .3 * w(ph + 2, 2);
+  });
+  [["b4", -24, 1], ["b5", -40, 3]].forEach(([id, a, ph]) => {
+    const el = $(id);
+    el.style.transform = `rotate(${a + 4 * w(ph)}deg) scaleY(${1 + .2 * w(ph, 2)})`;
+    el.style.opacity = .65 + .35 * w(ph + 1, 2);
+  });
+  $("glowTR").style.opacity = .85 + .15 * w(0, 2);
+  $("glowBL").style.opacity = .8 + .2 * w(2, 2);
 }
 
 function cursorAt(t, keys, clicks) {
@@ -221,156 +230,211 @@ function cursorAt(t, keys, clicks) {
   const k = easeInOut(p(t, t0, t1 - t0));
   let s = 1;
   for (const ct of clicks) { const q = p(t, ct - .08, .24); if (q > 0 && q < 1) s = 1 - .22 * Math.sin(q * Math.PI); }
-  const fadeIn = p(t, keys[0][0], .2), fadeOut = 1 - p(t, keys[keys.length - 1][0] - .2, .2);
-  set(c, { x: lerp(x0, x1, k) - 4, y: lerp(y0, y1, k) - 3, s, o: Math.min(fadeIn, fadeOut) });
+  const o = Math.min(p(t, keys[0][0], .2), 1 - p(t, keys[keys.length - 1][0] - .2, .2));
+  set(c, { x: lerp(x0, x1, k) - 4, y: lerp(y0, y1, k) - 3, s, o });
 }
-
 function ripple(t, clicks) {
-  const r = $("ripple");
-  r.style.left = "0px"; r.style.top = "0px";
   for (const [ct, x, y] of clicks) {
     const q = p(t, ct, .45);
-    if (q > 0 && q < 1) { set(r, { x: x - 10, y: y - 10, s: 1 + 4 * easeOut(q), o: 1 - q }); return; }
+    if (q > 0 && q < 1) { set($("ripple"), { x: x - 10, y: y - 10, s: 1 + 4 * easeOut(q), o: 1 - q }); return; }
   }
-  set(r, { o: 0 });
+  set($("ripple"), { o: 0 });
 }
 
-// Everything collapses into / grows out of this point: the hand-off between parts.
 const HUB = { x: 640, y: 270 };
 function collapse(t, start, dur, cx, cy) {
   const k = easeIn(p(t, start, dur));
-  return { k, x: (HUB.x - cx) * k, y: (HUB.y - cy) * k, s: 1 - .95 * k, o: 1 - p(t, start + dur * .55, dur * .45) };
+  return { x: (HUB.x - cx) * k, y: (HUB.y - cy) * k, s: 1 - .95 * k, o: 1 - p(t, start + dur * .55, dur * .45) };
 }
 
-const FIELD_NAMES = ["Exam Name", "Exam Date", "Repeating Exam?", "Previous Score", "Insights", "Study Preference",
-  "Study Cycle", "Practice Test", "Confidence Level", "Maturity Level", "Exam Goals", "Creating Plans"];
-const segs = $("segs");
-FIELD_NAMES.forEach(() => { const s = document.createElement("div"); s.className = "seg"; s.innerHTML = "<i></i>"; segs.appendChild(s); });
-
-// Calendar entries: crop boxes (2x px) from prep_assets.py, placed at the calendar's scale.
-const CAL_K = 630 / 2560;
+/* =================== Scene 1 setup =================== */
+const OLD_K = 780 / 2560;
 const ENTRIES = [[193, 261, 523, 415], [527, 597, 857, 751], [863, 594, 1192, 754], [1192, 343, 1532, 501]];
-ENTRIES.forEach(([l, t, r, b], i) => {
-  Object.assign($("e" + (i + 1)).style, { left: l * CAL_K + "px", top: t * CAL_K + "px", width: (r - l) * CAL_K + "px", height: (b - t) * CAL_K + "px" });
+ENTRIES.forEach(([l, t, r, b], i) => Object.assign($("e" + (i + 1)).style,
+  { left: l * OLD_K + "px", top: t * OLD_K + "px", width: (r - l) * OLD_K + "px", height: (b - t) * OLD_K + "px" }));
+
+const input = (label, value, icon = "") => `<label>${label}</label><div class="in"><span class="v" data-v="${value}"></span>${icon ? `<span class="ms">${icon}</span>` : ""}</div>`;
+// 11 fields + "Creating your plan" = the 12 steps of the old flow. [html, left, top, width, rotation]
+const FIELDS = [
+  [input("Exam name", "SAT"), 110, 34, 230, -4],
+  [`<img src="assets/piece_test.png" style="width:270px">`, 905, 20, 0, 3, "piece"],
+  [`<img src="assets/piece_date.png" style="width:170px">`, 70, 210, 0, -3, "piece"],
+  [input("Previous score", "1180"), 370, 66, 210, 2],
+  [`<img src="assets/piece_before.png" style="width:270px">`, 935, 300, 0, 4, "piece"],
+  [input("Insights", "Weak in algebra", "expand_more"), 690, 62, 230, -2],
+  [input("Study preference", "Evenings", "expand_more"), 300, 400, 220, 3],
+  [`<label>Practice test</label><div class="tg"><span class="on">Yes</span><span>No</span></div>`, 990, 176, 200, -3],
+  [`<label>Confidence level</label><div class="bar"><i></i><b></b></div>`, 175, 150, 220, 2],
+  [input("Study cycle", "Weekly", "expand_more"), 580, 418, 200, -3],
+  [input("Exam goals", "1400+", "flag"), 820, 430, 220, 3],
+];
+const FIELD_T0 = 1.95, FIELD_DT = .21;
+const fieldEls = FIELDS.map(([html, l, tp, w, rz, cls]) => {
+  const el = h(`<div class="abs tab ${cls || "fld"}" style="left:${l}px;top:${tp}px;${w ? `width:${w}px` : ""}">${html}</div>`);
+  el.dataset.rz = rz;
+  $("fieldsLayer").appendChild(el);
+  return el;
 });
+Object.assign($("creating").style, { left: "520px", top: "238px" });
 
 function scene1(t) {
   $("s2").style.display = "none"; $("s1").style.display = "block";
-  // Phase A: logo + empty-state panel; cursor clicks "Create"
-  const out = easeIn(p(t, 1.75, .35));
-  const lp = back(p(t, .1, .55));
-  set($("logoCard"), { s: .6 + .4 * lp, o: clamp(p(t, .1, .3)) * (1 - out), x: -70 * out, y: -10 * out, ry: 14 - 6 * lp, rz: -3 * (1 - lp) });
-  const pp = easeOut(p(t, .3, .6));
-  set($("emptyPanel"), { y: 70 * (1 - pp) + 30 * out, o: pp * (1 - out), s: 1 - .08 * out, rx: 14 * (1 - pp), ry: -10 + 4 * pp });
-  $("createBtn").style.transform = `scale(${1 - .06 * Math.sin(Math.PI * p(t, 1.48, .2))})`;
-
-  // Phase B: multi-step form (a stack of pages) + 12 fields + timeline fills in
-  const inB = easeOut(p(t, 2.0, .55));
-  const C = collapse(t, 5.15, .7, 310, 220);
-  const qT = [[2.05, 2.95], [2.95, 3.75], [3.75, 9]];
-  ["q1", "q2", "q3"].forEach((id, i) => {
-    const [a, b] = qT[i];
-    const enter = i === 0 ? 1 : easeOut(p(t, a, .35));
-    const leave = easeIn(p(t, b, .3));
-    const vis = t >= a - .01 && t <= b + .31 ? 1 : 0;
-    // old page lifts up and away, next one slides in from the stack behind
-    set($(id), { x: -60 * leave + 28 * (1 - enter), y: -40 * leave - 24 * (1 - enter), rz: -6 * leave, s: 1 - .04 * (1 - enter),
-      o: vis * (i === 0 ? 1 : enter) * (1 - leave) });
-  });
-  const stack = easeOut(p(t, 2.2, .5));
-  set($("pg1"), { x: 14 * stack, y: -12 * stack, o: inB });
-  set($("pg2"), { x: 28 * stack, y: -24 * stack, o: inB * .7 });
-  set($("formWrap"), { x: C.x - 90 * (1 - inB), y: C.y, s: C.s, o: inB * C.o, ry: 16 - 4 * inB, rx: 4 });
-
-  const fieldP = clamp((t - 2.3) / 2.6) * 12;
-  const n = Math.min(12, Math.max(1, Math.ceil(fieldP)));
-  $("fieldName").textContent = FIELD_NAMES[n - 1];
-  $("fieldNum").textContent = n;
-  [...segs.children].forEach((s, i) => { s.firstChild.style.width = clamp(fieldP - i) * 100 + "%"; });
-  const CF = collapse(t, 5.15, .7, 310, 420);
-  set($("fields"), { x: CF.x, y: CF.y + 20 * (1 - inB), s: CF.s, o: inB * CF.o });
-
-  const calIn = easeOut(p(t, 2.1, .6));
-  const CC = collapse(t, 5.15, .7, 890, 238);
-  set($("calWrap"), { x: CC.x + 140 * (1 - calIn), y: CC.y, s: CC.s, o: calIn * CC.o, ry: -16 + 4 * calIn, rx: 4 });
-  [2.85, 3.5, 4.1, 4.6].forEach((a, i) => set($("e" + (i + 1)), { s: Math.max(0, back(p(t, a, .4), 2)), o: clamp(p(t, a, .15)) }));
-
-  // Cursor: enter -> click Create -> click Next twice on the form (targets read live)
+  // Phase A: logo + empty state, cursor clicks Create
+  const out = easeIn(p(t, 1.5, .35));
+  const lp = back(p(t, .15, .55));
+  set($("logoCard"), { s: .6 + .4 * lp, o: clamp(p(t, .15, .3)) * (1 - out), y: 40 * out, rz: -4 * (1 - lp) });
+  const pp = easeOut(p(t, .35, .6));
+  set($("emptyPanel"), { y: 70 * (1 - pp) + 60 * out, o: pp * (1 - out), s: 1 - .1 * out, rx: 16 * (1 - pp) });
+  $("createBtn").style.transform = `scale(${1 - .06 * Math.sin(Math.PI * p(t, 1.28, .2))})`;
   const create = at($("createBtn"));
-  const next = at($("formWrap"), 395 / 626, 287 / 391);
-  cursorAt(t, [[.8, 1150, 520], [1.45, ...create], [1.9, 640, 440], [2.75, ...next], [3.6, ...next], [4.3, next[0] + 8, next[1] + 4], [4.9, 520, 520]], [1.5, 2.9, 3.7]);
-  ripple(t, [[1.5, ...create], [2.9, ...next], [3.7, ...next]]);
+  cursorAt(t, [[.75, 1150, 520], [1.25, ...create], [1.75, 900, 560]], [1.3]);
+  ripple(t, [[1.3, ...create]]);
 
-  const d = p(t, 5.55, .3);
+  // Phase B: old timeline behind, 12 form fields pile up on top like overlapping tabs
+  const calIn = easeOut(p(t, 1.6, .55));
+  const CC = collapse(t, 4.75, .7, 640, 279);
+  set($("oldCal"), { x: CC.x, y: CC.y + 50 * (1 - calIn), s: CC.s * (.94 + .06 * calIn), o: calIn * CC.o, rx: 10 * (1 - calIn) });
+  [2.55, 3.15, 3.75, 4.3].forEach((a, i) => set($("e" + (i + 1)), { s: Math.max(0, back(p(t, a, .4), 2)), o: clamp(p(t, a, .12)) }));
+
+  const newest = Math.floor((t - FIELD_T0) / FIELD_DT);
+  fieldEls.forEach((el, i) => {
+    const a = FIELD_T0 + i * FIELD_DT;
+    const q = back(p(t, a, .35), 1.8);
+    const r = el.getBoundingClientRect();
+    const cx = parseFloat(el.style.left) + el.offsetWidth / 2, cy = parseFloat(el.style.top) + el.offsetHeight / 2;
+    const C = collapse(t, 4.75 - (i % 4) * .03, .7, cx, cy);
+    const rz = Number(el.dataset.rz);
+    set(el, { x: C.x, y: C.y + 26 * (1 - easeOut(p(t, a, .35))), s: C.s * (.7 + .3 * q), o: clamp(p(t, a, .12)) * C.o, rz: rz * (1.6 - .6 * easeOut(p(t, a, .35))) });
+    el.classList.toggle("focus", i === newest && t < 4.6);
+    const v = el.querySelector(".v");
+    if (v) { const s = v.dataset.v; v.textContent = s.slice(0, Math.ceil(s.length * p(t, a + .05, .25))); }
+  });
+  const cr = back(p(t, FIELD_T0 + 11 * FIELD_DT + .05, .35), 1.8);
+  const CCr = collapse(t, 4.75, .7, 640, 270);
+  set($("creating"), { x: CCr.x, y: CCr.y, s: CCr.s * Math.max(.001, cr), o: clamp(p(t, FIELD_T0 + 11 * FIELD_DT + .05, .12)) * CCr.o });
+  $("creating").querySelector(".spin").style.transform = `rotate(${t * 520}deg)`;
+
+  const n = Math.max(1, Math.min(12, newest + 1 + (t >= FIELD_T0 + 11 * FIELD_DT + .05 ? 1 : 0)));
+  $("cnt").textContent = n;
+  const cin = easeOut(p(t, 1.9, .35)), cout = p(t, 4.7, .3);
+  set($("counter"), { y: -10 * (1 - cin), o: cin * (1 - cout) });
+
+  const d = p(t, 5.3, .3);
   set($("dot"), { s: back(d, 2), o: clamp(d * 3) });
 }
+
+/* =================== Scene 2 setup =================== */
+// Week grid geometry (inside #week)
+const W = { axis: 58, top: 84, colW: 115, hourH: 58, startH: 15 };
+const DAYS = [["Mon", 21, 1], ["Tue", 22, 1], ["Wed", 23, .45], ["Thu", 24, .7], ["Fri", 25, .0], ["Sat", 26, 0], ["Sun", 27, 0]];
+const colX = (d) => W.axis + d * W.colW;
+const rowY = (hr) => W.top + (hr - W.startH) * W.hourH;
+const week = $("week");
+week.appendChild(h(`<div id="todayCol" style="left:${colX(3) + 2}px;width:${W.colW - 4}px"></div>`));
+const head = h(`<div id="weekHead"></div>`); week.appendChild(head);
+DAYS.forEach(([d, n, prog], i) => head.appendChild(h(`<div class="dayH ${i === 3 ? "today" : ""}" style="left:${colX(i)}px;width:${W.colW}px"><small>${d}</small><div>${n}</div><span class="pb"><i data-p="${prog}"></i></span></div>`)));
+for (let hr = 15; hr <= 21; hr++) {
+  week.appendChild(h(`<div class="hr" style="top:${rowY(hr)}px"></div>`));
+  week.appendChild(h(`<div class="hl" style="top:${rowY(hr) - 7}px">${hr > 12 ? hr - 12 : hr} PM</div>`));
+}
+const blockStyle = (d, s, e) => `left:${colX(d) + 4}px;top:${rowY(s) + 2}px;width:${W.colW - 8}px;height:${(e - s) * W.hourH - 4}px`;
+// Life events already in the calendar
+[[0, 16, 18, "sports_soccer", "Soccer"], [2, 16, 18, "sports_soccer", "Soccer"], [1, 15.4, 16.4, "school", "Tutoring"],
+ [3, 18, 19.5, "music_note", "Orchestra"], [0, 19, 19.8, "restaurant", "Dinner"], [4, 18, 21, "bedtime", "Rest evening", "Protected"],
+ [5, 18, 20, "family_restroom", "Family time"]].forEach(([d, s, e, ic, label, sub]) =>
+  week.appendChild(h(`<div class="blk life" style="${blockStyle(d, s, e)}"><div class="t"><span class="ms">${ic}</span>${label}</div>${sub ? `<small>${sub}</small>` : ""}</div>`)));
+
+// Study sessions Notsi creates: [day, start, end, class, icon, title, sub]
+const PLAN = [
+  [3, 16.5, 17.3, "c-math", "calculate", "Math", "Up next · 30m"],
+  [1, 17, 17.6, "c-eng", "menu_book", "English", "Reading · 15m"],
+  [5, 15, 17, "c-mock", "edit_note", "Mock test prep", "Practice"],
+  [4, 16, 16.6, "c-flash", "style", "Flash cards", "10m"],
+  [6, 18, 18.8, "c-chem", "science", "Chem review", "45m"],
+  [2, 19, 19.8, "c-chem", "science", "Chemistry", "Review · 45m"],
+  [6, 17, 17.6, "c-check", "auto_awesome", "Weekly check-in", "With Notsi"],
+];
+const FLY_T0 = 4.0, FLY_DT = .1, FLY_DUR = .5;
+const flyEls = PLAN.map(([d, s, e, cls, ic, title, sub]) => {
+  const hpx = (e - s) * W.hourH, short = (hpx < 40 ? "short " : "") + (hpx < 70 ? "notag" : "");
+  const el = h(`<div class="abs blk fl ${cls} ${short}" style="left:0;top:0;width:${W.colW - 8}px;height:${(e - s) * W.hourH - 4}px">
+    <div class="t"><span class="ms">${ic}</span>${title}<span class="ms spark">auto_awesome</span></div><small>${sub}</small><span class="tag"><span class="ms">auto_awesome</span>Notsi</span></div>`);
+  $("flyLayer").appendChild(el);
+  const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+  Object.entries({ fill: "none", stroke: "#c4b5fd", "stroke-width": 2, "stroke-dasharray": "6 6", "stroke-linecap": "round" }).forEach(([k, v]) => path.setAttribute(k, v));
+  $("trails").appendChild(path);
+  return { el, path, d, s };
+});
 
 function scene2(t) {
   $("s1").style.display = "none"; $("s2").style.display = "block";
   set($("dot"), { o: 1 - p(t, 0, .1), s: 1 + .6 * p(t, 0, .1) });
 
-  // Phase A: dot blooms into Notsi orb (orb centre 640,135)
+  // Exit at the end so the loop restarts on an empty sky
+  const ex = easeIn(p(t, 5.4, .5));
+  const exit = { y: 40 * ex, s: 1 - .06 * ex, o: 1 - ex };
+
+  // Phase A: moonlight dot blooms into Notsi
   const grow = easeOut(p(t, 0, .6));
-  const bloom = back(p(t, 0, .6), 1.0);
   const toChat = easeInOut(p(t, 1.6, .5));
-  const head = at(document.querySelector("#chatHead .orb"));
-  const tx = head[0] - 640, ty = head[1] - 135;
+  const tgt = at(document.querySelector("#chatHead .orb"));
   set($("heroOrb"), {
-    x: (HUB.x - 640) * (1 - grow) + tx * toChat,
-    y: (HUB.y - 135) * (1 - grow) + ty * toChat,
-    s: Math.max(0.001, bloom) * (1 - toChat * (1 - 44 / 130)),
+    x: (HUB.x - 640) * (1 - grow) + (tgt[0] - 640) * toChat,
+    y: (HUB.y - 131) * (1 - grow) + (tgt[1] - 131) * toChat,
+    s: Math.max(.001, back(p(t, 0, .6), 1)) * (1 - toChat * (1 - 42 / 130)),
     o: clamp(p(t, 0, .08)) * (t < 2.1 ? 1 : 0),
   });
-  const helloIn = easeOut(p(t, .35, .45)), helloOut = easeIn(p(t, 1.55, .3));
-  set($("hello"), { y: 24 * (1 - helloIn) - 24 * helloOut, o: helloIn * (1 - helloOut) });
-  const btnIn = easeOut(p(t, .6, .45));
-  const press = 1 - .06 * Math.sin(Math.PI * p(t, 1.3, .2));
-  set($("startBtn"), { y: 24 * (1 - btnIn), s: press * (1 - .2 * helloOut), o: clamp(p(t, .6, .25)) * (1 - helloOut) });
+  const hi = easeOut(p(t, .35, .45)), ho = easeIn(p(t, 1.5, .3));
+  set($("hello"), { y: 24 * (1 - hi) - 24 * ho, o: hi * (1 - ho) });
+  const bi = easeOut(p(t, .6, .45));
+  set($("startBtn"), { y: 24 * (1 - bi), s: (1 - .06 * Math.sin(Math.PI * p(t, 1.28, .2))) * (1 - .2 * ho), o: clamp(p(t, .6, .25)) * (1 - ho) });
+  cursorAt(t, [[.7, 1100, 520], [1.25, 640, 411], [1.75, 860, 560]], [1.3]);
+  ripple(t, [[1.3, 640, 411]]);
 
-  const btn = [640, 415];
-  cursorAt(t, [[.7, 1100, 520], [1.25, ...btn], [1.8, 780, 530]], [1.32]);
-  ripple(t, [[1.32, ...btn]]);
-
-  // Phase B: chat panel + conversation
-  const chatIn = easeOut(p(t, 1.7, .45));
-  set($("chat"), { y: 40 * (1 - chatIn), o: chatIn, ry: 12 - 2 * chatIn, rx: 3 });
+  // Phase B: week calendar (back tab) + Notsi chat (front tab)
+  const wi = easeOut(p(t, 1.6, .55));
+  set($("week"), { y: 60 * (1 - wi) + exit.y, s: (.94 + .06 * wi) * exit.s, o: wi * exit.o, rx: 12 * (1 - wi) });
+  document.querySelectorAll(".dayH .pb i").forEach((el) => { el.style.width = Number(el.dataset.p) * 100 * easeOut(p(t, 2.0, .8)) + "%"; });
+  const ci = easeOut(p(t, 1.75, .45));
+  set($("chat"), { x: -50 * (1 - ci), y: exit.y, s: exit.s, o: ci * exit.o, ry: 14 * (1 - ci) });
   document.querySelector("#chatHead .orb").style.opacity = t < 2.1 ? 0 : 1;
-  const showAt = [2.2, 2.75, 3.25, 3.8, 4.2, 4.55];
-  showAt.forEach((a, i) => {
+  [2.2, 2.6, 3.0, 3.4, 3.75, 4.0].forEach((a, i) => {
     const m = $("m" + (i + 1));
-    let shown = t >= a;
-    if (i === 4 && t >= 4.55) shown = false;
+    let shown = t >= a; if (i === 4 && t >= 4.0) shown = false;
     m.style.display = shown ? (i >= 4 ? "flex" : "block") : "none";
     set(m, { s: .6 + .4 * back(p(t, a, .35), 1.8), o: clamp(p(t, a, .15)), y: 10 * (1 - easeOut(p(t, a, .3))) });
   });
   [...$("m5").children].forEach((d, i) => { d.style.transform = `translateY(${-4 * Math.max(0, Math.sin(t * 9 - i * .8))}px)`; });
-  const typedEl = $("typed");
-  const typing = [[2.35, 2.75, "SAT on Saturday, Oct 4"], [3.35, 3.8, "Evenings after soccer, 45 min a day"]];
-  let txt = null;
-  for (const [a, b, s] of typing) if (t >= a && t < b) txt = s.slice(0, Math.ceil(s.length * p(t, a, (b - a) * .85)));
-  typedEl.textContent = txt ?? "Ask Notsi or type a change…";
-  typedEl.style.color = txt ? "#1b2440" : "#9aa1b5";
 
-  // Phase C: answers fly into the plan, plan builds top-to-bottom
-  const planIn = easeOut(p(t, 4.3, .6));
-  set($("plan"), { x: 90 * (1 - planIn), o: planIn, blur: 8 * (1 - planIn), ry: -14 + 4 * planIn, rx: 3 });
-  [["fly1", "m2", 4.35, [760, 150]], ["fly2", "m4", 4.5, [880, 260]]].forEach(([id, src, a, dst]) => {
-    const el = $(id), q = easeInOut(p(t, a, .6));
-    const [sx, sy] = at($(src));
-    const w = el.offsetWidth, h = el.offsetHeight;
-    const lift = -60 * Math.sin(Math.PI * q);
-    set(el, { x: lerp(sx, dst[0], q) - w / 2, y: lerp(sy, dst[1], q) - h / 2 + lift, s: 1 - .25 * q,
-      o: clamp(p(t, a, .1)) * (1 - p(t, a + .5, .15)) });
+  // Phase C: sessions spring out of Notsi and attach to the timeline
+  const src = at($("m6"), .85, .5);
+  const wl = parseFloat(getComputedStyle(week).left), wt = parseFloat(getComputedStyle(week).top);
+  flyEls.forEach(({ el, path, d, s }, i) => {
+    const a = FLY_T0 + i * FLY_DT;
+    const q = easeInOut(p(t, a, FLY_DUR));
+    const tx = wl + colX(d) + 4, ty = wt + rowY(s) + 2;
+    const w = el.offsetWidth, hh = el.offsetHeight;
+    const sx = src[0] - w / 2, sy = src[1] - hh / 2;
+    const cx = (sx + tx) / 2, cy = Math.min(sy, ty) - 120;            // arc control point
+    const bx = (1 - q) ** 2 * sx + 2 * (1 - q) * q * cx + q * q * tx;
+    const by = (1 - q) ** 2 * sy + 2 * (1 - q) * q * cy + q * q * ty;
+    const land = back(p(t, a + FLY_DUR - .05, .3), 2.6);
+    const sc = q < 1 ? .45 + .55 * q : 1 + .06 * Math.sin(Math.PI * clamp(land));
+    set(el, { x: bx, y: by + exit.y, s: sc * exit.s, o: clamp(p(t, a, .08)) * exit.o });
+    el.classList.toggle("dash", q < 1);
+    // dashed trail draws along with the flight, then fades
+    // partial quadratic curve 0..q (de Casteljau) keeps the dash pattern while it grows
+    const ox = w / 2, oy = hh / 2;
+    const c1x = sx + (cx - sx) * q, c1y = sy + (cy - sy) * q;
+    path.setAttribute("d", `M${sx + ox},${sy + oy} Q${c1x + ox},${c1y + oy} ${bx + ox},${by + oy}`);
+    path.style.opacity = (q > 0 ? .9 : 0) * (1 - p(t, a + FLY_DUR, .35)) * exit.o;
   });
-  const reveal = easeInOut(p(t, 4.7, 1.0));
-  $("planImgWrap").style.clipPath = `inset(0 0 ${100 - reveal * 100}% 0)`;
-  const sc = $("scan");
-  sc.style.top = (62 + reveal * 408 - 35) + "px";
-  sc.style.opacity = reveal > 0 && reveal < 1 ? 1 : 0;
-  set($("badge"), { s: Math.max(0.001, back(p(t, 5.3, .4), 2)), o: clamp(p(t, 5.3, .15)) });
+
+  const bq = back(p(t, 4.95, .4), 2);
+  set($("badge"), { s: Math.max(.001, bq) * exit.s, o: clamp(p(t, 4.95, .15)) * exit.o, y: exit.y });
 }
 
-window.render = (part, t) => { background((part - 1) * 6 + t); part === 1 ? scene1(t) : scene2(t); };
+window.render = (part, t) => { sky((part - 1) * 6 + t); part === 1 ? scene1(t) : scene2(t); };
 const q = new URLSearchParams(location.search);
 window.render(Number(q.get("part") || 1), Number(q.get("t") || 0));
 </script>

@@ -22,3 +22,9 @@ for i, (x0, y0, y1) in enumerate(bars, 1):
     clean.paste(patch, box[:2])
     print(f"entry_{i}", box)
 clean.save(os.path.join(A, "calendar_clean.png"))
+
+# Relevant pieces of the old multi-step form (2x px crops of the question cards)
+for name, src, box in [("piece_test", "q1.png", (300, 180, 960, 500)),
+                       ("piece_date", "q2.png", (462, 280, 790, 590)),
+                       ("piece_before", "q3.png", (290, 150, 960, 465))]:
+    Image.open(os.path.join(A, src)).crop(box).save(os.path.join(A, name + ".png"))

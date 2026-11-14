@@ -16,7 +16,7 @@ const DIR = __dirname, OUT = path.join(DIR, "out");
   const browser = await chromium.launch();
   const page = await browser.newPage({ viewport: { width: 1280, height: 1080 }, deviceScaleFactor: 1 });
   await page.goto("file://" + path.join(DIR, "scene.html"));
-  await page.evaluate(() => document.fonts.ready);
+  await page.evaluate(async () => { await document.fonts.load('24px "Material Symbols Rounded"', "check_circle"); await document.fonts.load('600 16px "Outfit"'); await document.fonts.ready; });
   await page.waitForLoadState("networkidle");
 
   for (const part of parts) {
