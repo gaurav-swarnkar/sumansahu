@@ -10,9 +10,9 @@
   html, body { width: 1300px; height: 360px; background: transparent; font-family: "Poppins", sans-serif; overflow: hidden; }
   body.preview { background: linear-gradient(100deg, #3a0ca3 0%, #5b21d6 45%, #7c3aed 80%, #a855f7 100%); }
   .ms { font-family: "Material Symbols Rounded"; font-weight: normal; font-style: normal; line-height: 1; white-space: nowrap; font-feature-settings: "liga"; }
-  #art { position: absolute; left: 0; top: 0; width: 1300px; height: 360px; }
+  #art { position: absolute; left: 0; top: 0; width: 1300px; height: 360px; transform: scale(.82); transform-origin: 1236px 176px; }
   .abs { position: absolute; }
-  .card { background: #fff; border-radius: 18px; box-shadow: 0 24px 48px rgba(30, 6, 80, .38), 0 4px 12px rgba(30, 6, 80, .18); }
+  .card { background: #fff; border-radius: 18px; box-shadow: 0 14px 28px rgba(30, 6, 80, .26), 0 2px 6px rgba(30, 6, 80, .14); }
   :root { --ink: #1c1336; --muted: #8a84a3; --violet: #7c3aed; --v2: #8b5cf6; }
 
   /* Week calendar (back layer) */
@@ -62,9 +62,9 @@
 
   /* Notsi hero orb */
   #notsi { left: 604px; top: 22px; width: 76px; height: 76px; z-index: 4;
-    box-shadow: 0 0 0 7px rgba(255,255,255,.16), 0 0 40px 10px rgba(196,181,253,.55), 0 14px 30px rgba(30,6,80,.4); }
+    box-shadow: 0 0 0 7px rgba(255,255,255,.16), 0 0 32px 6px rgba(196,181,253,.5), 0 10px 22px rgba(30,6,80,.3); }
   #notsiTag { left: 690px; top: 36px; z-index: 4; background: #fff; border-radius: 999px; padding: 6px 12px 6px 10px; font-size: 11px; font-weight: 600; color: var(--ink);
-    display: flex; gap: 6px; align-items: center; box-shadow: 0 10px 24px rgba(30,6,80,.3); }
+    display: flex; gap: 6px; align-items: center; box-shadow: 0 8px 18px rgba(30,6,80,.22); }
   #notsiTag .ms { font-size: 14px; color: var(--violet); }
 
   #trail { left: 0; top: 0; width: 1300px; height: 360px; z-index: 5; overflow: visible; }
@@ -75,7 +75,7 @@
   #goal b { font-size: 12px; color: var(--ink); }
   #goal small { display: block; font-size: 9px; color: var(--muted); }
   #ready { left: 1020px; top: 8px; z-index: 4; background: #16a34a; color: #fff; font-size: 10.5px; font-weight: 600; padding: 6px 12px; border-radius: 999px;
-    display: flex; gap: 5px; align-items: center; box-shadow: 0 0 0 5px rgba(22,163,74,.18), 0 10px 22px rgba(30,6,80,.3); }
+    display: flex; gap: 5px; align-items: center; box-shadow: 0 0 0 5px rgba(22,163,74,.18), 0 8px 18px rgba(30,6,80,.22); }
   #ready .ms { font-size: 14px; }
 </style>
 </head>
@@ -138,8 +138,12 @@ blk(3, 15, 17, "c4 ai", `Mock test<small>Practice · 2h</small>`);
 
 // Dashed arc from the "Proposed changes" card to the new session on the calendar
 window.addEventListener("load", () => {
-  const a = document.querySelector(".prop").getBoundingClientRect();
-  const b = document.querySelector(".ai-new").getBoundingClientRect();
+  // rects are on-screen (after #art's scale); convert back to #art's own coordinates
+  const K = .82, OX = 1236, OY = 176;
+  const loc = (r) => ({ left: (r.left - OX) / K + OX, right: (r.right - OX) / K + OX, top: (r.top - OY) / K + OY,
+    bottom: (r.bottom - OY) / K + OY, height: r.height / K });
+  const a = loc(document.querySelector(".prop").getBoundingClientRect());
+  const b = loc(document.querySelector(".ai-new").getBoundingClientRect());
   const sx = a.right - 4, sy = a.bottom - 34, tx = b.left + 2, ty = b.top + b.height * .7;
   const mx = (sx + tx) / 2, my = Math.max(sy, ty) + 34;
   document.getElementById("arc").setAttribute("d", `M${sx},${sy} Q${mx},${my} ${tx},${ty}`);
