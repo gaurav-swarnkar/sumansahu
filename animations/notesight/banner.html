@@ -2,155 +2,133 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Notsi banner</title>
+<title>Planner banner</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,400,0..1,0&display=block" rel="stylesheet">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { width: 1300px; height: 360px; background: transparent; font-family: "Poppins", sans-serif; overflow: hidden; }
   body.preview { background: linear-gradient(100deg, #3a0ca3 0%, #5b21d6 45%, #7c3aed 80%, #a855f7 100%); }
+  :root { --ink: #1c1336; --muted: #8a84a3; --violet: #7c3aed; --line: #f0edf6; }
   .ms { font-family: "Material Symbols Rounded"; font-weight: normal; font-style: normal; line-height: 1; white-space: nowrap; font-feature-settings: "liga"; }
-  #art { position: absolute; left: 0; top: 0; width: 1300px; height: 360px; transform: scale(.82); transform-origin: 1236px 176px; }
   .abs { position: absolute; }
-  .card { background: #fff; border-radius: 18px; box-shadow: 0 14px 28px rgba(30, 6, 80, .26), 0 2px 6px rgba(30, 6, 80, .14); }
-  :root { --ink: #1c1336; --muted: #8a84a3; --violet: #7c3aed; --v2: #8b5cf6; }
+  .card { background: #fff; border-radius: 16px; box-shadow: 0 12px 26px rgba(30, 6, 80, .26), 0 2px 6px rgba(30, 6, 80, .12); }
+  .tag { font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: #fff; display: flex; align-items: center; gap: 6px; }
+  .tag i { width: 6px; height: 6px; border-radius: 50%; display: block; }
 
-  /* Week calendar (back layer) */
-  #week { left: 790px; top: 30px; width: 470px; height: 300px; padding: 16px 18px; transform: perspective(1400px) rotateY(-8deg); transform-origin: right center; }
-  #week .top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
-  #week .top b { font-size: 15px; color: var(--ink); font-weight: 600; }
-  #week .top span { font-size: 10px; color: var(--muted); }
-  .pill { display: inline-flex; gap: 4px; align-items: center; font-size: 10px; font-weight: 600; color: var(--violet); background: #efe7ff; padding: 4px 9px; border-radius: 999px; }
-  .pill .ms { font-size: 12px; }
-  #grid { position: absolute; left: 18px; right: 18px; top: 58px; bottom: 16px; }
-  .dh { position: absolute; top: 0; font-size: 10px; color: var(--muted); text-align: left; }
-  .dh b { display: block; font-size: 15px; color: var(--ink); font-weight: 600; line-height: 1.1; }
-  .dh.today b, .dh.today { color: var(--violet); }
-  .todaycol { position: absolute; top: -6px; bottom: 0; border-radius: 12px; background: #f5f0ff; }
-  .hl { position: absolute; right: 0; height: 1px; background: #f0edf6; }
-  .tl { position: absolute; left: 76px; font-size: 9px; color: var(--muted); }
-  .blk { position: absolute; border-radius: 9px; padding: 6px 8px; font-size: 10.5px; font-weight: 600; color: var(--ink); overflow: hidden; white-space: nowrap; }
+  /* ---------- Before: the old 12-step form ---------- */
+  #beforeTag { left: 628px; top: 22px; color: rgba(255,255,255,.7); }
+  #beforeTag i { background: rgba(255,255,255,.5); }
+  .old { width: 196px; height: 112px; padding: 12px 14px; border-radius: 14px; background: #fff; }
+  .old small { display: block; font-size: 8px; font-weight: 600; letter-spacing: .8px; color: #9aa1b5; }
+  .old b { display: block; font-size: 11.5px; font-weight: 600; color: #2a3350; margin: 3px 0 7px; }
+  .old .in { height: 26px; border: 1px solid #dfe3ea; border-radius: 6px; font-size: 10px; color: #2a3350; display: flex; align-items: center; justify-content: space-between; padding: 0 8px; }
+  .old .in .ms { font-size: 13px; color: #9aa1b5; }
+  .old .pg { height: 4px; border-radius: 2px; background: #e9edf4; margin-top: 10px; overflow: hidden; }
+  .old .pg i { display: block; height: 100%; background: #9db7e8; }
+  #stack { left: 628px; top: 44px; width: 230px; height: 140px; filter: saturate(.35); opacity: .78; }
+
+  /* ---------- After: the new week plan ---------- */
+  #afterTag { left: 802px; top: 22px; }
+  #afterTag i { background: #a7f3d0; box-shadow: 0 0 0 3px rgba(167,243,208,.25); }
+  #app { left: 800px; top: 44px; width: 456px; height: 270px; border-radius: 18px; overflow: hidden; }
+  #nav { height: 40px; display: flex; align-items: center; padding: 0 14px; gap: 16px; border-bottom: 1px solid var(--line); }
+  #nav img { height: 12px; }
+  #nav .tabs { display: flex; gap: 4px; margin-left: 6px; }
+  #nav .tabs span { font-size: 10px; color: var(--muted); padding: 4px 9px; border-radius: 999px; }
+  #nav .tabs span.on { background: var(--ink); color: #fff; }
+  #nav .av { margin-left: auto; width: 20px; height: 20px; border-radius: 50%; background: linear-gradient(135deg, #fbcfe8, #c4b5fd); }
+  #hdr { display: flex; align-items: baseline; justify-content: space-between; padding: 10px 14px 0; }
+  #hdr b { font-size: 14px; color: var(--ink); font-weight: 600; }
+  #hdr span { font-size: 9px; color: var(--muted); margin-left: 6px; }
+  .seg { display: flex; background: #f4f2f8; border-radius: 999px; padding: 2px; }
+  .seg em { font-style: normal; font-size: 9px; color: var(--muted); padding: 3px 9px; border-radius: 999px; }
+  .seg em.on { background: #fff; color: var(--ink); font-weight: 600; box-shadow: 0 1px 3px rgba(30,6,80,.12); }
+  #grid { position: absolute; left: 14px; right: 14px; top: 78px; bottom: 10px; }
+  .dh { position: absolute; top: 0; font-size: 8.5px; color: var(--muted); }
+  .dh b { display: block; font-size: 13px; color: var(--ink); font-weight: 600; line-height: 1.15; }
+  .dh.today, .dh.today b { color: var(--violet); }
+  .todaycol { position: absolute; top: -4px; bottom: 0; border-radius: 10px; background: #f6f1ff; }
+  .hl { position: absolute; right: 0; height: 1px; background: var(--line); }
+  .tl { position: absolute; left: 0; font-size: 8px; color: var(--muted); }
+  .blk { position: absolute; border-radius: 7px; padding: 4px 6px; font-size: 9px; font-weight: 600; color: var(--ink); overflow: hidden; white-space: nowrap; }
+  .blk small { display: block; font-size: 7.5px; font-weight: 500; color: #7a7490; }
   .blk.one small { display: none; }
-  .blk small { display: block; font-size: 8.5px; font-weight: 500; color: #7a7490; margin-top: 1px; }
-  .blk .ms { font-size: 11px; vertical-align: -2px; margin-right: 2px; }
-  .life { background: #f6f4f0; color: #4c4760; border: 1px solid #ece8e0; }
-  .ai { box-shadow: 0 0 0 1.5px var(--v2) inset; }
-  .ai-new { outline: 1.5px dashed var(--v2); outline-offset: -1.5px; }
-  .c1 { background: #ece4ff; } .c2 { background: #dff5ea; } .c3 { background: #fde7da; } .c4 { background: #f2e8ff; }
-  .spark { position: absolute; right: 5px; top: 5px; font-size: 10px !important; color: var(--v2); }
+  .life { background: #f6f4f0; color: #5a5470; }
+  .s1 { background: #ece4ff; box-shadow: inset 3px 0 0 #8b5cf6; }
+  .s2 { background: #dcf5e8; box-shadow: inset 3px 0 0 #22a06b; }
+  .s3 { background: #fde6d8; box-shadow: inset 3px 0 0 #ea7a3f; }
+  .now { outline: 1.5px solid var(--violet); outline-offset: 1px; }
 
-  /* Notsi chat (front layer) */
-  #chat { left: 640px; top: 74px; width: 250px; height: 262px; padding: 14px; z-index: 3; }
-  #chat .hd { display: flex; align-items: center; gap: 9px; padding-bottom: 10px; border-bottom: 1px solid #f0edf6; margin-bottom: 10px; }
-  .orb { border-radius: 50%; background: linear-gradient(135deg, #a78bfa 0%, #7c3aed 55%, #4f46e5 100%); display: flex; align-items: center; justify-content: center; }
-  .orb img { width: 58%; }
-  #chat .hd .orb { width: 32px; height: 32px; }
-  #chat .hd b { display: block; font-size: 13px; color: var(--ink); line-height: 1.2; }
-  #chat .hd span { font-size: 9px; color: var(--muted); }
-  .bub { font-size: 10px; line-height: 1.45; padding: 7px 10px; border-radius: 12px; margin-bottom: 7px; max-width: 92%; }
-  .bot { background: #f3eeff; color: var(--ink); border-bottom-left-radius: 4px; }
-  .me { background: var(--violet); color: #fff; margin-left: auto; border-bottom-right-radius: 4px; width: fit-content; }
-  .prop { border: 1.5px solid #c4b5fd; border-radius: 12px; padding: 8px 9px; }
-  .prop .t { font-size: 9.5px; font-weight: 600; color: var(--violet); display: flex; gap: 4px; align-items: center; margin-bottom: 5px; }
-  .prop .t .ms { font-size: 12px; }
-  .prop .r { font-size: 9px; color: var(--ink); display: flex; gap: 5px; align-items: center; margin-bottom: 3px; }
-  .prop .r .ms { font-size: 11px; color: #16a34a; }
-  .prop .btns { display: flex; gap: 6px; margin-top: 7px; }
-  .prop .btns span { flex: 1; text-align: center; font-size: 9.5px; font-weight: 600; padding: 5px 0; border-radius: 999px; }
-  .apply { background: var(--violet); color: #fff; }
+  /* ---------- The bridge: one conversation ---------- */
+  #chat { left: 650px; top: 146px; width: 252px; padding: 12px; z-index: 3; border-radius: 16px; }
+  #chat .hd { display: flex; align-items: center; gap: 8px; margin-bottom: 9px; }
+  #chat .orb { width: 24px; height: 24px; border-radius: 50%; background: linear-gradient(135deg, #a78bfa, #6d28d9); display: flex; align-items: center; justify-content: center; }
+  #chat .orb img { width: 60%; }
+  #chat .hd b { font-size: 11.5px; color: var(--ink); }
+  #chat .hd span { font-size: 9px; color: var(--muted); margin-left: auto; }
+  .bub { font-size: 9.5px; line-height: 1.45; padding: 6px 9px; border-radius: 11px; margin-bottom: 6px; width: fit-content; max-width: 92%; }
+  .me { background: var(--violet); color: #fff; margin-left: auto; border-bottom-right-radius: 3px; }
+  .bot { background: #f3eeff; color: var(--ink); border-bottom-left-radius: 3px; }
+  .bot strong { font-weight: 600; }
+  .acts { display: flex; gap: 6px; margin-top: 2px; }
+  .acts span { flex: 1; text-align: center; font-size: 9.5px; font-weight: 600; padding: 5px 0; border-radius: 999px; }
+  .apply { background: var(--ink); color: #fff; }
   .tweak { background: #f4f2f8; color: var(--ink); }
-
-  /* Notsi hero orb */
-  #notsi { left: 604px; top: 22px; width: 76px; height: 76px; z-index: 4;
-    box-shadow: 0 0 0 7px rgba(255,255,255,.16), 0 0 32px 6px rgba(196,181,253,.5), 0 10px 22px rgba(30,6,80,.3); }
-  #notsiTag { left: 690px; top: 36px; z-index: 4; background: #fff; border-radius: 999px; padding: 6px 12px 6px 10px; font-size: 11px; font-weight: 600; color: var(--ink);
-    display: flex; gap: 6px; align-items: center; box-shadow: 0 8px 18px rgba(30,6,80,.22); }
-  #notsiTag .ms { font-size: 14px; color: var(--violet); }
-
-  #trail { left: 0; top: 0; width: 1300px; height: 360px; z-index: 5; overflow: visible; }
-
-  /* Floating stat chips */
-  #goal { left: 1150px; top: 250px; width: 112px; padding: 12px 10px; z-index: 4; text-align: center; border-radius: 16px; }
-  #goal svg { width: 54px; height: 54px; display: block; margin: 0 auto 4px; }
-  #goal b { font-size: 12px; color: var(--ink); }
-  #goal small { display: block; font-size: 9px; color: var(--muted); }
-  #ready { left: 1020px; top: 8px; z-index: 4; background: #16a34a; color: #fff; font-size: 10.5px; font-weight: 600; padding: 6px 12px; border-radius: 999px;
-    display: flex; gap: 5px; align-items: center; box-shadow: 0 0 0 5px rgba(22,163,74,.18), 0 8px 18px rgba(30,6,80,.22); }
-  #ready .ms { font-size: 14px; }
 </style>
 </head>
 <body>
-<div id="art">
-  <div id="week" class="abs card">
-    <div class="top"><div><b>This week</b> <span>&nbsp;Sep 21 – 27</span></div><span class="pill"><span class="ms">auto_awesome</span>Planned by Notsi</span></div>
+  <!-- Before -->
+  <div id="beforeTag" class="abs tag"><i></i>Before · 12-step form</div>
+  <div id="stack" class="abs">
+    <div class="abs old card" style="left:28px;top:0"><small>STEP 02 OF 12</small><b>What test are you preparing for?</b><div class="in">SAT<span class="ms">expand_more</span></div><div class="pg"><i style="width:17%"></i></div></div>
+    <div class="abs old card" style="left:14px;top:12px"><small>STEP 03 OF 12</small><b>When is your test date?</b><div class="in">Oct 4, 2026<span class="ms">calendar_month</span></div><div class="pg"><i style="width:25%"></i></div></div>
+    <div class="abs old card" style="left:0;top:24px"><small>STEP 04 OF 12</small><b>Previous score</b><div class="in">1180<span class="ms">edit</span></div><div class="pg"><i style="width:33%"></i></div></div>
+  </div>
+
+  <!-- After -->
+  <div id="afterTag" class="abs tag"><i></i>After · one conversation</div>
+  <div id="app" class="abs card">
+    <div id="nav"><img src="assets/logo.svg" alt=""><div class="tabs"><span>Home</span><span class="on">Plan</span><span>Learn</span><span>Progress</span></div><div class="av"></div></div>
+    <div id="hdr"><div><b>Your week</b><span>Sep 21 – 25</span></div><div class="seg"><em>Day</em><em class="on">Week</em><em>Month</em></div></div>
     <div id="grid"></div>
   </div>
 
-  <svg id="trail" class="abs"><path id="arc" fill="none" stroke="#8b5cf6" stroke-opacity=".9" stroke-width="1.6" stroke-dasharray="5 5" stroke-linecap="round"/><circle id="arcDot" r="3.5" fill="#8b5cf6"/></svg>
-
+  <!-- One conversation -->
   <div id="chat" class="abs card">
-    <div class="hd"><div class="orb"><img src="assets/notsi_icon.svg" alt=""></div><div><b>Notsi</b><span>Your study agent</span></div></div>
-    <div class="bub bot">Your chemistry test is Friday. Want 2 short reviews before it?</div>
-    <div class="bub me">Yes, keep evenings light</div>
-    <div class="prop">
-      <div class="t"><span class="ms">event_available</span>Proposed changes</div>
-      <div class="r"><span class="ms">add</span>Chem review · Thu 7:30 PM · 20m</div>
-      <div class="r"><span class="ms">add</span>Chem quiz · Fri 7:30 AM · 10m</div>
-      <div class="btns"><span class="apply">Apply</span><span class="tweak">Tweak</span></div>
-    </div>
+    <div class="hd"><div class="orb"><img src="assets/notsi_icon.svg" alt=""></div><b>Notsi</b><span>Study agent</span></div>
+    <div class="bub me">SAT on Oct 4. I study best in the evenings, after soccer.</div>
+    <div class="bub bot"><strong>Planned 6 sessions</strong> around soccer and orchestra. 45 min a day, no overlaps.</div>
+    <div class="acts"><span class="apply">Apply plan</span><span class="tweak">Tweak</span></div>
   </div>
-
-  <div id="notsi" class="abs orb"><img src="assets/notsi_icon.svg" alt=""></div>
-  <div id="notsiTag" class="abs"><span class="ms">auto_awesome</span>Hi, I'm Notsi</div>
-  <div id="ready" class="abs"><span class="ms">check_circle</span>No overlaps · 60 min/day</div>
-  <div id="goal" class="abs card">
-    <svg viewBox="0 0 54 54"><circle cx="27" cy="27" r="22" fill="none" stroke="#efe7ff" stroke-width="6"/>
-      <circle cx="27" cy="27" r="22" fill="none" stroke="#7c3aed" stroke-width="6" stroke-linecap="round" stroke-dasharray="138.2" stroke-dashoffset="38.7" transform="rotate(-90 27 27)"/>
-      <text x="27" y="31" text-anchor="middle" font-family="Poppins" font-weight="600" font-size="12" fill="#1c1336">72%</text></svg>
-    <small>Weekly goal</small>
-  </div>
-</div>
 
 <script>
 const h = (s) => { const d = document.createElement("div"); d.innerHTML = s.trim(); return d.firstChild; };
 const grid = document.getElementById("grid");
-const G = { x0: 112, colW: 80, top: 36, hourH: 34, start: 15 };   // 4 days, clear of the chat card
+const G = { x0: 30, colW: 78.4, top: 30, hourH: 25, start: 15 };   // 5 days; 3 PM – 9 PM
 const cx = (d) => G.x0 + d * G.colW, ry = (hr) => G.top + (hr - G.start) * G.hourH;
-grid.appendChild(h(`<div class="todaycol" style="left:${cx(1)}px;width:${G.colW - 2}px"></div>`));
-[["Wed", 23], ["Thu", 24], ["Fri", 25], ["Sat", 26]].forEach(([d, n], i) =>
-  grid.appendChild(h(`<div class="dh ${i === 1 ? "today" : ""}" style="left:${cx(i) + 7}px">${d}<b>${n}</b></div>`)));
-for (let hr = 15; hr <= 20; hr++) {
+grid.appendChild(h(`<div class="todaycol" style="left:${cx(3)}px;width:${G.colW - 2}px"></div>`));
+[["Mon", 21], ["Tue", 22], ["Wed", 23], ["Thu", 24], ["Fri", 25]].forEach(([d, n], i) =>
+  grid.appendChild(h(`<div class="dh ${i === 3 ? "today" : ""}" style="left:${cx(i) + 6}px">${d}<b>${n}</b></div>`)));
+for (let hr = 15; hr <= 21; hr += 1) {
   grid.appendChild(h(`<div class="hl" style="top:${ry(hr)}px;left:${G.x0}px"></div>`));
-  grid.appendChild(h(`<div class="tl" style="top:${ry(hr) - 6}px">${hr - 12} PM</div>`));
+  if (hr % 2 === 1) grid.appendChild(h(`<div class="tl" style="top:${ry(hr) - 5}px">${hr - 12}pm</div>`));
 }
-const blk = (d, s, e, cls, html) => grid.appendChild(h(`<div class="blk ${cls} ${(e - s) * G.hourH < 40 ? "one" : ""}" style="left:${cx(d) + 3}px;top:${ry(s) + 2}px;width:${G.colW - 7}px;height:${(e - s) * G.hourH - 4}px">${html}</div>`));
-// Life events
-blk(0, 16, 18, "life", `Soccer<small>Practice</small>`);
-blk(1, 17.6, 18.9, "life", `Orchestra<small>6 – 7:30 PM</small>`);
-blk(2, 18, 20.4, "life", `Rest<small>Protected</small>`);
-blk(3, 17.4, 18.5, "life", `Family<small>Dinner</small>`);
-// Notsi-planned study sessions (violet outline = planned by Notsi)
-blk(0, 18.2, 19.2, "c3 ai", `Chemistry<small>45m</small>`);
-blk(1, 15.6, 16.8, "c1 ai", `Math<small>Up next · 30m</small>`);
-blk(1, 19.1, 20.35, "c3 ai-new", `Review<small>Chem · new</small>`);
-blk(2, 16, 17.2, "c4 ai", `Flashcards<small>10m</small>`);
-blk(3, 15, 17, "c4 ai", `Mock test<small>Practice · 2h</small>`);
-
-// Dashed arc from the "Proposed changes" card to the new session on the calendar
-window.addEventListener("load", () => {
-  // rects are on-screen (after #art's scale); convert back to #art's own coordinates
-  const K = .82, OX = 1236, OY = 176;
-  const loc = (r) => ({ left: (r.left - OX) / K + OX, right: (r.right - OX) / K + OX, top: (r.top - OY) / K + OY,
-    bottom: (r.bottom - OY) / K + OY, height: r.height / K });
-  const a = loc(document.querySelector(".prop").getBoundingClientRect());
-  const b = loc(document.querySelector(".ai-new").getBoundingClientRect());
-  const sx = a.right - 4, sy = a.bottom - 34, tx = b.left + 2, ty = b.top + b.height * .7;
-  const mx = (sx + tx) / 2, my = Math.max(sy, ty) + 34;
-  document.getElementById("arc").setAttribute("d", `M${sx},${sy} Q${mx},${my} ${tx},${ty}`);
-  Object.assign(document.getElementById("arcDot"), {}).setAttribute("cx", tx);
-  document.getElementById("arcDot").setAttribute("cy", ty);
-  document.body.dataset.ready = "1";
-});
+const blk = (d, s, e, cls, html) => grid.appendChild(h(`<div class="blk ${cls} ${(e - s) * G.hourH < 30 ? "one" : ""}" style="left:${cx(d) + 3}px;top:${ry(s) + 2}px;width:${G.colW - 6}px;height:${(e - s) * G.hourH - 3}px">${html}</div>`));
+// Real life first...
+blk(0, 16, 18, "life", "Soccer<small>Practice</small>");
+blk(2, 16, 18, "life", "Soccer<small>Practice</small>");
+blk(3, 18, 19.5, "life", "Orchestra<small>6 – 7:30</small>");
+blk(4, 18, 21, "life", "Rest evening<small>Protected</small>");
+blk(1, 15, 16.2, "life", "Tutoring");
+// ...then study fits around it
+blk(0, 18.5, 19.4, "s1", "Math");
+blk(1, 17, 18, "s2", "English<small>Reading</small>");
+blk(2, 19, 20, "s3", "Chemistry");
+blk(3, 16.2, 17.6, "s1 now", "Math<small>Up next · 30m</small>");
+blk(4, 16, 17, "s3", "Chem review");
+blk(3, 20, 20.8, "s2", "Flashcards");
+document.body.dataset.ready = "1";
 </script>
 </body>
 </html>
