@@ -6,85 +6,112 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root { --bg: #1f53df; --tint: #d2ddf9; --ink: #1b2440; --blue: #2f80ed; --violet: #8b5cf6; }
+  :root { --bg: #1f53df; --tint: #d2ddf9; --ink: #1b2440; --violet: #8b5cf6; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { width: 1280px; height: 1080px; overflow: hidden; background: var(--bg); font-family: "Outfit", sans-serif; }
-  /* Top 60% stays empty. Everything animates inside the bottom 40% (432px). */
-  #stage { position: absolute; left: 0; top: 648px; width: 1280px; height: 432px; }
-  .abs { position: absolute; will-change: transform, opacity; }
-  .card { background: #fff; border-radius: 22px; box-shadow: 0 18px 40px rgba(8, 24, 80, .28); overflow: hidden; }
+
+  /* ---------- Background (whole canvas, continuous across both parts) ---------- */
+  #bg { position: absolute; inset: 0; overflow: hidden;
+    background: radial-gradient(120% 80% at 50% 100%, #2c66f2 0%, #1f53df 45%, #1a45c4 100%); }
+  .blob { position: absolute; border-radius: 50%; filter: blur(90px); }
+  #blobA { width: 620px; height: 620px; background: rgba(139, 92, 246, .38); }
+  #blobB { width: 560px; height: 560px; background: rgba(56, 189, 248, .26); }
+  #blobC { width: 480px; height: 480px; background: rgba(255, 255, 255, .10); }
+  #grid { position: absolute; left: -40px; top: -40px; width: 1360px; height: 1160px;
+    background-image: radial-gradient(rgba(255,255,255,.22) 1.2px, transparent 1.4px); background-size: 32px 32px;
+    -webkit-mask-image: radial-gradient(90% 70% at 50% 60%, #000 0%, rgba(0,0,0,.35) 55%, transparent 85%); }
+  .ring { position: absolute; border-radius: 50%; border: 1px solid rgba(255,255,255,.09); left: 50%; }
+  #ring1 { width: 1100px; height: 1100px; margin-left: -550px; top: 470px; }
+  #ring2 { width: 1500px; height: 1500px; margin-left: -750px; top: 300px; border-color: rgba(255,255,255,.06); }
+  #ring3 { width: 1900px; height: 1900px; margin-left: -950px; top: 120px; border-color: rgba(255,255,255,.04); }
+  #grain { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,25,90,.18), rgba(10,25,90,0) 40%); }
+
+  /* Top 50% stays background only. Everything animates inside the bottom half (540px). */
+  #stage { position: absolute; left: 0; top: 540px; width: 1280px; height: 540px; perspective: 1700px; }
+  .abs { position: absolute; will-change: transform, opacity; transform-style: preserve-3d; }
+  .card { background: #fff; border-radius: 22px; overflow: hidden;
+    box-shadow: 0 0 0 8px rgba(255,255,255,.14), 0 0 0 9px rgba(255,255,255,.22), 0 34px 60px rgba(6, 18, 70, .38); }
   img { display: block; }
 
   /* ---------- Scene 1: old UI ---------- */
-  #logoCard { left: 380px; top: 96px; width: 200px; height: 82px; border-radius: 22px; background: #fff;
-    display: flex; align-items: center; justify-content: center; box-shadow: 0 14px 30px rgba(8,24,80,.25); z-index: 3; }
-  #logoCard img { width: 150px; }
-  #emptyPanel { left: 520px; top: 46px; width: 300px; height: 340px; border-radius: 40px; background: var(--tint);
-    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; z-index: 2; }
-  #emptyPanel .icon { width: 96px; height: 96px; border: 2px dashed #a9bdf3; border-radius: 18px; display: flex; align-items: center; justify-content: center; }
-  #emptyPanel .icon img { width: 58px; }
-  #emptyPanel h3 { font-weight: 500; font-size: 22px; color: #2a3350; }
-  #createBtn { background: #2f80ed; color: #fff; font-size: 14px; font-weight: 500; padding: 12px 22px; border-radius: 999px; white-space: nowrap; }
-  #ripple { width: 20px; height: 20px; border-radius: 50%; border: 3px solid #fff; z-index: 20; }
+  #logoCard { left: 385px; top: 128px; width: 236px; height: 94px; border-radius: 26px; background: #fff;
+    display: flex; align-items: center; justify-content: center; z-index: 3;
+    box-shadow: 0 0 0 7px rgba(255,255,255,.16), 0 22px 40px rgba(6,18,70,.32); }
+  #logoCard img { width: 176px; }
+  #emptyPanel { left: 545px; top: 62px; width: 350px; height: 410px; border-radius: 46px; background: var(--tint);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px; z-index: 2;
+    box-shadow: 0 0 0 9px rgba(255,255,255,.12), 0 34px 60px rgba(6,18,70,.3); }
+  #emptyPanel .icon { width: 116px; height: 116px; border: 2px dashed #a9bdf3; border-radius: 22px; display: flex; align-items: center; justify-content: center; }
+  #emptyPanel .icon img { width: 70px; }
+  #emptyPanel h3 { font-weight: 500; font-size: 26px; color: #2a3350; }
+  #createBtn { background: #2f80ed; color: #fff; font-size: 16px; font-weight: 500; padding: 14px 26px; border-radius: 999px; white-space: nowrap; }
+  #ripple { width: 20px; height: 20px; border-radius: 50%; border: 3px solid #fff; z-index: 40; }
 
-  #formWrap { left: 96px; top: 34px; width: 400px; height: 250px; z-index: 2; }
-  #formWrap .card { position: absolute; inset: 0; border-radius: 20px; }
-  #formWrap img { width: 400px; height: 250px; }
-  #fields { left: 96px; top: 300px; width: 400px; z-index: 2; color: #fff; }
-  #fields .row { display: flex; justify-content: space-between; font-size: 15px; font-weight: 500; margin-bottom: 10px; }
+  #formWrap { left: 80px; top: 76px; width: 460px; height: 288px; z-index: 2; }
+  #formWrap .page { position: absolute; inset: 0; border-radius: 22px; background: rgba(255,255,255,.16); border: 1px solid rgba(255,255,255,.3); }
+  #formWrap .card { position: absolute; inset: 0; }
+  #formWrap .card img { width: 460px; height: 288px; }
+  #fields { left: 80px; top: 404px; width: 460px; z-index: 2; color: #fff; }
+  #fields .row { display: flex; justify-content: space-between; font-size: 17px; font-weight: 500; margin-bottom: 12px; }
   #fields .row b { font-weight: 700; }
-  #fields .segs { display: flex; gap: 5px; }
-  #fields .seg { flex: 1; height: 8px; border-radius: 4px; background: rgba(255,255,255,.25); overflow: hidden; }
+  #fields .segs { display: flex; gap: 6px; }
+  #fields .seg { flex: 1; height: 9px; border-radius: 5px; background: rgba(255,255,255,.22); overflow: hidden; }
   #fields .seg i { display: block; height: 100%; width: 0; background: #fff; }
-  #fields .names { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 6px; }
-  #fields .chip { font-size: 12px; padding: 4px 9px; border-radius: 999px; background: rgba(255,255,255,.14); color: rgba(255,255,255,.9); }
-  #calWrap { left: 540px; top: 34px; width: 640px; height: 300px; z-index: 2; }
-  #calWrap .card { position: absolute; inset: 0; border-radius: 18px; }
-  #calWrap .card > img { width: 640px; height: 300px; }
+  #calWrap { left: 575px; top: 90px; width: 630px; height: 296px; z-index: 2; }
+  #calWrap .card { position: absolute; inset: 0; border-radius: 20px; }
+  #calWrap .card > img { width: 630px; height: 296px; }
   .entry { position: absolute; transform-origin: left center; }
-  #dot { width: 18px; height: 18px; border-radius: 50%; background: #fff; left: 631px; top: 207px; z-index: 30; box-shadow: 0 0 30px 10px rgba(255,255,255,.35); }
+  #dot { width: 18px; height: 18px; border-radius: 50%; background: #fff; left: 631px; top: 261px; z-index: 30; box-shadow: 0 0 30px 10px rgba(255,255,255,.35); }
 
   /* ---------- Scene 2: Notsi ---------- */
   .orb { border-radius: 50%; background: linear-gradient(135deg, #8b5cf6 0%, #3b6ef5 100%); display: flex; align-items: center; justify-content: center; }
   .orb img { width: 56%; }
-  #heroOrb { left: 580px; top: 40px; width: 120px; height: 120px; z-index: 5; box-shadow: 0 0 34px 4px rgba(167,139,250,.55); }
-  #hello { left: 0; width: 1280px; top: 168px; text-align: center; color: #fff; z-index: 5; }
-  #hello h2 { font-size: 46px; font-weight: 700; letter-spacing: -.5px; }
-  #hello p { font-size: 18px; opacity: .85; margin-top: 4px; }
-  #startBtn { left: 520px; top: 312px; width: 240px; height: 54px; border-radius: 999px; background: #fff; color: #2b5ce6;
-    font-size: 17px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; z-index: 5; box-shadow: 0 12px 26px rgba(8,24,80,.3); }
+  #heroOrb { left: 575px; top: 70px; width: 130px; height: 130px; z-index: 6; box-shadow: 0 0 0 10px rgba(255,255,255,.12), 0 0 40px 6px rgba(167,139,250,.6); }
+  #hello { left: 0; width: 1280px; top: 232px; text-align: center; color: #fff; z-index: 5; }
+  #hello h2 { font-size: 56px; font-weight: 700; letter-spacing: -.5px; }
+  #hello p { font-size: 20px; opacity: .85; margin-top: 4px; }
+  #startBtn { left: 500px; top: 384px; width: 280px; height: 62px; border-radius: 999px; background: #fff; color: #2b5ce6;
+    font-size: 19px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; z-index: 5;
+    box-shadow: 0 0 0 8px rgba(255,255,255,.16), 0 16px 30px rgba(6,18,70,.32); }
 
-  #chat { left: 90px; top: 22px; width: 410px; height: 390px; border-radius: 24px; z-index: 4; display: flex; flex-direction: column; }
-  #chatHead { display: flex; align-items: center; gap: 12px; padding: 16px 20px; border-bottom: 1px solid #eef0f6; }
-  #chatHead .orb { width: 40px; height: 40px; }
-  #chatHead b { display: block; font-size: 17px; color: var(--ink); }
-  #chatHead span { font-size: 12px; color: #7a8199; }
+  #chat { left: 70px; top: 40px; width: 440px; height: 470px; z-index: 4; display: flex; flex-direction: column; }
+  #chatHead { display: flex; align-items: center; gap: 12px; padding: 18px 22px; border-bottom: 1px solid #eef0f6; }
+  #chatHead .orb { width: 44px; height: 44px; }
+  #chatHead b { display: block; font-size: 19px; color: var(--ink); }
+  #chatHead span { font-size: 13px; color: #7a8199; }
   #msgs { position: relative; flex: 1; overflow: hidden; }
-  #msgsInner { position: absolute; left: 0; right: 0; bottom: 0; padding: 0 18px 12px; display: flex; flex-direction: column; gap: 10px; }
-  .msg { max-width: 86%; font-size: 15px; line-height: 1.35; padding: 10px 14px; border-radius: 16px; transform-origin: left bottom; }
+  #msgsInner { position: absolute; left: 0; right: 0; bottom: 0; padding: 0 20px 14px; display: flex; flex-direction: column; gap: 12px; }
+  .msg { max-width: 86%; font-size: 17px; line-height: 1.35; padding: 11px 16px; border-radius: 18px; transform-origin: left bottom; }
   .msg.bot { background: #f1ecfe; color: var(--ink); align-self: flex-start; border-bottom-left-radius: 6px; }
   .msg.me { background: #3b6ef5; color: #fff; align-self: flex-end; border-bottom-right-radius: 6px; transform-origin: right bottom; }
-  .msg.typing { display: flex; gap: 5px; padding: 14px 16px; }
-  .msg.typing i { width: 7px; height: 7px; border-radius: 50%; background: #8b5cf6; display: block; }
+  .msg.typing { display: flex; gap: 5px; padding: 15px 18px; }
+  .msg.typing i { width: 8px; height: 8px; border-radius: 50%; background: #8b5cf6; display: block; }
   .msg.build { background: linear-gradient(90deg, #f1ecfe, #e6eeff); font-weight: 500; display: flex; gap: 8px; align-items: center; }
   .msg.build em { font-style: normal; color: #8b5cf6; }
-  #chatInput { margin: 0 18px 16px; height: 44px; border-radius: 14px; border: 1px solid #e6e8f0; display: flex; align-items: center; padding: 0 8px 0 14px; font-size: 14px; color: #9aa1b5; justify-content: space-between; }
-  #chatInput .send { width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(135deg,#8b5cf6,#3b6ef5); }
-  #typed { color: var(--ink); }
+  #chatInput { margin: 0 20px 18px; height: 50px; border-radius: 16px; border: 1px solid #e6e8f0; display: flex; align-items: center; padding: 0 9px 0 16px; font-size: 15px; color: #9aa1b5; justify-content: space-between; }
+  #chatInput .send { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg,#8b5cf6,#3b6ef5); }
 
-  #plan { left: 530px; top: 22px; width: 660px; height: 390px; border-radius: 24px; z-index: 4; background: #f7f6f3; }
-  #plan .head { position: absolute; left: 0; right: 0; top: 0; height: 56px; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; background: #fff; border-bottom: 1px solid #eef0f6; z-index: 2; }
-  #plan .head b { font-size: 17px; color: var(--ink); }
-  #plan .head span { font-size: 12px; color: #8b5cf6; font-weight: 600; background: #f1ecfe; padding: 5px 10px; border-radius: 999px; }
-  #planImgWrap { position: absolute; left: 0; right: 0; top: 56px; bottom: 0; overflow: hidden; }
-  #planImgWrap img { width: 660px; position: absolute; left: 0; top: -84px; }
-  #scan { left: 0; right: 0; height: 60px; background: linear-gradient(180deg, rgba(139,92,246,0), rgba(139,92,246,.25), rgba(139,92,246,0)); z-index: 3; }
-  #badge { left: 955px; top: 14px; z-index: 6; background: #12b76a; color: #fff; font-size: 14px; font-weight: 600; padding: 8px 14px; border-radius: 999px; box-shadow: 0 10px 22px rgba(8,24,80,.3); display: flex; gap: 6px; align-items: center; }
+  #plan { left: 570px; top: 40px; width: 650px; height: 470px; z-index: 4; background: #f7f6f3; }
+  #plan .head { position: absolute; left: 0; right: 0; top: 0; height: 62px; padding: 0 22px; display: flex; align-items: center; justify-content: space-between; background: #fff; border-bottom: 1px solid #eef0f6; z-index: 2; }
+  #plan .head b { font-size: 19px; color: var(--ink); }
+  #plan .head span { font-size: 13px; color: #8b5cf6; font-weight: 600; background: #f1ecfe; padding: 6px 12px; border-radius: 999px; }
+  #planImgWrap { position: absolute; left: 0; right: 0; top: 62px; bottom: 0; overflow: hidden; }
+  #planImgWrap img { width: 650px; position: absolute; left: 0; top: -82px; }
+  #scan { left: 0; right: 0; height: 70px; background: linear-gradient(180deg, rgba(139,92,246,0), rgba(139,92,246,.25), rgba(139,92,246,0)); z-index: 3; }
+  #badge { left: 930px; top: 14px; z-index: 8; background: #12b76a; color: #fff; font-size: 15px; font-weight: 600; padding: 9px 16px; border-radius: 999px; box-shadow: 0 0 0 6px rgba(18,183,106,.22), 0 10px 22px rgba(6,18,70,.3); }
+  .fly { z-index: 9; left: 0; top: 0; background: #fff; color: #3b6ef5; font-size: 14px; font-weight: 600; padding: 7px 13px; border-radius: 999px; white-space: nowrap;
+    box-shadow: 0 0 0 5px rgba(255,255,255,.2), 0 10px 20px rgba(6,18,70,.3); }
 
-  #cursor { width: 30px; height: 30px; z-index: 50; transform-origin: 4px 3px; }
+  #cursor { width: 32px; height: 32px; z-index: 50; transform-origin: 4px 3px; left: 0; top: 0; }
 </style>
 </head>
 <body>
+<div id="bg">
+  <div id="blobA" class="blob"></div><div id="blobB" class="blob"></div><div id="blobC" class="blob"></div>
+  <div id="grid"></div>
+  <div id="ring1" class="ring"></div><div id="ring2" class="ring"></div><div id="ring3" class="ring"></div>
+  <div id="grain"></div>
+</div>
 <div id="stage">
   <!-- Scene 1 -->
   <div id="s1">
@@ -96,6 +123,8 @@
     </div>
 
     <div id="formWrap" class="abs">
+      <div class="page" id="pg2"></div>
+      <div class="page" id="pg1"></div>
       <div class="card" id="q1"><img src="assets/q1.png" alt=""></div>
       <div class="card" id="q2"><img src="assets/q2.png" alt=""></div>
       <div class="card" id="q3"><img src="assets/q3.png" alt=""></div>
@@ -139,6 +168,8 @@
       <div id="planImgWrap"><img src="assets/new_day.png" alt=""></div>
       <div id="scan" class="abs"></div>
     </div>
+    <div id="fly1" class="abs fly">SAT &middot; Oct 4</div>
+    <div id="fly2" class="abs fly">Evenings &middot; 45 min</div>
     <div id="badge" class="abs">&#10003; Plan ready</div>
   </div>
 
@@ -157,14 +188,31 @@ const easeIn = (x) => x * x * x;
 const easeInOut = (x) => (x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
 const back = (x, s = 1.6) => { x = clamp(x) - 1; return x * x * ((s + 1) * x + s) + 1; };
 
-function set(el, { x = 0, y = 0, s = 1, o = 1, r = 0, blur = 0 } = {}) {
-  el.style.transform = `translate(${x}px, ${y}px) scale(${s}) rotate(${r}deg)`;
+function set(el, { x = 0, y = 0, s = 1, o = 1, rx = 0, ry = 0, rz = 0, blur = 0 } = {}) {
+  el.style.transform = `translate3d(${x}px, ${y}px, 0) rotateX(${rx}deg) rotateY(${ry}deg) rotate(${rz}deg) scale(${s})`;
   el.style.opacity = o;
   el.style.filter = blur ? `blur(${blur}px)` : "none";
   el.style.visibility = o <= 0.001 ? "hidden" : "visible";
 }
 
-// Cursor path: list of [time, x, y] keyframes (stage coords of the arrow tip) + click times.
+// Live centre of an element in stage coordinates (fx, fy = fraction inside its box).
+const stageTop = 540;
+function at(el, fx = .5, fy = .5) {
+  const r = el.getBoundingClientRect();
+  return [r.left + r.width * fx, r.top - stageTop + r.height * fy];
+}
+
+// Background: driven by global time so it flows unbroken across the cut between parts.
+function background(T) {
+  const mv = (id, x, y) => { $(id).style.transform = `translate3d(${x}px, ${y}px, 0)`; };
+  mv("blobA", 760 + 120 * Math.sin(T * .35), 520 + 60 * Math.cos(T * .3));
+  mv("blobB", -80 + 110 * Math.cos(T * .28), 600 + 70 * Math.sin(T * .33));
+  mv("blobC", 400 + 160 * Math.sin(T * .22 + 1), 80 + 50 * Math.cos(T * .25));
+  const g = (T * 4) % 32;
+  set($("grid"), { x: g, y: -g * .5 });
+  [1, 2, 3].forEach((i) => set($("ring" + i), { s: 1 + .015 * Math.sin(T * .6 + i) }));
+}
+
 function cursorAt(t, keys, clicks) {
   const c = $("cursor");
   if (t < keys[0][0] || t > keys[keys.length - 1][0]) { set(c, { o: 0 }); return; }
@@ -175,7 +223,6 @@ function cursorAt(t, keys, clicks) {
   for (const ct of clicks) { const q = p(t, ct - .08, .24); if (q > 0 && q < 1) s = 1 - .22 * Math.sin(q * Math.PI); }
   const fadeIn = p(t, keys[0][0], .2), fadeOut = 1 - p(t, keys[keys.length - 1][0] - .2, .2);
   set(c, { x: lerp(x0, x1, k) - 4, y: lerp(y0, y1, k) - 3, s, o: Math.min(fadeIn, fadeOut) });
-  c.style.left = "0px"; c.style.top = "0px";
 }
 
 function ripple(t, clicks) {
@@ -188,12 +235,11 @@ function ripple(t, clicks) {
   set(r, { o: 0 });
 }
 
-// Everything collapses into / grows out of this point; it's the hand-off between parts.
-const HUB = { x: 640, y: 216 };
-function collapse(el, t, start, dur, cx, cy) {
-  // returns transform pulling element (whose centre is cx,cy) into the hub
+// Everything collapses into / grows out of this point: the hand-off between parts.
+const HUB = { x: 640, y: 270 };
+function collapse(t, start, dur, cx, cy) {
   const k = easeIn(p(t, start, dur));
-  return { x: (HUB.x - cx) * k, y: (HUB.y - cy) * k, s: 1 - .95 * k, o: 1 - p(t, start + dur * .55, dur * .45) };
+  return { k, x: (HUB.x - cx) * k, y: (HUB.y - cy) * k, s: 1 - .95 * k, o: 1 - p(t, start + dur * .55, dur * .45) };
 }
 
 const FIELD_NAMES = ["Exam Name", "Exam Date", "Repeating Exam?", "Previous Score", "Insights", "Study Preference",
@@ -201,100 +247,103 @@ const FIELD_NAMES = ["Exam Name", "Exam Date", "Repeating Exam?", "Previous Scor
 const segs = $("segs");
 FIELD_NAMES.forEach(() => { const s = document.createElement("div"); s.className = "seg"; s.innerHTML = "<i></i>"; segs.appendChild(s); });
 
-// Calendar entries: crop boxes (2x px) from prep_assets.py -> placed at 0.25 scale.
+// Calendar entries: crop boxes (2x px) from prep_assets.py, placed at the calendar's scale.
+const CAL_K = 630 / 2560;
 const ENTRIES = [[193, 261, 523, 415], [527, 597, 857, 751], [863, 594, 1192, 754], [1192, 343, 1532, 501]];
 ENTRIES.forEach(([l, t, r, b], i) => {
-  const e = $("e" + (i + 1));
-  Object.assign(e.style, { left: l / 4 + "px", top: t / 4 + "px", width: (r - l) / 4 + "px", height: (b - t) / 4 + "px" });
+  Object.assign($("e" + (i + 1)).style, { left: l * CAL_K + "px", top: t * CAL_K + "px", width: (r - l) * CAL_K + "px", height: (b - t) * CAL_K + "px" });
 });
 
 function scene1(t) {
   $("s2").style.display = "none"; $("s1").style.display = "block";
-  // Phase A: logo + empty-state panel, cursor clicks "Create"
+  // Phase A: logo + empty-state panel; cursor clicks "Create"
   const out = easeIn(p(t, 1.75, .35));
   const lp = back(p(t, .1, .55));
-  set($("logoCard"), { s: .6 + .4 * lp, o: clamp(p(t, .1, .3)) * (1 - out), x: -60 * out, y: -10 * out });
+  set($("logoCard"), { s: .6 + .4 * lp, o: clamp(p(t, .1, .3)) * (1 - out), x: -70 * out, y: -10 * out, ry: 14 - 6 * lp, rz: -3 * (1 - lp) });
   const pp = easeOut(p(t, .3, .6));
-  const press = 1 - .06 * Math.sin(Math.PI * p(t, 1.48, .2));
-  set($("emptyPanel"), { y: 60 * (1 - pp) + 30 * out, o: pp * (1 - out), s: (1 - .08 * out) });
-  $("createBtn").style.transform = `scale(${press})`;
+  set($("emptyPanel"), { y: 70 * (1 - pp) + 30 * out, o: pp * (1 - out), s: 1 - .08 * out, rx: 14 * (1 - pp), ry: -10 + 4 * pp });
+  $("createBtn").style.transform = `scale(${1 - .06 * Math.sin(Math.PI * p(t, 1.48, .2))})`;
 
-  // Phase B: multi-step form + 12 fields + timeline fills in
-  const inB = easeOut(p(t, 2.0, .5));
-  const C = collapse(null, t, 5.15, .7, 296, 159);
+  // Phase B: multi-step form (a stack of pages) + 12 fields + timeline fills in
+  const inB = easeOut(p(t, 2.0, .55));
+  const C = collapse(t, 5.15, .7, 310, 220);
   const qT = [[2.05, 2.95], [2.95, 3.75], [3.75, 9]];
   ["q1", "q2", "q3"].forEach((id, i) => {
     const [a, b] = qT[i];
-    const enter = i === 0 ? 1 : easeOut(p(t, a, .3));
+    const enter = i === 0 ? 1 : easeOut(p(t, a, .35));
     const leave = easeIn(p(t, b, .3));
     const vis = t >= a - .01 && t <= b + .31 ? 1 : 0;
-    set($(id), { x: 420 * (1 - enter) - 420 * leave, o: vis * (i === 0 ? 1 : enter) * (1 - leave) });
+    // old page lifts up and away, next one slides in from the stack behind
+    set($(id), { x: -60 * leave + 28 * (1 - enter), y: -40 * leave - 24 * (1 - enter), rz: -6 * leave, s: 1 - .04 * (1 - enter),
+      o: vis * (i === 0 ? 1 : enter) * (1 - leave) });
   });
-  set($("formWrap"), { x: C.x + -80 * (1 - inB), y: C.y, s: C.s, o: inB * C.o });
+  const stack = easeOut(p(t, 2.2, .5));
+  set($("pg1"), { x: 14 * stack, y: -12 * stack, o: inB });
+  set($("pg2"), { x: 28 * stack, y: -24 * stack, o: inB * .7 });
+  set($("formWrap"), { x: C.x - 90 * (1 - inB), y: C.y, s: C.s, o: inB * C.o, ry: 16 - 4 * inB, rx: 4 });
 
-  const fieldP = clamp((t - 2.3) / 2.6) * 12; // 12 fields over 2.6s
+  const fieldP = clamp((t - 2.3) / 2.6) * 12;
   const n = Math.min(12, Math.max(1, Math.ceil(fieldP)));
   $("fieldName").textContent = FIELD_NAMES[n - 1];
   $("fieldNum").textContent = n;
   [...segs.children].forEach((s, i) => { s.firstChild.style.width = clamp(fieldP - i) * 100 + "%"; });
-  const CF = collapse(null, t, 5.15, .7, 296, 320);
+  const CF = collapse(t, 5.15, .7, 310, 420);
   set($("fields"), { x: CF.x, y: CF.y + 20 * (1 - inB), s: CF.s, o: inB * CF.o });
 
-  const calIn = easeOut(p(t, 2.1, .55));
-  const CC = collapse(null, t, 5.15, .7, 860, 184);
-  set($("calWrap"), { x: CC.x + 120 * (1 - calIn), y: CC.y, s: CC.s, o: calIn * CC.o });
-  [2.85, 3.5, 4.1, 4.6].forEach((at, i) => {
-    const q = back(p(t, at, .4), 2);
-    set($("e" + (i + 1)), { s: Math.max(0, q), o: clamp(p(t, at, .15)) });
-  });
+  const calIn = easeOut(p(t, 2.1, .6));
+  const CC = collapse(t, 5.15, .7, 890, 238);
+  set($("calWrap"), { x: CC.x + 140 * (1 - calIn), y: CC.y, s: CC.s, o: calIn * CC.o, ry: -16 + 4 * calIn, rx: 4 });
+  [2.85, 3.5, 4.1, 4.6].forEach((a, i) => set($("e" + (i + 1)), { s: Math.max(0, back(p(t, a, .4), 2)), o: clamp(p(t, a, .15)) }));
 
-  // Cursor: enter -> click Create -> click Next x2 on the form
-  cursorAt(t, [[.8, 1150, 430], [1.45, 672, 334], [1.9, 640, 360], [2.75, 352, 236], [3.6, 352, 236], [4.3, 360, 240], [4.9, 520, 420]], [1.5, 2.9, 3.7]);
-  ripple(t, [[1.5, 672, 334], [2.9, 352, 236], [3.7, 352, 236]]);
+  // Cursor: enter -> click Create -> click Next twice on the form (targets read live)
+  const create = at($("createBtn"));
+  const next = at($("formWrap"), 395 / 626, 287 / 391);
+  cursorAt(t, [[.8, 1150, 520], [1.45, ...create], [1.9, 640, 440], [2.75, ...next], [3.6, ...next], [4.3, next[0] + 8, next[1] + 4], [4.9, 520, 520]], [1.5, 2.9, 3.7]);
+  ripple(t, [[1.5, ...create], [2.9, ...next], [3.7, ...next]]);
 
-  // Hand-off dot
   const d = p(t, 5.55, .3);
   set($("dot"), { s: back(d, 2), o: clamp(d * 3) });
 }
 
 function scene2(t) {
   $("s1").style.display = "none"; $("s2").style.display = "block";
-  // Phase A: dot blooms into Notsi orb
+  set($("dot"), { o: 1 - p(t, 0, .1), s: 1 + .6 * p(t, 0, .1) });
+
+  // Phase A: dot blooms into Notsi orb (orb centre 640,135)
+  const grow = easeOut(p(t, 0, .6));
   const bloom = back(p(t, 0, .6), 1.0);
   const toChat = easeInOut(p(t, 1.6, .5));
-  // heroOrb centre (640, 80) -> chat header orb centre (160, 64), size 120 -> 40
+  const head = at(document.querySelector("#chatHead .orb"));
+  const tx = head[0] - 640, ty = head[1] - 135;
   set($("heroOrb"), {
-    x: (HUB.x - 640) * (1 - easeOut(p(t, 0, .6))) + (130 - 640) * toChat,
-    y: (HUB.y - 100) * (1 - easeOut(p(t, 0, .6))) + (58 - 100) * toChat,
-    s: Math.max(0.001, bloom) * (1 - toChat * (1 - 40 / 120)),
+    x: (HUB.x - 640) * (1 - grow) + tx * toChat,
+    y: (HUB.y - 135) * (1 - grow) + ty * toChat,
+    s: Math.max(0.001, bloom) * (1 - toChat * (1 - 44 / 130)),
     o: clamp(p(t, 0, .08)) * (t < 2.1 ? 1 : 0),
   });
   const helloIn = easeOut(p(t, .35, .45)), helloOut = easeIn(p(t, 1.55, .3));
-  set($("hello"), { y: 20 * (1 - helloIn) - 20 * helloOut, o: helloIn * (1 - helloOut) });
-  const btnIn = back(p(t, .6, .45));
+  set($("hello"), { y: 24 * (1 - helloIn) - 24 * helloOut, o: helloIn * (1 - helloOut) });
+  const btnIn = easeOut(p(t, .6, .45));
   const press = 1 - .06 * Math.sin(Math.PI * p(t, 1.3, .2));
-  set($("startBtn"), { y: 20 * (1 - easeOut(p(t, .6, .45))), s: press * (helloOut > 0 ? 1 - .2 * helloOut : 1) * (btnIn > 0 ? 1 : 0), o: clamp(p(t, .6, .25)) * (1 - helloOut) });
+  set($("startBtn"), { y: 24 * (1 - btnIn), s: press * (1 - .2 * helloOut), o: clamp(p(t, .6, .25)) * (1 - helloOut) });
 
-  cursorAt(t, [[.7, 1100, 420], [1.25, 650, 342], [1.8, 760, 430]], [1.32]);
-  ripple(t, [[1.32, 650, 342]]);
+  const btn = [640, 415];
+  cursorAt(t, [[.7, 1100, 520], [1.25, ...btn], [1.8, 780, 530]], [1.32]);
+  ripple(t, [[1.32, ...btn]]);
 
   // Phase B: chat panel + conversation
-  const chatIn = easeOut(p(t, 1.7, .4));
-  set($("chat"), { y: 30 * (1 - chatIn), o: chatIn });
+  const chatIn = easeOut(p(t, 1.7, .45));
+  set($("chat"), { y: 40 * (1 - chatIn), o: chatIn, ry: 12 - 2 * chatIn, rx: 3 });
   document.querySelector("#chatHead .orb").style.opacity = t < 2.1 ? 0 : 1;
   const showAt = [2.2, 2.75, 3.25, 3.8, 4.2, 4.55];
-  const hideTyping = 4.55;
-  showAt.forEach((at, i) => {
+  showAt.forEach((a, i) => {
     const m = $("m" + (i + 1));
-    let shown = t >= at;
-    if (i === 4 && t >= hideTyping) shown = false;
-    m.style.display = shown ? "flex" : "none";
-    if (i !== 4 && i !== 5) m.style.display = shown ? "block" : "none";
-    const q = back(p(t, at, .35), 1.8);
-    set(m, { s: .6 + .4 * q, o: clamp(p(t, at, .15)), y: 10 * (1 - easeOut(p(t, at, .3))) });
+    let shown = t >= a;
+    if (i === 4 && t >= 4.55) shown = false;
+    m.style.display = shown ? (i >= 4 ? "flex" : "block") : "none";
+    set(m, { s: .6 + .4 * back(p(t, a, .35), 1.8), o: clamp(p(t, a, .15)), y: 10 * (1 - easeOut(p(t, a, .3))) });
   });
   [...$("m5").children].forEach((d, i) => { d.style.transform = `translateY(${-4 * Math.max(0, Math.sin(t * 9 - i * .8))}px)`; });
-  // user typing into the input before each user message
   const typedEl = $("typed");
   const typing = [[2.35, 2.75, "SAT on Saturday, Oct 4"], [3.35, 3.8, "Evenings after soccer, 45 min a day"]];
   let txt = null;
@@ -302,21 +351,26 @@ function scene2(t) {
   typedEl.textContent = txt ?? "Ask Notsi or type a change…";
   typedEl.style.color = txt ? "#1b2440" : "#9aa1b5";
 
-  // Phase C: smart plan builds
-  const planIn = easeOut(p(t, 4.35, .55));
-  set($("plan"), { x: 80 * (1 - planIn), o: planIn, blur: 8 * (1 - planIn) });
-  const reveal = easeInOut(p(t, 4.6, 1.0));
+  // Phase C: answers fly into the plan, plan builds top-to-bottom
+  const planIn = easeOut(p(t, 4.3, .6));
+  set($("plan"), { x: 90 * (1 - planIn), o: planIn, blur: 8 * (1 - planIn), ry: -14 + 4 * planIn, rx: 3 });
+  [["fly1", "m2", 4.35, [760, 150]], ["fly2", "m4", 4.5, [880, 260]]].forEach(([id, src, a, dst]) => {
+    const el = $(id), q = easeInOut(p(t, a, .6));
+    const [sx, sy] = at($(src));
+    const w = el.offsetWidth, h = el.offsetHeight;
+    const lift = -60 * Math.sin(Math.PI * q);
+    set(el, { x: lerp(sx, dst[0], q) - w / 2, y: lerp(sy, dst[1], q) - h / 2 + lift, s: 1 - .25 * q,
+      o: clamp(p(t, a, .1)) * (1 - p(t, a + .5, .15)) });
+  });
+  const reveal = easeInOut(p(t, 4.7, 1.0));
   $("planImgWrap").style.clipPath = `inset(0 0 ${100 - reveal * 100}% 0)`;
   const sc = $("scan");
-  sc.style.top = (56 + reveal * 334 - 30) + "px";
+  sc.style.top = (62 + reveal * 408 - 35) + "px";
   sc.style.opacity = reveal > 0 && reveal < 1 ? 1 : 0;
-  const bq = back(p(t, 5.3, .4), 2);
-  set($("badge"), { s: Math.max(0.001, bq), o: clamp(p(t, 5.3, .15)) });
-
-  set($("dot"), { o: 1 - p(t, 0, .1), s: 1 + .6 * p(t, 0, .1) });
+  set($("badge"), { s: Math.max(0.001, back(p(t, 5.3, .4), 2)), o: clamp(p(t, 5.3, .15)) });
 }
 
-window.render = (part, t) => (part === 1 ? scene1(t) : scene2(t));
+window.render = (part, t) => { background((part - 1) * 6 + t); part === 1 ? scene1(t) : scene2(t); };
 const q = new URLSearchParams(location.search);
 window.render(Number(q.get("part") || 1), Number(q.get("t") || 0));
 </script>
