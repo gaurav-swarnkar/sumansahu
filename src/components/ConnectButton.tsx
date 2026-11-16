@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPhone, faEnvelope, faPaperPlane, faXmark, faComment } from "@fortawesome/free-solid-svg-icons";
 import { faLinkedin, faBehance, faMedium } from "@fortawesome/free-brands-svg-icons";
-import contactDrawerImage from "../imports/Main/suman_sahu.png";
+import contactDrawerImage from "../assets/images/common/suman-sahu.png";
 
 function ArrowForward({ className = "" }: { className?: string }) {
   return (

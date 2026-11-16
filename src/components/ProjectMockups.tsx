@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef, useState } from "react";
-import type { Project } from "../data";
+import type { Project } from "../data/projects";
 
 /**
  * Small, illustrative UI mockups that suggest what each project's product

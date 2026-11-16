@@ -11,15 +11,18 @@ A Vite development server is **already running** on `$PORT` (default 8443). You 
 
 ## Project Structure
 
-This is the canonical project structure. Start with task-relevant files below. Only follow imports or inspect other files when required, when a documented path is missing, or when the repository contradicts this guide.
+Full map with editing how-tos: `PROJECT_STRUCTURE.md`. Keep to it when adding files.
 
-- `src/main.tsx` - React entrypoint; imports `src/index.css` and mounts `src/App.tsx` into the `#root` element
-- `src/App.tsx` - Primary application component and the usual starting point for UI work
-- `src/index.css` - Global CSS entrypoint and Tailwind CSS v4 import
-- `index.html` - Vite HTML shell containing the `#root` element and loading `src/main.tsx`
-- `package.json` - Project dependencies and the Vite build, development, preview, and formatting scripts
-- `vite.config.ts` - Vite configuration with React, Tailwind CSS v4, and Figma Make plugins plus the `@` alias for `src`
-- `.mise.toml` - Toolchain versions for Node.js and pnpm
+- `src/main.tsx` - React entrypoint; imports `src/styles/index.css` and mounts `src/App.tsx`
+- `src/App.tsx` - All routes (address → page)
+- `src/pages/` - One file per page; `src/pages/projects/` holds each project's case study
+- `src/components/` - Reusable pieces (project banner/frame `ProjectContent.tsx`, mockups, contact drawer, carousels)
+- `src/data/` - Editable content: `projects.ts`, `projectThemes.ts`, `about.ts`
+- `src/styles/index.css` - Global CSS entrypoint and Tailwind CSS v4 import
+- `src/lib/` - Helpers without UI (transitions, analytics)
+- `src/assets/images|videos/<page-or-project>/` - All media, imported from code; lowercase-hyphen names
+- `public/prototypes/` - Static HTML prototypes reached by URL
+- `index.html`, `package.json`, `vite.config.ts`, `.mise.toml` - Shell, scripts, build config, toolchain
 
 ## Dependencies
 
@@ -30,9 +33,9 @@ This is the canonical project structure. Start with task-relevant files below. O
 
 ## Styling
 
-This project uses **Tailwind CSS v4** through the `@tailwindcss/vite` plugin configured in `vite.config.ts`. `src/index.css` imports Tailwind with `@import 'tailwindcss';`. Use Tailwind utility classes directly in JSX and put global CSS or Tailwind v4 theme customization in `src/index.css`. This scaffold does not need a Tailwind config file or PostCSS config.
+This project uses **Tailwind CSS v4** through the `@tailwindcss/vite` plugin configured in `vite.config.ts`. `src/styles/index.css` imports Tailwind with `@import 'tailwindcss';`. Use Tailwind utility classes directly in JSX and put global CSS or Tailwind v4 theme customization in `src/styles/index.css`. This scaffold does not need a Tailwind config file or PostCSS config.
 
-`src/main.tsx` imports `src/index.css`, so global font wiring belongs in `src/index.css`. Keep CSS `@import` statements first, then add any `@font-face` rules and font-family defaults there.
+`src/main.tsx` imports `src/styles/index.css`, so global font wiring belongs there. Keep CSS `@import` statements first, then add any `@font-face` rules and font-family defaults there.
 
 ## Code quality
 
