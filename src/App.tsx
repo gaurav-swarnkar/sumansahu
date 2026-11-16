@@ -1,124 +1,98 @@
 import { Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "motion/react";
-import { useState, useEffect } from "react";
-import Hero from "./components/Hero";
-import ProjectStories from "./components/ProjectStories";
-import ProjectDetail from "./components/ProjectDetail";
-import About from "./components/About";
+import { useState, useEffect, type ReactNode } from "react";
+import HomePage from "./pages/HomePage";
+import ProjectsPage from "./pages/ProjectsPage";
+import ProjectDetailPage from "./pages/ProjectDetailPage";
+import AboutPage from "./pages/AboutPage";
+import AdminLoginPage from "./pages/admin/AdminLoginPage";
+import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
 import IntroductionModal from "./components/IntroductionModal";
-import AdminLogin from "./admin/AdminLogin";
-import AdminDashboard from "./admin/AdminDashboard";
-import ProtectedRoute from "./admin/ProtectedRoute";
-import { initializeAnalytics, trackVisitor } from "./utils/analytics";
-import { pageVariants } from "./utils/transitions";
+import ProtectedRoute from "./components/ProtectedRoute";
+import { initializeAnalytics, trackVisitor } from "./lib/analytics";
+import { pageVariants } from "./lib/transitions";
 
-function PortfolioWrapper() {
+/*
+ * ROUTES: every address on the site and the page file it shows.
+ *
+ *   /                      → pages/HomePage.tsx
+ *   /portfolio             → pages/HomePage.tsx + introduction pop-up
+ *   /projects              → pages/ProjectsPage.tsx
+ *   /project/:projectId    → pages/ProjectDetailPage.tsx  (content from pages/projects/)
+ *   /about                 → pages/AboutPage.tsx
+ *   /workshop/login        → pages/admin/AdminLoginPage.tsx
+ *   /workshop/dashboard    → pages/admin/AdminDashboardPage.tsx (login required)
+ */
+
+/** Wraps a page in the shared fade/slide page transition. */
+function Animated({ children }: { children: ReactNode }) {
+  return (
+    <motion.div initial="hidden" animate="visible" exit="exit" variants={pageVariants}>
+      {children}
+    </motion.div>
+  );
+}
+
+function HomeWithIntroduction() {
   const [isIntroductionOpen, setIsIntroductionOpen] = useState(true);
-
   return (
     <>
-      <Hero />
-      <IntroductionModal
-        isOpen={isIntroductionOpen}
-        onClose={() => setIsIntroductionOpen(false)}
-      />
+      <HomePage />
+      <IntroductionModal isOpen={isIntroductionOpen} onClose={() => setIsIntroductionOpen(false)} />
     </>
   );
 }
 
-function AnimatedRoutes() {
+function SiteRoutes() {
   const location = useLocation();
   const [active, setActive] = useState(0);
 
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
-        <Route
-          path="/"
-          element={
-            <motion.div initial="hidden" animate="visible" exit="exit" variants={pageVariants}>
-              <Hero />
-            </motion.div>
-          }
-        />
-        <Route
-          path="/portfolio"
-          element={
-            <motion.div initial="hidden" animate="visible" exit="exit" variants={pageVariants}>
-              <PortfolioWrapper />
-            </motion.div>
-          }
-        />
+        <Route path="/" element={<Animated><HomePage /></Animated>} />
+        <Route path="/portfolio" element={<Animated><HomeWithIntroduction /></Animated>} />
         <Route
           path="/projects"
           element={
-            <motion.div initial="hidden" animate="visible" exit="exit" variants={pageVariants}>
-              <ProjectStories
-                active={active}
-                setActive={setActive}
-                onBack={() => window.history.back()}
-              />
-            </motion.div>
+            <Animated>
+              <ProjectsPage active={active} setActive={setActive} onBack={() => window.history.back()} />
+            </Animated>
           }
         />
-        <Route
-          path="/project/:projectId"
-          element={
-            <motion.div initial="hidden" animate="visible" exit="exit" variants={pageVariants}>
-              <ProjectDetail />
-            </motion.div>
-          }
-        />
-        <Route
-          path="/about"
-          element={
-            <motion.div initial="hidden" animate="visible" exit="exit" variants={pageVariants}>
-              <About />
-            </motion.div>
-          }
-        />
+        <Route path="/project/:projectId" element={<Animated><ProjectDetailPage /></Animated>} />
+        <Route path="/about" element={<Animated><AboutPage /></Animated>} />
       </Routes>
     </AnimatePresence>
   );
 }
 
+function AdminRoutes() {
+  return (
+    <Routes>
+      <Route path="/workshop/login" element={<AdminLoginPage />} />
+      <Route
+        path="/workshop/dashboard"
+        element={
+          <ProtectedRoute>
+            <AdminDashboardPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route path="/workshop/*" element={<AdminLoginPage />} />
+    </Routes>
+  );
+}
+
 export default function App() {
   const { pathname } = useLocation();
+  const isAdmin = pathname.startsWith("/workshop");
 
   useEffect(() => {
-    // Initialize analytics system
     initializeAnalytics();
-    
-    // Track this visitor (only for portfolio pages, not admin panel)
-    if (!pathname.startsWith('/workshop')) {
-      trackVisitor();
-    }
+    // Count visitors on the portfolio only, not on the admin panel.
+    if (!isAdmin) trackVisitor();
   }, []);
 
-  // Admin routes - no animation
-  if (pathname.startsWith('/workshop')) {
-    return (
-      <div className="min-h-screen w-full bg-canvas">
-        <Routes>
-          <Route path="/workshop/login" element={<AdminLogin />} />
-          <Route
-            path="/workshop/dashboard"
-            element={
-              <ProtectedRoute>
-                <AdminDashboard />
-              </ProtectedRoute>
-            }
-          />
-          <Route path="/workshop/*" element={<AdminLogin />} />
-        </Routes>
-      </div>
-    );
-  }
-
-  // Portfolio routes - with animation
-  return (
-    <div className="min-h-screen w-full bg-canvas">
-      <AnimatedRoutes />
-    </div>
-  );
+  return <div className="min-h-screen w-full bg-canvas">{isAdmin ? <AdminRoutes /> : <SiteRoutes />}</div>;
 }

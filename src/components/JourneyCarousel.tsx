@@ -2,18 +2,17 @@ import { useEffect, useState, useRef } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay, faPause, faVolumeMute, faVolumeHigh } from "@fortawesome/free-solid-svg-icons";
-import { journeyTimeline } from "../data";
+import { journeyTimeline } from "../data/about";
+import journey1 from "../assets/videos/about/journey-1.mp4";
+import journey2 from "../assets/videos/about/journey-2.mp4";
+import journey3 from "../assets/videos/about/journey-3.mp4";
+import journey4 from "../assets/videos/about/journey-4.mp4";
+import journey5 from "../assets/videos/about/journey-5.mp4";
+import journey6 from "../assets/videos/about/journey-6.mp4";
+import journey7 from "../assets/videos/about/journey-7.mp4";
 
-// Video paths
-const slides = [
-  `${import.meta.env.BASE_URL}imports/about_page/slide1.mp4`,
-  `${import.meta.env.BASE_URL}imports/about_page/slide2.mp4`,
-  `${import.meta.env.BASE_URL}imports/about_page/slide3.mp4`,
-  `${import.meta.env.BASE_URL}imports/about_page/slide4.mp4`,
-  `${import.meta.env.BASE_URL}imports/about_page/slide5.mp4`,
-  `${import.meta.env.BASE_URL}imports/about_page/slide6.mp4`,
-  `${import.meta.env.BASE_URL}imports/about_page/slide7.mp4`,
-];
+// Journey videos (one per slide), in src/assets/videos/about/
+const slides = [journey1, journey2, journey3, journey4, journey5, journey6, journey7];
 
 const SLIDE_DURATION_MS = 6000;
 
